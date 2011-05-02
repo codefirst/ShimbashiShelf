@@ -22,7 +22,7 @@ import org.apache.lucene.search._
 import org.apache.lucene.queryParser._
 object Indexer {
   val INDEX_PATH : String  = "index"
-  def index(text : String) {
+  def index(text : String) : Boolean = {
     var writer : IndexWriter = null
     try {
       val dir : Directory = FSDirectory.open(new File(INDEX_PATH))
@@ -37,6 +37,7 @@ object Indexer {
     } finally {
       writer.close()
     }
+    return true
   }
   def main(args : Array[String]) {
     Indexer.index(args(0))
