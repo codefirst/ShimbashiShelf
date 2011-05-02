@@ -8,6 +8,7 @@ class ShimbashiShelfProject(info: ProjectInfo) extends DefaultWebProject(info)
   val poiScratchpad = "poi" % "poi-scratchpad" % "3.1-FINAL"
   val luceneCore = "org.apache.lucene" % "lucene-core" % "3.1.0"
   val luceneAnalyzers = "org.apache.lucene" % "lucene-analyzers" % "3.1.0"
+  val specs2 = "org.specs2" % "specs2_2.8.1" % "1.2"
 
   def specs2Framework = new TestFramework("org.specs2.runner.SpecsFramework")
   override def testFrameworks = super.testFrameworks ++ Seq(specs2Framework)
