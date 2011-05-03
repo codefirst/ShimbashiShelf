@@ -9,6 +9,8 @@ for developer
 
     $ sbt update
     $ sbt compile
+    $ sbt package
+    $ sbt jar
 
 * run by scripts
 
