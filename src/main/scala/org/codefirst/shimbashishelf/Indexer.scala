@@ -20,8 +20,9 @@ object Indexer {
     }
 
     var writer : IndexWriter = null
+    var dir : Directory = null
     try {
-      val dir : Directory = FSDirectory.open(new File(INDEX_PATH))
+      dir = FSDirectory.open(new File(INDEX_PATH))
       writer = new IndexWriter(dir, new IndexWriterConfig(Version.LUCENE_31, new CJKAnalyzer(Version.LUCENE_31)))
 
       val doc : Document = new Document()
@@ -31,12 +32,13 @@ object Indexer {
 
       doc.add(pathField)
       doc.add(contentField)
-      
       writer.addDocument(doc)
     } catch {
-      case e:IOException => e.printStackTrace()
+      case e:IOException => return false
     } finally {
-      writer.close()
+      if (writer != null) {
+        writer.close()
+      }
     }
     return true
   }
@@ -48,8 +50,7 @@ object Indexer {
 
   def indexRecursively(file : File) : Boolean = {
     if (file.isFile()) {
-      index(file)
-      return true
+      return index(file)
     }
     file.listFiles.map(indexRecursively).forall(identity)
   }
