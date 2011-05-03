@@ -31,11 +31,14 @@ object Searcher {
       val parser : QueryParser = new QueryParser(Version.LUCENE_31, "document", new CJKAnalyzer(Version.LUCENE_31))
       val td : TopDocs = searcher.search(parser.parse(query), 1000)
       System.out.println(td.totalHits)
+      for (scoreDoc <- td.scoreDocs) { 
+        System.out.println(scoreDoc.toString())
+      }
       searcher.close()
       dir.close()
     }
 
     def main(args : Array[String]) {
-      Searcher.search(args(1))
+      Searcher.search(args(0))
     }
 }
