@@ -4,3 +4,6 @@ target/
 project/build/target
 project/boot
 index/
+.idea
+*.iml
+**/*.iml

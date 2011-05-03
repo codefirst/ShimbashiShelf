@@ -1,25 +1,16 @@
 package org.codefirst.shimbashishelf
 
-import java.io.BufferedReader
 import java.io.File
-import java.io.FileNotFoundException
-import java.io.FileReader
 import java.io.IOException
-import java.util.ArrayList
-import java.util.List
 import org.apache.lucene.analysis.cjk.CJKAnalyzer
 import org.apache.lucene.document.Document
 import org.apache.lucene.document.Field
 import org.apache.lucene.document.Field.Index
 import org.apache.lucene.document.Field.Store
-import org.apache.lucene.index.CorruptIndexException
-import org.apache.lucene.index.IndexWriter
 import org.apache.lucene.store.Directory
 import org.apache.lucene.store.FSDirectory
 import org.apache.lucene.util.Version
-import org.apache.lucene.search._
-
-import org.apache.lucene.queryParser._
+import org.apache.lucene.index.{IndexWriterConfig, IndexWriter}
 
 object Indexer {
   val INDEX_PATH : String  = "index"
@@ -27,8 +18,8 @@ object Indexer {
     var writer : IndexWriter = null
     try {
       val dir : Directory = FSDirectory.open(new File(INDEX_PATH))
-      writer = new IndexWriter(dir, new CJKAnalyzer(Version.LUCENE_31),
-                               IndexWriter.MaxFieldLength.UNLIMITED)
+      val config : IndexWriterConfig = new IndexWriterConfig(Version.LUCENE_31, new CJKAnalyzer(Version.LUCENE_31))
+      writer = new IndexWriter(dir, config)
 
       val doc : Document = new Document()
 
@@ -37,7 +28,7 @@ object Indexer {
 
       doc.add(pathField)
       doc.add(contentField)
-
+      
       writer.addDocument(doc)
     } catch {
       case e:IOException => e.printStackTrace()
