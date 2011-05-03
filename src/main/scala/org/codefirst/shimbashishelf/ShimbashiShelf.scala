@@ -5,7 +5,7 @@ import java.io.File
 
 object ShimbashiShelf {
   val INDEX_PATH : String  = "index"
-  val commands : Array[String] = Array("index", "search")
+  val commands : Array[String] = Array("index", "search", "index-all")
   def main(args : Array[String]) {
     if (args.length == 0) { 
       println("no arguments found")
@@ -37,9 +37,20 @@ object ShimbashiShelf {
       }
       val file : File = new File(args(1))
       if (Indexer.index(file)) { 
-        "index successful"
+        println("index successful")
       } else { 
-        "index failed"
+        println("index failed")
+      }
+    } else if (args(0).equals("index-all")) {
+      if (args.length < 2) {
+        println("usage: index-all <directory-path>")
+        System.exit(0)
+      }
+      val dir : File = new File(args(1))
+      if (Indexer.indexRecursively(dir)) {
+        println("index successful")
+      } else {
+        println("index failed")
       }
     }
   }
