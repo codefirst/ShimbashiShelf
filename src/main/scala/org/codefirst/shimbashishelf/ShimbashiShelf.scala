@@ -31,13 +31,17 @@ object ShimbashiShelf {
       println(documents.length + " documents found:")
       documents.foreach ((doc) => println(doc.getField("path").stringValue()))
     } else if (args(0).equals("search-by-path")) {
-        if (args.length < 2) {
-          println("usage: search-by-path <path>")
-          System.exit(0)
-        }
-        val documents : Array[Document] = Searcher.searchByPath(args(1))
-        println(documents.length + " documents found:")
-        documents.foreach ((doc) => println(doc.getField("path").stringValue()))
+      if (args.length < 2) {
+        println("usage: search-by-path <path>")
+        System.exit(0)
+      }
+      try {
+        val document : Document = Searcher.searchByPath(args(1))
+        println("found:")
+        println(document.getField("path").stringValue())
+      } catch {
+        case e : Exception => e.printStackTrace() 
+      }
     } else if (args(0).equals("index")) {
       if (args.length < 2) { 
         println("usage: index <filepath>")

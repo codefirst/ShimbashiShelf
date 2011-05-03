@@ -24,15 +24,23 @@ object Searcher {
     return docs
   }
 
-  def searchByPath(path : String) : Array[Document] = {
+  def searchByPath(path : String) : Document = {
+    if (path == null) {
+      throw new Exception("null path is not allowed")      
+    }
     val dir : Directory = FSDirectory.open(new File(INDEX_PATH))
-    val searcher : Searcher = new IndexSearcher(dir, true);
-    val term : Term = new Term("path", path);
-    val termQuery : Query = new TermQuery(term);
-    val td : TopDocs= searcher.search(termQuery,10);
+    val searcher : Searcher = new IndexSearcher(dir, true)
+    val term : Term = new Term("path", path)
+    val termQuery : Query = new TermQuery(term)
+    val td : TopDocs= searcher.search(termQuery,10)
     val docs = td.scoreDocs.map ((scoreDoc) => searcher.doc(scoreDoc.doc))
     searcher.close()
     dir.close()
-    return docs
+    if (docs.length == 0) {
+      throw new Exception("cannot find: " + path)
+    } else if (docs.length > 1) {
+      throw new Exception("found multiply: " + path)      
+    }
+    return docs(0)
   }
 }
