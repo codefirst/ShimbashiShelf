@@ -1,6 +1,6 @@
 import sbt._
 
-class ShimbashiShelfProject(info: ProjectInfo) extends DefaultWebProject(info)
+class ShimbashiShelfProject(info: ProjectInfo) extends DefaultProject(info)
 {
   val pdfbox = "pdfbox" % "pdfbox" % "0.7.3"
   val poi = "org.apache.poi" % "poi" % "3.7"
@@ -14,4 +14,6 @@ class ShimbashiShelfProject(info: ProjectInfo) extends DefaultWebProject(info)
   override def testFrameworks = super.testFrameworks ++ Seq(specs2Framework)
 
   override def includeTest(s: String) = { s.endsWith("Spec") || s.contains("UserGuide") }
+
+  override def mainClass = Some("org.codefirst.shimbashishelf.ShimbashiShelf")
 }
