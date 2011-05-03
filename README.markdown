@@ -18,3 +18,4 @@ for developer
 
 commands
 - search <word>         : search documents by a <word>
+- index <filepath>      : index a file
