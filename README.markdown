@@ -9,3 +9,10 @@ for developer
 
     $ sbt update
     $ sbt compile
+
+* run by scripts
+
+    $ ./scripts/shimbashishelf.sh <command> <args..> 
+
+commands
+- search <word>         : search documents by a <word>
