@@ -27,7 +27,7 @@ object Indexer {
 
       val doc : Document = new Document()
 
-      val pathField : Field = new Field("path", path, Store.YES, Index.ANALYZED)
+      val pathField : Field = new Field("path", path, Store.YES, Index.NOT_ANALYZED)
       val contentField : Field = new Field("content", text, Store.YES, Index.ANALYZED)
 
       doc.add(pathField)

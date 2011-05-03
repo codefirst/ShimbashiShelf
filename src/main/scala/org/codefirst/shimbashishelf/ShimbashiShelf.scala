@@ -27,7 +27,7 @@ object ShimbashiShelf {
         println("usage: search <word>")
         System.exit(0)
       }
-      val documents : Array[Document] = Searcher.search(args(1))
+      val documents : Array[Document] = Searcher.search(args(1), "content")
       println(documents.length + " documents found:")
       documents.foreach ((doc) => println(doc.getField("path").stringValue()))
     } else if (args(0).equals("search-by-path")) {
@@ -35,7 +35,7 @@ object ShimbashiShelf {
           println("usage: search-by-path <path>")
           System.exit(0)
         }
-        val documents : Array[Document] = Searcher.search(args(1), "path")
+        val documents : Array[Document] = Searcher.searchByPath(args(1))
         println(documents.length + " documents found:")
         documents.foreach ((doc) => println(doc.getField("path").stringValue()))
     } else if (args(0).equals("index")) {
