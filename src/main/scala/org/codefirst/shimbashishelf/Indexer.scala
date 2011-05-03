@@ -33,7 +33,7 @@ object Indexer {
       val doc : Document = new Document()
 
       val pathField : Field = new Field("path", path, Store.YES, Index.ANALYZED)
-      val contentField : Field = new Field("document", text, Store.YES, Index.ANALYZED)
+      val contentField : Field = new Field("content", text, Store.YES, Index.ANALYZED)
 
       doc.add(pathField)
       doc.add(contentField)
