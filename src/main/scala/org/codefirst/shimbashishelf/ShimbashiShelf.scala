@@ -5,7 +5,7 @@ import java.io.File
 
 object ShimbashiShelf {
   val INDEX_PATH : String  = "index"
-  val commands : Array[String] = Array("index", "search", "index-all")
+  val commands : Array[String] = Array("index", "search", "index-all", "search-by-path")
   def main(args : Array[String]) {
     if (args.length == 0) { 
       println("no arguments found")
@@ -22,15 +22,23 @@ object ShimbashiShelf {
       System.exit(0)
     }
 
-    if (args(0).equals("search")) { 
-      if (args.length < 2) { 
+    if (args(0).equals("search")) {
+      if (args.length < 2) {
         println("usage: search <word>")
         System.exit(0)
       }
       val documents : Array[Document] = Searcher.search(args(1))
       println(documents.length + " documents found:")
       documents.foreach ((doc) => println(doc.getField("path").stringValue()))
-    } else if (args(0).equals("index")) { 
+    } else if (args(0).equals("search-by-path")) {
+        if (args.length < 2) {
+          println("usage: search-by-path <path>")
+          System.exit(0)
+        }
+        val documents : Array[Document] = Searcher.search(args(1), "path")
+        println(documents.length + " documents found:")
+        documents.foreach ((doc) => println(doc.getField("path").stringValue()))
+    } else if (args(0).equals("index")) {
       if (args.length < 2) { 
         println("usage: index <filepath>")
         System.exit(0)

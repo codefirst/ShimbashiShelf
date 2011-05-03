@@ -13,14 +13,18 @@ import org.apache.lucene.queryParser._
 
 object Searcher {
   val INDEX_PATH : String  = "index"
-  def search(query : String) : Array[Document] = {
+  def search(query : String, field : String) : Array[Document] = {
     val dir : Directory = FSDirectory.open(new File(INDEX_PATH))
     val searcher : IndexSearcher = new IndexSearcher(dir, true)
-    val parser : QueryParser = new QueryParser(Version.LUCENE_31, "content", new CJKAnalyzer(Version.LUCENE_31))
+    val parser : QueryParser = new QueryParser(Version.LUCENE_31, field, new CJKAnalyzer(Version.LUCENE_31))
     val td : TopDocs = searcher.search(parser.parse(query), 1000)
     val docs = td.scoreDocs.map ((scoreDoc) => searcher.doc(scoreDoc.doc))
     searcher.close()
     dir.close()
     return docs
+  }
+
+  def search(query : String) : Array[Document] = {
+    return search(query, "content")
   }
 }
