@@ -16,17 +16,11 @@ object Searcher {
   def search(query : String) : Array[Document] = {
     val dir : Directory = FSDirectory.open(new File(INDEX_PATH))
     val searcher : IndexSearcher = new IndexSearcher(dir, true)
-    val parser : QueryParser = new QueryParser(Version.LUCENE_31, "document", new CJKAnalyzer(Version.LUCENE_31))
+    val parser : QueryParser = new QueryParser(Version.LUCENE_31, "content", new CJKAnalyzer(Version.LUCENE_31))
     val td : TopDocs = searcher.search(parser.parse(query), 1000)
     val docs = td.scoreDocs.map ((scoreDoc) => searcher.doc(scoreDoc.doc))
     searcher.close()
     dir.close()
     return docs
-  }
-
-  def main(args : Array[String]) {
-    val documents : Array[Document] = Searcher.search(args(0))
-    println(documents.length + " documents found:")
-    documents.map ((doc) => println(doc.getField("path").stringValue()))
   }
 }
