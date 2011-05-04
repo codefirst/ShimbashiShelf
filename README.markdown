@@ -16,9 +16,13 @@ for developer
     $ sbt package
     $ sbt jar
 
+* start webserver
+
+    $ sbt jettry-run
+
 * run by scripts
 
-    $ ./scripts/shimbashishelf.sh <command> <args..> 
+    $ ./scripts/shimbashishelf.sh <command> <args..>
 
 commands
 - search <word>         : search documents by a <word>
