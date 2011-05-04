@@ -4,33 +4,15 @@ import java.io.File
 import java.io.IOException
 import org.apache.lucene.analysis.cjk.CJKAnalyzer
 import org.apache.lucene.document.Document
-import org.apache.lucene.document.Field
-import org.apache.lucene.document.Field.Index
-import org.apache.lucene.document.Field.Store
 import org.apache.lucene.store.Directory
 import org.apache.lucene.store.FSDirectory
 import org.apache.lucene.util.Version
 import org.apache.lucene.index.{IndexWriterConfig, IndexWriter}
+import org.apache.lucene.document.Field.{Index,Store}
 import org.apache.lucene.analysis.SimpleAnalyzer
-import org.apache.lucene.index.Term
-
-object SLucene {
-  implicit def tuple2term(x : (String, String)) : Term =
-    new Term(x._1, x._2)
-
-  implicit def tuple2field(x : (String, String, Field.Store, Field.Index)) : Field =
-    new Field(x._1, x._2, x._3, x._4)
-}
 
 object Indexer {
   import SLucene._
-
-
-  def using[A <: { def close() : Unit }, B](resource : A)(body : A => B) : Option[B] =
-    try     { Some(body(resource)) }
-    catch   { case _ => None }
-    finally { resource.close() }
-
 
   def index(path : String, text : String) : Boolean = {
     val config = new IndexWriterConfig(Version.LUCENE_31, new CJKAnalyzer(Version.LUCENE_31))
