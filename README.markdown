@@ -5,6 +5,10 @@ ShimbashiShelf
 for developer
 ----------------------
 
+* setup develop environment
+
+    $ cp bleis/* .git/hooks
+
 * build ShimbashiShelf
 
     $ sbt update
