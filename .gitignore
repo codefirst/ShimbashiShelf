@@ -3,6 +3,8 @@ lib_managed/
 target/
 project/build/target
 project/boot
+project/plugins/src_managed
+project/plugins/project
 index/
 .idea
 *.iml

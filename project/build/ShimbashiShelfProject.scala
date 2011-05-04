@@ -1,4 +1,5 @@
 import sbt._
+import eu.henkelmann.sbt.JUnitXmlTestsListener
 
 class ShimbashiShelfProject(info: ProjectInfo) extends DefaultWebProject(info)
 {
@@ -18,6 +19,9 @@ class ShimbashiShelfProject(info: ProjectInfo) extends DefaultWebProject(info)
 
   // def specs2Framework = new TestFramework("org.specs2.runner.SpecsFramework")
   // override def testFrameworks = super.testFrameworks ++ Seq(specs2Framework)
+
+  def junitXmlListener: TestReportListener = new JUnitXmlTestsListener(outputPath.toString)
+  override def testListeners: Seq[TestReportListener] = super.testListeners ++ Seq(junitXmlListener)
 
   override def includeTest(s: String) = { s.endsWith("Spec") || s.contains("UserGuide") }
 
