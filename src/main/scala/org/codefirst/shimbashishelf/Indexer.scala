@@ -15,7 +15,7 @@ import org.apache.lucene.analysis.SimpleAnalyzer
 import org.apache.lucene.index.Term
 
 object Indexer {
-  val INDEX_PATH : String  = "index"
+
   def index(path : String, text : String) : Boolean = {
     if (text == null) {
       return true

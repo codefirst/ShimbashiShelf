@@ -12,7 +12,6 @@ import org.apache.lucene.search._
 import org.apache.lucene.queryParser._
 
 object Searcher {
-  val INDEX_PATH : String  = "index"
   def search(query : String, field : String) : Array[Document] = {
     val dir : Directory = FSDirectory.open(new File(INDEX_PATH))
     val searcher : IndexSearcher = new IndexSearcher(dir, true)
