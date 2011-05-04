@@ -25,7 +25,7 @@ object Searcher {
 
   def searchByPath(path : String) : Document = {
     if (path == null) {
-      throw new Exception("null path is not allowed")      
+      throw new Exception("null path is not allowed")
     }
     val dir : Directory = FSDirectory.open(new File(INDEX_PATH))
     val searcher : Searcher = new IndexSearcher(dir, true)
@@ -38,7 +38,7 @@ object Searcher {
     if (docs.length == 0) {
       throw new Exception("cannot find: " + path)
     } else if (docs.length > 1) {
-      throw new Exception("found multiply: " + path)      
+      throw new Exception("found multiply: " + path)
     }
     return docs(0)
   }

@@ -47,7 +47,7 @@ object Indexer {
     return true
   }
 
-  def index(file : File) : Boolean = { 
+  def index(file : File) : Boolean = {
     val text : String = TextExtractor.extract(file.getAbsolutePath())
     return Indexer.index(file.getAbsolutePath(), text)
   }
