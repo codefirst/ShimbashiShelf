@@ -52,9 +52,16 @@ object OfficeExtractor extends Extractor {
   }
 }
 
+object PlainTextExtractor extends Extractor {
+  def extract(fileName : String) = {
+    Some(Source.fromFile(fileName).mkString)
+  }
+}
+
 object TextExtractor {
   private val Extractors : List[Extractor] = List(PdfExtractor,
-						  OfficeExtractor)
+						  OfficeExtractor,
+						  PlainTextExtractor)
 
   private def any[A,B](xs : List[A])(f : A => Option[B]) : Option[B] = {
     xs match {
