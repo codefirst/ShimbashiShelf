@@ -1,18 +1,27 @@
 package org.codefirst.shimbashishelf
-import org.specs2.mutable._
+import org.scalatest.Spec
+import org.scalatest.matchers.MustMatchers
+import org.scalatest.matchers.ShouldMatchers
+import scala.collection.mutable.Stack
 
-class TextExtractorSpec extends Specification {
-  
-  "FileNameUtil" should {
-    "get extension" in {
-      FileNameUtil.getExtension("hoge.fuga.ppt") must_== "ppt"
+
+class TextExtractorSpec extends Spec with ShouldMatchers {
+  describe("FileNameUtil") {
+
+    describe("get extension of hoge.fuga.ppt") {
+      it("should be ppt") {
+        FileNameUtil.getExtension("hoge.fuga.ppt") should be ("ppt")
+      }
     }
   }
 
-  "PDFExtractor" should {
-    "PDFではないファイルを入力すると Noneが返る" in { 
-      PdfExtractor.extract("hoge.ppt") must_== None
+  describe("PdfExtractor") { 
+    it ("PDFファイルを入力すると Noneが返る") { 
+      PdfExtractor.extract("hoge.ppt") should be (None)
     }
+    // it ("PDFファイルを入力すると Someが返る") { 
+    //   PdfExtractor.extract("hoge.pdf") should be (Some("hoge"))
+    // }
   }
 }
 
