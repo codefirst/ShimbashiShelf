@@ -3,9 +3,12 @@ import org.scalatest.Spec
 import org.scalatest.matchers.MustMatchers
 import org.scalatest.matchers.ShouldMatchers
 import scala.collection.mutable.Stack
+import org.pdfbox.pdfparser._
 
 
 class TextExtractorSpec extends Spec with ShouldMatchers {
+  import org.mockito.Mockito
+
   describe("FileNameUtil") {
 
     describe("get extension of hoge.fuga.ppt") {
@@ -16,12 +19,16 @@ class TextExtractorSpec extends Spec with ShouldMatchers {
   }
 
   describe("PdfExtractor") { 
-    it ("PDFファイルを入力すると Noneが返る") { 
+    it ("PDFではないファイルを入力すると Noneが返る") { 
       PdfExtractor.extract("hoge.ppt") should be (None)
     }
-    // it ("PDFファイルを入力すると Someが返る") { 
-    //   PdfExtractor.extract("hoge.pdf") should be (Some("hoge"))
-    // }
   }
+
+  describe("OfficeExtractor") { 
+    it ("Officeではないファイルを入力すると Noneが返る") { 
+      OfficeExtractor.extract("hoge.txt") should be (None)
+    }
+  }
+
 }
 
