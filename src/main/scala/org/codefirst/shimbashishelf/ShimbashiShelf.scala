@@ -7,74 +7,67 @@ object ShimbashiShelf {
   val INDEX_PATH : String  = "index"
   val commands : Array[String] = Array("index", "search", "index-all", "search-by-path", "commit")
   def main(args : Array[String]) {
-    if (args.length == 0) { 
-      println("no arguments found")
-      println("available commands:")
-      commands.foreach((command) => println("   " + command))
-
-      System.exit(0)
-    }
-
-    if (!commands.contains(args(0))) {
-      println("unknown command")
-      println("available commands:")
-      commands.foreach((command) => println("   " + command))
-      System.exit(0)
-    }
-
-    if (args(0).equals("search")) {
-      if (args.length < 2) {
-        println("usage: search <word>")
-        System.exit(0)
+    args.toList match {
+      case List() => {
+	println("no arguments found")
+	println("available commands:")
+	commands.foreach((command) => println("   " + command))
       }
-      val documents : Array[Document] = Searcher.search(args(1), "content")
-      println(documents.length + " documents found:")
-      documents.foreach ((doc) => println(doc.getField("path").stringValue()))
-    } else if (args(0).equals("search-by-path")) {
-      if (args.length < 2) {
-        println("usage: search-by-path <path>")
-        System.exit(0)
-      }
-      try {
-        val document : Document = Searcher.searchByPath(args(1))
-        println("found:")
-        println(document.getField("path").stringValue())
-      } catch {
-        case e : Exception => e.printStackTrace() 
-      }
-    } else if (args(0).equals("index")) {
-      if (args.length < 2) { 
-        println("usage: index <filepath>")
-        System.exit(0)
-      }
-      val file : File = new File(args(1))
-      if (Indexer.index(file)) { 
-        println("index successful")
-      } else { 
-        println("index failed")
-      }
-    } else if (args(0).equals("index-all")) {
-      if (args.length < 2) {
-        println("usage: index-all <directory-path>")
-        System.exit(0)
-      }
-      val dir : File = new File(args(1))
-      if (Indexer.indexRecursively(dir)) {
-        println("index successful")
-      } else {
-        println("index failed")
-      }
-    }  else if (args(0).equals("commit")) {
-      if (args.length < 2) {
-        println("usage: commit <filepath>")
-        System.exit(0)
-      }
-
-      val vc : VersionControl = new VersionControl(new File("files"))
-      if (vc.commit(new File(args(1)))) {
-        println("commit successful")
-      } else {
-        println("commit failure")
+      case "search"::args =>
+	if(args.length < 1) {
+          println("usage: search <word>")
+	} else {
+	  val documents : Array[Document] = Searcher.search(args(0), "content")
+	  println(documents.length + " documents found:")
+	  documents.foreach ((doc) => println(doc.getField("path").stringValue()))
+	}
+      case "search-by-path"::args =>
+	if (args.length < 1) {
+          println("usage: search-by-path <path>")
+	} else try {
+          val document : Document = Searcher.searchByPath(args(0))
+          println("found:")
+          println(document.getField("path").stringValue())
+	} catch {
+          case e : Exception => e.printStackTrace()
+	}
+      case "index"::args =>
+	if (args.length < 1) {
+          println("usage: index <filepath>")
+	} else {
+	  val file : File = new File(args(0))
+	  if (Indexer.index(file)) {
+            println("index successful")
+	  } else {
+            println("index failed")
+	  }
+	}
+      case "index-all"::args =>
+	if (args.length < 1) {
+          println("usage: index-all <directory-path>")
+	} else {
+	  val dir : File = new File(args(0))
+	  if (Indexer.indexRecursively(dir)) {
+            println("index successful")
+	  } else {
+            println("index failed")
+	  }
+	}
+      case "commit"::args =>
+	if (args.length < 1) {
+          println("usage: commit <filepath>")
+	} else {
+	  val vc : VersionControl = new VersionControl(new File("files"))
+	  if (vc.commit(new File(args(0)))) {
+            println("commit successful")
+	  } else {
+            println("commit failure")
+	  }
+	}
+      case _ => {
+	println("unknown command")
+	println("available commands:")
+	commands.foreach((command) => println("   " + command))
       }
     }
   }
