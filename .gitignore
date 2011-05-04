@@ -8,3 +8,4 @@ index/
 *.iml
 **/*.iml
 files/
+.ensime

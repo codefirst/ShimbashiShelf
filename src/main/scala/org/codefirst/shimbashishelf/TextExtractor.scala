@@ -28,7 +28,7 @@ object TextExtractor {
         return null
     }
 
-    private def isOfficeFile(extension : String) : Boolean =  extension.equals("doc") || extension.equals("docx") || extension.equals("ppt") || extension.equals("pptx") || extension.equals("xls") || extension.equals("xlsx");
+    private def isOfficeFile(extension : String) : Boolean = List("doc", "docx", "ppt", "pptx", "xls", "xlsx").contains(extension)
 
     private def extractPDF(fileName : String) : String = {
         val in : InputStream = new FileInputStream(fileName)
