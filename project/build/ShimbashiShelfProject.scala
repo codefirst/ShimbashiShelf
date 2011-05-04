@@ -9,6 +9,7 @@ class ShimbashiShelfProject(info: ProjectInfo) extends DefaultWebProject(info)
   val luceneCore = "org.apache.lucene" % "lucene-core" % "3.1.0"
   val luceneAnalyzers = "org.apache.lucene" % "lucene-analyzers" % "3.1.0"
   val specs2 = "org.specs2" % "specs2_2.8.1" % "1.2"
+  val jgit = "com.madgag" % "org.eclipse.jgit" % "0.11.99.4-UNOFFICIAL-ROBERTO-RELEASE"
 
   def specs2Framework = new TestFramework("org.specs2.runner.SpecsFramework")
   override def testFrameworks = super.testFrameworks ++ Seq(specs2Framework)

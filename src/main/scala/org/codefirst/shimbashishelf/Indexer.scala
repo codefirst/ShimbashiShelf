@@ -21,33 +21,29 @@ object Indexer {
       return true
     }
 
-//    if (document == null) {
-      var writer : IndexWriter = null
-      var dir : Directory = null
-      try {
-        dir = FSDirectory.open(new File(INDEX_PATH))
-        writer = new IndexWriter(dir, new IndexWriterConfig(Version.LUCENE_31, new CJKAnalyzer(Version.LUCENE_31)))
+    var writer : IndexWriter = null
+    var dir : Directory = null
+    try {
+      dir = FSDirectory.open(new File(INDEX_PATH))
+      writer = new IndexWriter(dir, new IndexWriterConfig(Version.LUCENE_31, new CJKAnalyzer(Version.LUCENE_31)))
 
-        writer.deleteDocuments(new Term("path", path))
+      writer.deleteDocuments(new Term("path", path))
 
-        val doc : Document = new Document()
+      val doc : Document = new Document()
 
-        val pathField : Field = new Field("path", path, Store.YES, Index.NOT_ANALYZED)
-        val contentField : Field = new Field("content", text, Store.YES, Index.ANALYZED)
+      val pathField : Field = new Field("path", path, Store.YES, Index.NOT_ANALYZED)
+      val contentField : Field = new Field("content", text, Store.YES, Index.ANALYZED)
 
-        doc.add(pathField)
-        doc.add(contentField)
-        writer.addDocument(doc)
-      } catch {
-        case e:IOException => return false
-      } finally {
-        if (writer != null) {
-          writer.close()
-        }
+      doc.add(pathField)
+      doc.add(contentField)
+      writer.addDocument(doc)
+    } catch {
+      case e:IOException => return false
+    } finally {
+      if (writer != null) {
+        writer.close()
       }
-//    } else {
-      
-//    }
+    }
     return true
   }
 

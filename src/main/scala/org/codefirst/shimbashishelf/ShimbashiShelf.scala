@@ -5,7 +5,7 @@ import java.io.File
 
 object ShimbashiShelf {
   val INDEX_PATH : String  = "index"
-  val commands : Array[String] = Array("index", "search", "index-all", "search-by-path")
+  val commands : Array[String] = Array("index", "search", "index-all", "search-by-path", "commit")
   def main(args : Array[String]) {
     if (args.length == 0) { 
       println("no arguments found")
@@ -63,6 +63,18 @@ object ShimbashiShelf {
         println("index successful")
       } else {
         println("index failed")
+      }
+    }  else if (args(0).equals("commit")) {
+      if (args.length < 2) {
+        println("usage: commit <filepath>")
+        System.exit(0)
+      }
+
+      val vc : VersionControl = new VersionControl(new File("files"))
+      if (vc.commit(new File(args(1)))) {
+        println("commit successful")
+      } else {
+        println("commit failure")
       }
     }
   }
