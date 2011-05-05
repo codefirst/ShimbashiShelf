@@ -1,14 +1,25 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-  <head><meta content="text/html; charset=UTF-8" http-equiv="content-type" /><title>Home</title></head>
-  <body class="lift:content_id=main">
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type" />
+    <title>ShimbashiShelf</title>
+  </head>
+  <body class="body lift:content_id=main">
     <div id="main" class="lift:surround?with=default;at=content">
-      <h2>Welcome to your project!</h2>
-      <p>
-	<span class="lift:helloWorld.howdy">
-	  Welcome to your Lift app at <span id="time">Time goes here</span>
-	</span>
-      </p>
+      <h2>ShibashiShelf</h2>
+
+      <div class="search-from">
+        <lift:search.searchForm form="post">
+          検索: <f:q />
+          <f:search />
+        </lift:search.searchForm>
+      </div>      
+      <div class="search-result">
+        <lift:search.show>
+          <div><result:path/></div>
+          <div><result:content/></div>
+        </lift:search.show>
+      </div>
     </div>
   </body>
 </html>

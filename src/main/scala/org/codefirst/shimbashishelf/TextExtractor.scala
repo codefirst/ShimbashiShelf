@@ -44,7 +44,7 @@ object OfficeExtractor extends Extractor {
 
   def extract(fileName : String) = {
     val ext = FileNameUtil.getExtension(fileName)
-    if(extensions contains ext){
+    if(extensions contains ext) {
       val in : InputStream = new FileInputStream(fileName)
       Some(ExtractorFactory.createExtractor(in).getText())
     } else
@@ -67,10 +67,10 @@ object TextExtractor {
     xs match {
       case List() => None
       case x::xs  =>
-	f(x) match {
-	  case x @ Some(_) => x
-	  case None => any(xs)(f)
-	}
+	    f(x) match {
+	      case x @ Some(_) => x
+	      case None => any(xs)(f)
+	    }
     }
   }
 

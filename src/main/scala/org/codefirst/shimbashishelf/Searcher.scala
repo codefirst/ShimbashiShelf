@@ -15,9 +15,9 @@ object Searcher {
   def search(query : String, field : String) : Array[Document] = {
     using( FSDirectory.open(new File(INDEX_PATH)) ) { case dir =>
       using( new IndexSearcher(dir, true) ) { case searcher => {
-	val parser : QueryParser = new QueryParser(Version.LUCENE_31, field, new CJKAnalyzer(Version.LUCENE_31))
-	val td : TopDocs = searcher.search(parser.parse(query), 1000)
-	td.scoreDocs.map ((scoreDoc) => searcher.doc(scoreDoc.doc))
+	    val parser : QueryParser = new QueryParser(Version.LUCENE_31, field, new CJKAnalyzer(Version.LUCENE_31))
+	    val td : TopDocs = searcher.search(parser.parse(query), 1000)
+	    td.scoreDocs.map ((scoreDoc) => searcher.doc(scoreDoc.doc))
       }}}
   }
 

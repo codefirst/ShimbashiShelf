@@ -4,10 +4,11 @@ import org.scalatest.matchers.MustMatchers
 import org.scalatest.matchers.ShouldMatchers
 import scala.collection.mutable.Stack
 import org.pdfbox.pdfparser._
+import org.scalatest.mock.MockitoSugar
+import java.io.InputStream
 
+class TextExtractorSpec extends Spec with ShouldMatchers with MockitoSugar {
 
-class TextExtractorSpec extends Spec with ShouldMatchers {
-  import org.mockito.Mockito
 
   describe("FileNameUtil") {
 
