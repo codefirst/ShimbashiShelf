@@ -12,19 +12,21 @@ import code.lib._
 import Helpers._
 import org.codefirst.shimbashishelf.Searcher
 import org.apache.lucene.document.Document
+import net.liftweb.http.S
 
 class Search {
-  lazy val date: Box[Date] = DependencyFactory.inject[Date] // inject the date
+//  lazy val date: Box[Date] = DependencyFactory.inject[Date] // inject the date
 
-  object message extends RequestVar(Full(""))
+//  object message extends RequestVar(Full("q"))
+  var q : String = S.param("q").openOr("")
   var documents : Array[Document] = Array()
 
   def searchForm(xhtml : NodeSeq) : NodeSeq = {
-    if (message.get.get != "") { doSearch() }
+    if (q != "") { doSearch() }
 
     bind( "f", xhtml,
-         "q" -> text(message.get.get, m => message(Full(m))) % ("autofocus" -> true) % ("id" -> "q"),
-         "search" -> SHtml.submit("search", doSearch)
+         "q" -> text(q, q = _) % ("autofocus" -> true) % ("id" -> "q") % ("name" -> "q"),
+         "search" -> SHtml.submit(S.?("Search"), doSearch) % ("name" -> "s")
        )
   }
 
@@ -39,7 +41,7 @@ class Search {
   }
 
   private def doSearch() {
-    documents = Searcher.search(message.get.get, "content")
+    documents = Searcher.search(q, "content")
   }
 }
 

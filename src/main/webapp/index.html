@@ -1,20 +1,23 @@
-<div id="main" class="lift:surround?with=default;at=content">
-  <div class="search-header">
-    <img alt="ShibashiShelf" title="ShibashiShelf" src="images/logo.png" />
-  </div>
+<lift:surround with="default" at="content">
+  <div id="main">
+    <div class="search-header">
+      <img alt="ShibashiShelf" title="ShibashiShelf" src="images/logo.png" />
+    </div>
 
-  <div class="search-form">
-    <lift:search.searchForm form="post">
-      <label>Search:</label> <f:q />
+    <div class="search-form">
+      <lift:search.searchForm form="get">
+      <label for="q">Search:</label>
+      <f:q />
       <f:search />
-    </lift:search.searchForm>
-  </div>
-  <div class="search-result">
-    <lift:search.show>
+      </lift:search.searchForm>
+    </div>
+    <div class="search-result">
+      <lift:search.show>
       <div class="result-item">
         <a href="#"><result:path/></a>
       </div>
-    </lift:search.show>
+      </lift:search.show>
+    </div>
   </div>
-</div>
+</lift:surround>
 
