@@ -33,14 +33,13 @@ class Search {
       documents.map(document => 
         bind("result", xhtml, 
              "path" -> document.getField("path").stringValue(),
-             "content" -> document.getField("content").stringValue().substring(0, 100)
+             "content" -> document.getField("content").stringValue()
            ))
     }</xml:Group>
   }
 
   private def doSearch() {
     documents = Searcher.search(message.get.get, "content")
-    documents.foreach { d => println(d.getField("path").stringValue())}
   }
 }
 
