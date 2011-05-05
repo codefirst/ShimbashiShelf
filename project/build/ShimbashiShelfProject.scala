@@ -7,9 +7,10 @@ class ShimbashiShelfProject(info: ProjectInfo) extends DefaultWebProject(info)
   val jetty6 = "org.mortbay.jetty" % "jetty" % "6.1.25" % "test"
 
   val pdfbox = "pdfbox" % "pdfbox" % "0.7.3"
-  val poi = "org.apache.poi" % "poi" % "3.7"
-  val poiOoxml = "org.apache.poi" % "poi-ooxml" % "3.7"
-  val poiScratchpad = "poi" % "poi-scratchpad" % "3.1-FINAL"
+  val poi = "org.apache.poi" % "poi" % "3.8-beta2"
+  val poiOoxml = "org.apache.poi" % "poi-ooxml" % "3.8-beta2"
+  val poiScratchpad = "org.apache.poi" % "poi-scratchpad" % "3.8-beta2"
+  val poiExcelant = "org.apache.poi" % "poi-excelant" % "3.8-beta2"
   val luceneCore = "org.apache.lucene" % "lucene-core" % "3.1.0"
   val luceneAnalyzers = "org.apache.lucene" % "lucene-analyzers" % "3.1.0"
   val specs2 = "org.specs2" % "specs2_2.8.1" % "1.2"
