@@ -1,27 +1,20 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta content="text/html; charset=UTF-8" http-equiv="content-type" />
-    <title>ShimbashiShelf - 次世代文書管理ソリューション</title>
-  </head>
-  <body class="body lift:content_id=main">
-    <div id="main" class="lift:surround?with=default;at=content">
-      <div class="header">
-        <img alt="ShibashiShelf" title="ShibashiShelf" src="images/logo.png" />
-      </div>
+<div id="main" class="lift:surround?with=default;at=content">
+  <div class="search-header">
+    <img alt="ShibashiShelf" title="ShibashiShelf" src="images/logo.png" />
+  </div>
 
-      <div class="search-form">
-        <lift:search.searchForm form="post">
-          <label>検索:</label> <f:q />
-          <f:search />
-        </lift:search.searchForm>
+  <div class="search-form">
+    <lift:search.searchForm form="post">
+      <label>Search:</label> <f:q />
+      <f:search />
+    </lift:search.searchForm>
+  </div>
+  <div class="search-result">
+    <lift:search.show>
+      <div class="result-item">
+        <a href="#"><result:path/></a>
       </div>
-      <div class="search-result">
-        <lift:search.show>
-          <div><result:path/></div>
-        </lift:search.show>
-      </div>
-    </div>
-  </body>
-</html>
+    </lift:search.show>
+  </div>
+</div>
 

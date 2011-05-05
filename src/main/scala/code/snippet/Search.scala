@@ -23,15 +23,15 @@ class Search {
     if (message.get.get != "") { doSearch() }
 
     bind( "f", xhtml,
-         "q" -> text(message.get.get, m => message(Full(m))),
+         "q" -> text(message.get.get, m => message(Full(m))) % ("autofocus" -> true) % ("id" -> "q"),
          "search" -> SHtml.submit("search", doSearch)
        )
   }
-  
+
   def show(xhtml : NodeSeq) : NodeSeq = {
-    <xml:Group> { 
-      documents.map(document => 
-        bind("result", xhtml, 
+    <xml:Group> {
+      documents.map(document =>
+        bind("result", xhtml,
              "path" -> document.getField("path").stringValue(),
              "content" -> document.getField("content").stringValue()
            ))

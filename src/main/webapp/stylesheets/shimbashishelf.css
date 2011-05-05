@@ -43,13 +43,12 @@ input[type="submit"] {
 }
 
 .footer {
-    margin-top: 20px;
+    margin-top: 40px;
     border-top: 1px solid #ccc;
     color: #999;
     text-align: center;
     font-size: 80%;
 }
-
 
 a {
   color: #0044cc;
