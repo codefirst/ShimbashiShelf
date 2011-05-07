@@ -77,6 +77,7 @@ class VersionControl(repositoryDir : File) {
       commits.add(new Commit(commit.getName(), commit.getAuthorIdent().getName(), 
                              commit.getAuthorIdent().getEmailAddress(), cal.getTime(), files.toList))
     }
+    revWalk.dispose()
     commits.toList
   }
 }
