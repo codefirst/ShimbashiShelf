@@ -71,25 +71,29 @@ object ShimbashiShelf {
       case "history"::args =>
 	    val vc : VersionControl = new VersionControl(new File("files"))
         var commits : List[Commit] = null
+        val format = new SimpleDateFormat("yyyy-MM-dd")
         if (args.length >= 2) { 
-          val startDate = DateFormat.getInstance().parse(args(0))
-          val endDate = DateFormat.getInstance().parse(args(1))
+          val startDate = format.parse(args(0))
+          val endDate = format.parse(args(1))
+          endDate.setHours(23)
+          endDate.setMinutes(59)
+          endDate.setSeconds(59)
           commits = vc.commitList(startDate, endDate)
         } else if (args.length == 1) { 
-          val startDate = DateFormat.getInstance().parse(args(0))
+          val startDate = format.parse(args(0))
           commits = vc.commitList(startDate, null)
         } else { 
           commits = vc.commitList(null, null)
         }
       
-        val format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
+        val commitDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
         val cal = Calendar.getInstance()
 
         for (commit <- commits) { 
           println("hash    : " + commit.getHash())
           println("author  : " + commit.getAuthor())
           println("email   : " + commit.getEmailAddress())
-          println("date    : " + format.format(commit.getDate()))
+          println("date    : " + commitDateFormat.format(commit.getDate()))
           println("modified: ")
           commit.getFiles().foreach { file => println("   " + file) }
           println()

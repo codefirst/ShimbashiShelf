@@ -55,7 +55,7 @@ class VersionControl(repositoryDir : File) {
     (startDate, endDate) match {
       case (null, null) => revWalk.setRevFilter(RevFilter.ALL)
       case (null, _) => revWalk.setRevFilter(CommitTimeRevFilter.before(endDate))
-      case (_, null) => revWalk.setRevFilter(CommitTimeRevFilter.after(endDate))
+      case (_, null) => revWalk.setRevFilter(CommitTimeRevFilter.after(startDate))
       case (_, _) => revWalk.setRevFilter(CommitTimeRevFilter.between(startDate, endDate))
     }
     revWalk.markStart(revWalk.parseCommit(repository.resolve("master")))
@@ -74,7 +74,7 @@ class VersionControl(repositoryDir : File) {
       }
       val cal = Calendar.getInstance()
       cal.setTimeInMillis(commit.getCommitTime().asInstanceOf[Long] * 1000)
-      commits.add(new Commit(commit.getName(), commit.getAuthorIdent().getName(), 
+      commits.add(new Commit(commit.getName(), commit.getAuthorIdent().getName(),
                              commit.getAuthorIdent().getEmailAddress(), cal.getTime(), files.toList))
     }
     revWalk.dispose()
