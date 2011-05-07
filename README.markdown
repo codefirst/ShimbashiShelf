@@ -30,3 +30,4 @@ commands
 - index-all <directory> : index all files under <directory>
 - search-by-path        : search by a absolute path (enclosed phrase)
 - commit <filepath>     : commit a file to a version control system (repository directory is ./files/)
+- history               : show history

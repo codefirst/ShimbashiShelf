@@ -5,6 +5,7 @@ import java.io.File
 import java.util.Calendar
 import java.util.Date
 import java.text.SimpleDateFormat
+import java.text.DateFormat
 
 object ShimbashiShelf {
   val INDEX_PATH : String  = "index"
@@ -69,14 +70,26 @@ object ShimbashiShelf {
 	    }
       case "history"::args =>
 	    val vc : VersionControl = new VersionControl(new File("files"))
-        val commits : List[Commit] = vc.commitList()
-
+        var commits : List[Commit] = null
+        if (args.length >= 2) { 
+          val startDate = DateFormat.getInstance().parse(args(0))
+          val endDate = DateFormat.getInstance().parse(args(1))
+          commits = vc.commitList(startDate, endDate)
+        } else if (args.length == 1) { 
+          val startDate = DateFormat.getInstance().parse(args(0))
+          commits = vc.commitList(startDate, null)
+        } else { 
+          commits = vc.commitList(null, null)
+        }
+      
         val format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
         val cal = Calendar.getInstance()
 
         for (commit <- commits) { 
-          println("hash: " + commit.getHash())
-          println("date: " + format.format(commit.getDate()))
+          println("hash    : " + commit.getHash())
+          println("author  : " + commit.getAuthor())
+          println("email   : " + commit.getEmailAddress())
+          println("date    : " + format.format(commit.getDate()))
           println("modified: ")
           commit.getFiles().foreach { file => println("   " + file) }
           println()
