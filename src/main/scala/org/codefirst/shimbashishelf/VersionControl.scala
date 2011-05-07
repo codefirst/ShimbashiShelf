@@ -14,7 +14,7 @@ import java.text.SimpleDateFormat
 import collection.JavaConversions._
 import scala.collection.mutable._
 
-class Commit(hash : String, author : String, email : String, date : Date, files : scala.collection.immutable.List[String]) {
+class FileDiffCommit(hash : String, author : String, email : String, date : Date, files : scala.collection.immutable.List[String]) {
   def getHash() = hash
   def getAuthor() = author
   def getEmailAddress() = email
@@ -47,31 +47,10 @@ class VersionControl(repositoryDir : File) {
     return true
   }
 
-  def commitList(startDate : Option[Date], endDate : Option[Date]) : scala.collection.immutable.List[Commit] = {
-    val revWalk : DurationRevWalk = new DurationRevWalk(repository, startDate, endDate)
-
-    var commits : ListBuffer[Commit] = new ListBuffer()
-    val tw : TreeWalk = new TreeWalk(repository.newObjectReader())
-    tw.setRecursive(true)
-    for (commit <- revWalk) {
-      tw.reset(commit.getTree())
-      if (commit.getParentCount() >= 1) {
-        tw.setFilter(TreeFilter.ANY_DIFF)
-        tw.addTree(commit.getParent(0).getTree())
-      } else {
-        tw.setFilter(TreeFilter.ALL)
-      }
-      var files : ListBuffer[String] = new ListBuffer()
-      while (tw.next()) {
-        files.add(tw.getPathString())
-      }
-      val cal = Calendar.getInstance()
-      cal.setTimeInMillis(commit.getCommitTime().asInstanceOf[Long] * 1000)
-      commits.add(new Commit(commit.getName(), commit.getAuthorIdent().getName(),
-                             commit.getAuthorIdent().getEmailAddress(), cal.getTime(), files.toList))
-    }
-    revWalk.dispose()
-    commits.toList
+  def commitList(startDate : Option[Date], endDate : Option[Date]) : scala.collection.immutable.List[FileDiffCommit] = {
+    val tw : RecursiveTreeWalk = new RecursiveTreeWalk(repository)
+    new DurationRevWalk(repository, startDate, endDate).walkRevisions { case commit => { tw.getFileDiffCommits(commit) }}
   }
+
 }
 

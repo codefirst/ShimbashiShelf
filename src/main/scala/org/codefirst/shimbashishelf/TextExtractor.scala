@@ -77,10 +77,4 @@ object TextExtractor {
   def extract(fileName : String) : String =
     any(Extractors){ e => e.extract(fileName) }.getOrElse("")
 
-  def main(args : Array[String]) {
-    for (fileName <- args) {
-      println(fileName)
-      println(extract(fileName))
-    }
-  }
 }
