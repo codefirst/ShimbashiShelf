@@ -47,19 +47,12 @@ class VersionControl(repositoryDir : File) {
     return true
   }
 
-  def commitList(startDate : Date, endDate : Date) : scala.collection.immutable.List[Commit] = {
-    val tw = new NameConflictTreeWalk(repository.newObjectReader())
-    tw.setRecursive(true)
+  def commitList(startDate : Option[Date], endDate : Option[Date]) : scala.collection.immutable.List[Commit] = {
+    val revWalk : DurationRevWalk = new DurationRevWalk(repository, startDate, endDate)
 
-    val revWalk : RevWalk = new RevWalk(repository)
-    (startDate, endDate) match {
-      case (null, null) => revWalk.setRevFilter(RevFilter.ALL)
-      case (null, _) => revWalk.setRevFilter(CommitTimeRevFilter.before(endDate))
-      case (_, null) => revWalk.setRevFilter(CommitTimeRevFilter.after(startDate))
-      case (_, _) => revWalk.setRevFilter(CommitTimeRevFilter.between(startDate, endDate))
-    }
-    revWalk.markStart(revWalk.parseCommit(repository.resolve("master")))
     var commits : ListBuffer[Commit] = new ListBuffer()
+    val tw : TreeWalk = new TreeWalk(repository.newObjectReader())
+    tw.setRecursive(true)
     for (commit <- revWalk) {
       tw.reset(commit.getTree())
       if (commit.getParentCount() >= 1) {
@@ -81,3 +74,4 @@ class VersionControl(repositoryDir : File) {
     commits.toList
   }
 }
+

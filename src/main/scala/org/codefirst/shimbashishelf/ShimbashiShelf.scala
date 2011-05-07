@@ -73,17 +73,18 @@ object ShimbashiShelf {
         var commits : List[Commit] = null
         val format = new SimpleDateFormat("yyyy-MM-dd")
         if (args.length >= 2) { 
+          val cal = Calendar.getInstance()
           val startDate = format.parse(args(0))
           val endDate = format.parse(args(1))
-          endDate.setHours(23)
-          endDate.setMinutes(59)
-          endDate.setSeconds(59)
-          commits = vc.commitList(startDate, endDate)
+          cal.setTimeInMillis(endDate.getTime())
+          cal.add(Calendar.DATE, 1)
+          cal.add(Calendar.MILLISECOND, -1)
+          commits = vc.commitList(Some(startDate), Some(cal.getTime()))
         } else if (args.length == 1) { 
           val startDate = format.parse(args(0))
-          commits = vc.commitList(startDate, null)
+          commits = vc.commitList(Some(startDate), None)
         } else { 
-          commits = vc.commitList(null, null)
+          commits = vc.commitList(None, None)
         }
       
         val commitDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
