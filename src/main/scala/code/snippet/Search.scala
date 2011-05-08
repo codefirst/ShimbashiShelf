@@ -9,8 +9,7 @@ import _root_.net.liftweb.common._
 import _root_.java.util.Date
 import code.lib._
 import Helpers._
-import org.codefirst.shimbashishelf.Searcher
-import org.apache.lucene.document.Document
+import org.codefirst.shimbashishelf._
 import net.liftweb.http._
 
 class Search extends StatefulSnippet {
@@ -24,7 +23,7 @@ class Search extends StatefulSnippet {
 
   def searchForm(xhtml : NodeSeq) : NodeSeq = {
     def doSearch() {
-      println("doSearch : " + query)
+      S.notice("doSearch : " + query)
       documents = Searcher.search(query, "content")
       redirectTo("/search?q="+query)
     }
@@ -39,8 +38,9 @@ class Search extends StatefulSnippet {
     <xml:Group> {
       documents.map(document =>
         bind("result", xhtml,
-             "path" -> document.getField("path").stringValue(),
-             "content" -> document.getField("content").stringValue()
+             "path" -> document.path,
+             "content" -> document.content,
+	     "highlight" -> document.highlight
            ))
     }</xml:Group>
   }

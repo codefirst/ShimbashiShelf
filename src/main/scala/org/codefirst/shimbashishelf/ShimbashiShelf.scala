@@ -1,6 +1,5 @@
 package org.codefirst.shimbashishelf
 
-import org.apache.lucene.document.Document
 import java.io.File
 import java.util.Calendar
 import java.util.Date
@@ -19,11 +18,14 @@ object ShimbashiShelf {
       }
       case "search"::args =>
 	    if(args.length < 1) {
-          println("usage: search <word>")
+              println("usage: search <word>")
 	    } else {
 	      val documents : Array[Document] = Searcher.search(args(0), "content")
 	      println(documents.length + " documents found:")
-	      documents.foreach ((doc) => println(doc.getField("path").stringValue()))
+	      for(doc <- documents){
+		println(doc.path)
+		println(doc.highlight)
+	      }
 	    }
       case "search-by-path"::args =>
 	    if (args.length < 1) {
@@ -31,7 +33,7 @@ object ShimbashiShelf {
 	    } else try {
           val document : Document = Searcher.searchByPath(args(0))
           println("found:")
-          println(document.getField("path").stringValue())
+          println(document.path)
 	    } catch {
           case e : Exception => e.printStackTrace()
 	    }
@@ -72,7 +74,7 @@ object ShimbashiShelf {
 	    val vc : VersionControl = new VersionControl(new File("files"))
         var commits : List[FileDiffCommit] = null
         val format = new SimpleDateFormat("yyyy-MM-dd")
-        if (args.length >= 2) { 
+        if (args.length >= 2) {
           val cal = Calendar.getInstance()
           val startDate = format.parse(args(0))
           val endDate = format.parse(args(1))
@@ -80,17 +82,17 @@ object ShimbashiShelf {
           cal.add(Calendar.DATE, 1)
           cal.add(Calendar.MILLISECOND, -1)
           commits = vc.commitList(Some(startDate), Some(cal.getTime()))
-        } else if (args.length == 1) { 
+        } else if (args.length == 1) {
           val startDate = format.parse(args(0))
           commits = vc.commitList(Some(startDate), None)
-        } else { 
+        } else {
           commits = vc.commitList(None, None)
         }
-      
+
         val commitDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
         val cal = Calendar.getInstance()
 
-        for (commit <- commits) { 
+        for (commit <- commits) {
           println("hash    : " + commit.getHash())
           println("author  : " + commit.getAuthor())
           println("email   : " + commit.getEmailAddress())

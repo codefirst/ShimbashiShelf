@@ -3,7 +3,6 @@ package org.codefirst.shimbashishelf
 import java.io.File
 import java.io.IOException
 import org.apache.lucene.analysis.cjk.CJKAnalyzer
-import org.apache.lucene.document.Document
 import org.apache.lucene.store.Directory
 import org.apache.lucene.store.FSDirectory
 import org.apache.lucene.util.Version
@@ -21,7 +20,7 @@ object Indexer {
 	    using(new IndexWriter(dir, config)){
 	      case writer => {
 	        writer.deleteDocuments(("path", path))
-	        val doc : Document = new Document()
+	        val doc = new org.apache.lucene.document.Document()
 	        doc.add(("path", path, Store.YES, Index.NOT_ANALYZED))
 	        doc.add(("content", text, Store.YES, Index.ANALYZED))
 	        writer.addDocument(doc)

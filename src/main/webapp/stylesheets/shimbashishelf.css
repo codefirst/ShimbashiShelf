@@ -1,3 +1,7 @@
+B {
+    font-weight: bold;
+}
+
 body {
     color: #333;
 }
@@ -84,3 +88,4 @@ a:active {
 img {
     border: none;
 }
+
