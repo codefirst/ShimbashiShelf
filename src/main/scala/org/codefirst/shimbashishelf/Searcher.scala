@@ -11,13 +11,14 @@ import org.apache.lucene.search._
 import org.apache.lucene.queryParser._
 
 object Searcher {
-  val analyzer = new CJKAnalyzer(Version.LUCENE_31)
+  val analyzer  = new CJKAnalyzer(Version.LUCENE_31)
+  val formatter = new SimpleHTMLFormatter("<strong>","</strong>")
 
   private def searchByQuery(query : Query, field : String) : Array[Document] =
     using( FSDirectory.open(new File(INDEX_PATH)) ) { case dir =>
       using( new IndexSearcher(dir, true) ) { case searcher => {
 	val scorer = new QueryScorer(query, field)
-	val hightlighter = new Highlighter(scorer)
+	val hightlighter = new Highlighter(formatter, scorer)
 	val td : TopDocs = searcher.search(query, 1000)
 	for {
 	  scoreDoc    <- td.scoreDocs
