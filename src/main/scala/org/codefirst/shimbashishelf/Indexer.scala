@@ -9,6 +9,7 @@ import org.apache.lucene.util.Version
 import org.apache.lucene.index.{IndexWriterConfig, IndexWriter}
 import org.apache.lucene.document.Field.{Index,Store}
 import org.apache.lucene.analysis.SimpleAnalyzer
+import scala.collection.immutable.Stream
 
 object Indexer {
   import SLucene._
@@ -30,8 +31,19 @@ object Indexer {
     }
   }
 
-  def index(file : File) : Boolean = 
+  def index(file : File) : Boolean =
     Indexer.index(file.getAbsolutePath(), TextExtractor.extract(file.getAbsolutePath()))
+
+  def allFiles(file : File) : Stream[File] = {
+    if (file.isFile()) {
+      Stream.cons(file, Stream.empty)
+    }else{
+      for {
+	sub  <- file.listFiles.toStream
+	file <- allFiles(sub)
+      } yield file
+    }
+  }
 
   def indexRecursively(file : File) : Boolean = {
     if (file.isFile()) {
