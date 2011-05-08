@@ -12,7 +12,7 @@ import org.apache.lucene.queryParser._
 
 object Searcher {
   val analyzer  = new CJKAnalyzer(Version.LUCENE_31)
-  val formatter = new SimpleHTMLFormatter("<strong>","</strong>")
+  val formatter = new SimpleHTMLFormatter("]]><strong>","</strong><![CDATA[")
 
   private def searchByQuery(query : Query, field : String) : Array[Document] =
     using( FSDirectory.open(new File(INDEX_PATH)) ) { case dir =>
@@ -25,7 +25,7 @@ object Searcher {
 	  val doc     = searcher.doc(scoreDoc.doc)
 	  val content = doc.getField("content").stringValue()
 	  val high    = hightlighter.getBestFragment(analyzer, field, content)
-	} yield Document(doc,high)
+	} yield Document(doc,"<pre><![CDATA[" + high + "]]></pre>")
       } } }
 
   def search(query : String, field : String) : Array[Document] = {
