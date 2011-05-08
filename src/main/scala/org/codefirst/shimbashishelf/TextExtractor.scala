@@ -1,9 +1,9 @@
 package org.codefirst.shimbashishelf
 import scala.io.Source
 import java.io._
-import org.pdfbox.util._
-import org.pdfbox.pdfparser._
-import org.pdfbox.pdmodel._
+import org.apache.pdfbox.util._
+import org.apache.pdfbox.pdfparser._
+import org.apache.pdfbox.pdmodel._
 import org.apache.poi.hwpf.extractor._
 import org.apache.poi.hssf.extractor._
 import org.apache.poi.hssf.usermodel._
