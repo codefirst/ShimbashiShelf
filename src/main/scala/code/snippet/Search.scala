@@ -14,7 +14,7 @@ import org.apache.lucene.document.Document
 import net.liftweb.http._
 
 class Search extends StatefulSnippet {
-  object query extends RequestVar("")
+  var query = S.param("q").openOr("")
   var documents : Array[Document] = Array()
 
   override def dispatch : DispatchIt = {
@@ -28,8 +28,9 @@ class Search extends StatefulSnippet {
       documents = Searcher.search(query, "content")
       redirectTo("/search")
     }
+    println(query)
     bind("f", xhtml,
-         "q" -> text(query.is, query(_)) % ("autofocus" -> true) % ("id" -> "q"),
+         "q" -> text(query, query = _) % ("autofocus" -> true) % ("id" -> "q"),
          "search" -> SHtml.submit(S.?("Search"), doSearch))
   }
 
