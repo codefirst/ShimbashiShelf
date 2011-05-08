@@ -21,12 +21,13 @@ class Boot {
 
     // Build SiteMap
     val entries = List(
-      Menu.i("Home") / "index" // the simple way to declare a menu
+      Menu.i("Home") / "index",
+      Menu.i("Search") / "search"
 
       // more complex because this menu allows anything in the
       // /static path to be visible
 
-      // Menu(Loc("Static", Link(List("static"), true, "/static/index"), 
+      // Menu(Loc("Static", Link(List("static"), true, "/static/index"),
 	  //      "Static Content"))
     )
 
@@ -37,7 +38,7 @@ class Boot {
     //Show the spinny image when an Ajax call starts
     LiftRules.ajaxStart =
       Full(() => LiftRules.jsArtifacts.show("ajax-loader").cmd)
-    
+
     // Make the spinny image go away when it ends
     LiftRules.ajaxEnd =
       Full(() => LiftRules.jsArtifacts.hide("ajax-loader").cmd)

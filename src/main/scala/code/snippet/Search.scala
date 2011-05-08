@@ -1,5 +1,4 @@
-package code {
-package snippet {
+package code.snippet
 
 import _root_.scala.xml.{NodeSeq, Text}
 import _root_.net.liftweb.http._
@@ -12,22 +11,26 @@ import code.lib._
 import Helpers._
 import org.codefirst.shimbashishelf.Searcher
 import org.apache.lucene.document.Document
-import net.liftweb.http.S
+import net.liftweb.http._
 
-class Search {
-//  lazy val date: Box[Date] = DependencyFactory.inject[Date] // inject the date
-
-//  object message extends RequestVar(Full("q"))
-  var q : String = S.param("q").openOr("")
+class Search extends StatefulSnippet {
+  object query extends RequestVar("")
   var documents : Array[Document] = Array()
 
-  def searchForm(xhtml : NodeSeq) : NodeSeq = {
-    if (q != "") { doSearch() }
+  override def dispatch : DispatchIt = {
+    case "searchForm" => searchForm(_)
+    case "show"       => show(_)
+  }
 
-    bind( "f", xhtml,
-         "q" -> text(q, q = _) % ("autofocus" -> true) % ("id" -> "q") % ("name" -> "q"),
-         "search" -> SHtml.submit(S.?("Search"), doSearch) % ("name" -> "s")
-       )
+  def searchForm(xhtml : NodeSeq) : NodeSeq = {
+    def doSearch() {
+      println("doSearch : " + query)
+      documents = Searcher.search(query, "content")
+      redirectTo("/search")
+    }
+    bind("f", xhtml,
+         "q" -> text(query.is, query(_)) % ("autofocus" -> true) % ("id" -> "q"),
+         "search" -> SHtml.submit(S.?("Search"), doSearch))
   }
 
   def show(xhtml : NodeSeq) : NodeSeq = {
@@ -39,11 +42,5 @@ class Search {
            ))
     }</xml:Group>
   }
-
-  private def doSearch() {
-    documents = Searcher.search(q, "content")
-  }
 }
 
-}
-}
