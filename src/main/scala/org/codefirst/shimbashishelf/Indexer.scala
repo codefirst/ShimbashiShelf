@@ -30,10 +30,8 @@ object Indexer {
     }
   }
 
-  def index(file : File) : Boolean = {
-    val text : String = TextExtractor.extract(file.getAbsolutePath())
-    return Indexer.index(file.getAbsolutePath(), text)
-  }
+  def index(file : File) : Boolean = 
+    Indexer.index(file.getAbsolutePath(), TextExtractor.extract(file.getAbsolutePath()))
 
   def indexRecursively(file : File) : Boolean = {
     if (file.isFile()) {
