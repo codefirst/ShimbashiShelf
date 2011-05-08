@@ -3,7 +3,7 @@ import org.scalatest.Spec
 import org.scalatest.matchers.MustMatchers
 import org.scalatest.matchers.ShouldMatchers
 import scala.collection.mutable.Stack
-import org.pdfbox.pdfparser._
+import org.apache.pdfbox.pdfparser._
 import org.scalatest.mock.MockitoSugar
 import java.io.InputStream
 
