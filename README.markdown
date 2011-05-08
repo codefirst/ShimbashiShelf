@@ -18,7 +18,7 @@ for developer
 
 * start webserver
 
-    $ sbt jettry-run
+    $ sbt jetty-run
 
 * run by scripts
 
