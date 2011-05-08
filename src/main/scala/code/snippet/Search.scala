@@ -26,9 +26,10 @@ class Search extends StatefulSnippet {
     def doSearch() {
       println("doSearch : " + query)
       documents = Searcher.search(query, "content")
-      redirectTo("/search")
+      redirectTo("/search?q="+query)
     }
-    println(query)
+    if(!query.isEmpty()) { documents = Searcher.search(query, "content") }
+
     bind("f", xhtml,
          "q" -> text(query, query = _) % ("autofocus" -> true) % ("id" -> "q"),
          "search" -> SHtml.submit(S.?("Search"), doSearch))
