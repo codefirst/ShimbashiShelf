@@ -1,12 +1,22 @@
 package org.codefirst.shimbashishelf
 import scala.xml.XML
+import java.io.File
 import net.liftweb.util._
 import net.liftweb.util.Helpers._
-
+import org.apache.lucene.store.FSDirectory
+import org.apache.lucene.search.IndexSearcher
 
 object Document {
   def apply(id : Int, doc : org.apache.lucene.document.Document, hightligth : String) =
     new Document(id, doc, hightligth)
+
+  def find(id : Int) = {
+    using( FSDirectory.open(new File(INDEX_PATH)) ) { case dir =>
+      using( new IndexSearcher(dir, true) ) { case searcher => {
+        val doc   = searcher.doc(id)
+        new Document(id, doc,"<pre />")
+      }}}
+  }
 }
 
 class Document(val id : Int, doc : org.apache.lucene.document.Document, high : String){
