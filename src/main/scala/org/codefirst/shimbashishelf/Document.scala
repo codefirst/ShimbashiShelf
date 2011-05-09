@@ -24,7 +24,7 @@ class Document(val id : Int, doc : org.apache.lucene.document.Document, high : S
   def filename = FileUtil.basename(path)
   def content  = getString("content")
   def manageID  = getString("manageID")
-  val highlight = XML.loadString(high)
+  val highlight = try { XML.loadString(high) } catch { case _ => <pre /> }
 
   def toBindParams : List[BindParam]=
     List("path" -> path,
