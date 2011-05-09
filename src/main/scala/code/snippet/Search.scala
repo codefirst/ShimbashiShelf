@@ -37,7 +37,7 @@ class Search extends StatefulSnippet  with PaginatorSnippet[Document] {
       documents = Searcher.search(query, "content")
       redirectTo("/search?q="+query)
     }
-    if(!query.isEmpty()) { documents = Searcher.search(query, "content") }
+    if(!query.isEmpty) { documents = Searcher.search(query, "content") }
 
     bind("f", xhtml,
          "q" -> text(query, query = _) % ("autofocus" -> true) % ("id" -> "q"),

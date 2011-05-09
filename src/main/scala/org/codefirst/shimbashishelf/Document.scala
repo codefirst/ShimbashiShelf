@@ -1,5 +1,4 @@
 package org.codefirst.shimbashishelf
-import scala.util.matching._
 import scala.xml.XML
 
 object Document {

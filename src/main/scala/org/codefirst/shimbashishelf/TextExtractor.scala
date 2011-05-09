@@ -17,19 +17,9 @@ trait Extractor{
   def extract(fileName : String) : Option[String]
 }
 
-object FileNameUtil {
-  def getExtension(path : String) : String = {
-    val i =path.lastIndexOf(".")
-    if (i > 0)
-      path.substring(i + 1)
-    else
-      ""
-  }
-}
-
 object PdfExtractor extends Extractor {
   def extract(fileName : String) = {
-    if(FileNameUtil.getExtension(fileName) == "pdf") {
+    if(FileUtil.getExtension(fileName) == "pdf") {
       val in : InputStream = new FileInputStream(fileName)
       val pdfParser : PDFParser = new PDFParser(in)
       pdfParser.parse()
@@ -43,7 +33,7 @@ object OfficeExtractor extends Extractor {
   val extensions = List("doc", "docx", "ppt", "pptx", "xls", "xlsx")
 
   def extract(fileName : String) = {
-    val ext = FileNameUtil.getExtension(fileName)
+    val ext = FileUtil.getExtension(fileName)
     if(extensions contains ext) {
       val in : InputStream = new FileInputStream(fileName)
       Some(ExtractorFactory.createExtractor(in).getText())
@@ -54,7 +44,7 @@ object OfficeExtractor extends Extractor {
 
 object PlainTextExtractor extends Extractor {
   def extract(fileName : String) =
-    readAll(fileName)
+    FileUtil.readAll(fileName)
 }
 
 object TextExtractor {

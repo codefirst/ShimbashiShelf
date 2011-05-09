@@ -15,7 +15,7 @@ object Status{
     new Status(mutable.Map())
 
   def withDefault(proc : Status => Unit) {
-    val status = readAll(STATUS_PATH) match {
+    val status = FileUtil.readAll(STATUS_PATH) match {
       case Some(text) => fromJson(text)
       case None => empty
     }
