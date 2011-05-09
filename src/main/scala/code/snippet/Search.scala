@@ -49,7 +49,8 @@ class Search extends StatefulSnippet  with PaginatorSnippet[Document] {
       bind("result", xhtml,
            "path" -> document.path,
            "content" -> document.content,
-	   "highlight" -> document.highlight
+	   "highlight" -> document.highlight,
+	   "manageID" -> document.manageID
          ))
   }
 }
