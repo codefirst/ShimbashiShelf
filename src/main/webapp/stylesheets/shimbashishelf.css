@@ -42,7 +42,9 @@ input[type="submit"] {
 }
 
 .search-result {
+    border-top: 1px solid #ddd;
     margin: 20px;
+    margin-top: 0px;
     overflow: hidden;
 }
 
@@ -52,13 +54,16 @@ input[type="submit"] {
 
 .search-result pre {
     border: 1px solid #ddd;
+    padding: 5px;
     margin: 0;
 }
 
 .result-item {
-    border-top: 1px solid #ddd;
     margin: 20px;
-    margin-top: 50px;
+}
+
+.result-item:first {
+    margin-top: 0px;
 }
 
 .footer {
