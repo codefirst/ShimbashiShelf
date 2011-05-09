@@ -12,14 +12,24 @@ import Helpers._
 import org.codefirst.shimbashishelf._
 import net.liftweb.http._
 
-class Search extends StatefulSnippet {
+class Search extends StatefulSnippet  with PaginatorSnippet[Document] {
   var query = S.param("q").openOr("")
   var documents : Array[Document] = Array()
 
   override def dispatch : DispatchIt = {
     case "searchForm" => searchForm(_)
     case "show"       => show(_)
+    case "paginate"   => paginate(_)
   }
+
+  override def count =
+    documents.size
+  override def page  =
+    documents.slice(curPage*itemsPerPage, (curPage+1)*itemsPerPage)
+  override def pageUrl(offset: Long) : String =
+    appendParams(super.pageUrl(offset), List("q" -> query))
+  def currentXml: NodeSeq =
+    Text((first+1)+"-"+(first+itemsPerPage min count)+" of "+count)
 
   def searchForm(xhtml : NodeSeq) : NodeSeq = {
     def doSearch() {
@@ -35,14 +45,12 @@ class Search extends StatefulSnippet {
   }
 
   def show(xhtml : NodeSeq) : NodeSeq = {
-    <xml:Group> {
-      documents.map(document =>
-        bind("result", xhtml,
-             "path" -> document.path,
-             "content" -> document.content,
-	     "highlight" -> document.highlight
-           ))
-    }</xml:Group>
+    page.flatMap(document =>
+      bind("result", xhtml,
+           "path" -> document.path,
+           "content" -> document.content,
+	   "highlight" -> document.highlight
+         ))
   }
 }
 
