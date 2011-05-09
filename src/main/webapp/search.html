@@ -10,7 +10,11 @@
   <div class="search-result">
     <lift:search.show>
       <div class="result-item">
-	[<result:manageID />] <a href="#"><result:path/></a>
+	<div class="title"><a href="#"><result:filename/></a></div>
+	<div class="info">
+	  ID: <result:manageID />
+	  Path: <result:path/>
+	</div>
 	<result:highlight />
       </div>
     </lift:search.show>

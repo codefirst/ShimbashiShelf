@@ -43,15 +43,22 @@ input[type="submit"] {
 
 .search-result {
     margin: 20px;
+    overflow: hidden;
+}
+
+.search-result .info{
+    font-size: 10px;
 }
 
 .search-result pre {
     border: 1px solid #ddd;
+    margin: 0;
 }
 
 .result-item {
     border-top: 1px solid #ddd;
     margin: 20px;
+    margin-top: 50px;
 }
 
 .footer {

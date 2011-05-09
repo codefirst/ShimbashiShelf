@@ -45,13 +45,9 @@ class Search extends StatefulSnippet  with PaginatorSnippet[Document] {
   }
 
   def show(xhtml : NodeSeq) : NodeSeq = {
-    page.flatMap(document =>
+    page.flatMap(document => {
       bind("result", xhtml,
-           "path" -> document.path,
-           "content" -> document.content,
-	   "highlight" -> document.highlight,
-	   "manageID" -> document.manageID
-         ))
+	   document.toBindParams : _*)})
   }
 }
 
