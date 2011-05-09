@@ -17,15 +17,15 @@ object Searcher {
   private def searchByQuery(query : Query, field : String) : Array[Document] =
     using( FSDirectory.open(new File(INDEX_PATH)) ) { case dir =>
       using( new IndexSearcher(dir, true) ) { case searcher => {
-	val scorer = new QueryScorer(query, field)
-	val hightlighter = new Highlighter(formatter, scorer)
-	val td : TopDocs = searcher.search(query, 1000)
-	for {
-	  scoreDoc    <- td.scoreDocs
-	  val doc     = searcher.doc(scoreDoc.doc)
-	  val content = doc.getField("content").stringValue()
-	  val high    = hightlighter.getBestFragment(analyzer, field, content)
-	} yield Document(doc,"<pre><![CDATA[" + high + "]]></pre>")
+	    val scorer = new QueryScorer(query, field)
+	    val hightlighter = new Highlighter(formatter, scorer)
+	    val td : TopDocs = searcher.search(query, 1000)
+	    for {
+	      scoreDoc    <- td.scoreDocs
+	      val doc     = searcher.doc(scoreDoc.doc)
+	      val content = doc.getField("content").stringValue()
+	      val high    = hightlighter.getBestFragment(analyzer, field, content)
+	    } yield Document(scoreDoc.doc, doc,"<pre><![CDATA[" + high + "]]></pre>")
       } } }
 
   def search(query : String, field : String) : Array[Document] = {
@@ -41,9 +41,9 @@ object Searcher {
     val query : Query = new TermQuery(term)
     searchByQuery(query, "path") match {
       case Array(x) =>
-	Some(x)
+	  Some(x)
       case _ =>
-	None
+	  None
     }
   }
 }

@@ -5,14 +5,11 @@ import net.liftweb.util.Helpers._
 
 
 object Document {
-  def apply(doc : org.apache.lucene.document.Document) =
-    new Document(doc,"<pre />")
-
-  def apply(doc : org.apache.lucene.document.Document, hightligth : String) =
-    new Document(doc,hightligth)
+  def apply(id : Int, doc : org.apache.lucene.document.Document, hightligth : String) =
+    new Document(id, doc, hightligth)
 }
 
-class Document(doc : org.apache.lucene.document.Document, high : String){
+class Document(val id : Int, doc : org.apache.lucene.document.Document, high : String){
   def path     = getString("path")
   def filename = FileUtil.basename(path)
   def content  = getString("content")
@@ -21,10 +18,11 @@ class Document(doc : org.apache.lucene.document.Document, high : String){
 
   def toBindParams : List[BindParam]=
     List("path" -> path,
-	 "content" -> content,
-	 "filename" -> filename,
-	 "highlight" -> highlight,
-	 "manageID" -> manageID)
+         "id"   -> id,
+         "content" -> content,
+         "filename" -> filename,
+         "highlight" -> highlight,
+         "manageID" -> manageID)
 
   private def getString(key : String) : String = {
     doc.getField(key).stringValue()
