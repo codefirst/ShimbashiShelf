@@ -53,16 +53,8 @@ object OfficeExtractor extends Extractor {
 }
 
 object PlainTextExtractor extends Extractor {
-  def extract(fileName : String) = {
-    val in : InputStream = new FileInputStream(fileName)
-    val sb = new StringBuffer()
-    var c  : Int = in.read
-    while( c != -1){
-      sb.append(c.toChar)
-      c = in.read
-    }
-    Some(sb.toString())
-  }
+  def extract(fileName : String) =
+    readAll(fileName)
 }
 
 object TextExtractor {

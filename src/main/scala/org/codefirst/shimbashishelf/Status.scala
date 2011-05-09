@@ -4,6 +4,7 @@ import sjson.json.DefaultProtocol._
 import scala.collection.mutable
 import dispatch.json.JsonParser
 import scala.util.parsing.input.CharArrayReader
+import java.io.FileWriter
 
 object Status{
   case class JsStatus(version : Int, intMap : Map[String, Int])
@@ -13,8 +14,16 @@ object Status{
   def empty =
     new Status(mutable.Map())
 
-  def default =
-    fromJson(STATUS_PATH)
+  def withDefault(proc : Status => Unit) {
+    val status = readAll(STATUS_PATH) match {
+      case Some(text) => fromJson(text)
+      case None => empty
+    }
+    proc(status)
+    val w = new FileWriter(STATUS_PATH)
+    try { w.write(status.toJson) }
+    finally{  w.close }
+  }
 
   def fromJson(json : String) = {
     val reader = new CharArrayReader(json.toArray)

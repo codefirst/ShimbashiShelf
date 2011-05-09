@@ -13,6 +13,7 @@ object Document {
 class Document(doc : org.apache.lucene.document.Document, high : String){
   def path    = getString("path")
   def content = getString("content")
+  def manageID   = getString("manageID")
   val highlight = XML.loadString(high)
 
   private def getString(key : String) : String = {

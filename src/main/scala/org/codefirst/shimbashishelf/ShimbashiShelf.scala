@@ -22,7 +22,7 @@ object ShimbashiShelf {
 	  val documents : Array[Document] = Searcher.search(args(0), "content")
 	  println(documents.length + " documents found:")
 	  for(doc <- documents){
-	    println(doc.path)
+            println("[%s] %s".format(doc.manageID, doc.path))
 	    println(doc.highlight)
 	  }
 	}
@@ -32,7 +32,7 @@ object ShimbashiShelf {
 	} else try {
           val document : Document = Searcher.searchByPath(args(0))
           println("found:")
-          println(document.path)
+          println("[%s] %s".format(document.manageID, document.path))
 	} catch {
           case e : Exception => e.printStackTrace()
 	}
@@ -41,11 +41,7 @@ object ShimbashiShelf {
           println("usage: index <filepath>")
 	} else {
 	  val file : File = new File(args(0))
-	  if (Indexer.index(file)) {
-            println("index successful")
-	  } else {
-            println("index failed")
-	  }
+	  Indexer().index(file)
 	}
       case "index-all"::args =>
 	if (args.length < 1) {
@@ -54,13 +50,8 @@ object ShimbashiShelf {
 	  val dir : File = new File(args(0))
 	  for(file <- Indexer.allFiles(dir)){
 	    println(file)
-	    Indexer.index(file)
+	    Indexer().index(file)
 	  }
-/*	  if (Indexer.indexRecursively(dir)) {
-            println("index successful")
-	  } else {
-            println("index failed")
-	  }*/
 	}
       case "commit"::args =>
 	if (args.length < 1) {
