@@ -5,6 +5,7 @@ class ShimbashiShelfProject(info: ProjectInfo) extends DefaultWebProject(info)
 {
   val lift   = "net.liftweb" %% "lift-mapper" % "2.2" % "compile"
   val jetty6 = "org.mortbay.jetty" % "jetty" % "6.1.25" % "test"
+  val json = "net.debasishg" %% "sjson" % "0.10"
 
   val pdfbox = "org.apache.pdfbox" % "pdfbox" % "1.5.0"
   val poi = "org.apache.poi" % "poi" % "3.8-beta2"

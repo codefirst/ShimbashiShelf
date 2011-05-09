@@ -7,7 +7,6 @@ import java.text.SimpleDateFormat
 import java.text.DateFormat
 
 object ShimbashiShelf {
-  val INDEX_PATH : String  = "index"
   val commands : Array[String] = Array("index", "search", "index-all", "search-by-path", "commit", "history")
   def main(args : Array[String]) {
     args.toList match {

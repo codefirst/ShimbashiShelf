@@ -19,14 +19,14 @@ class TextExtractorSpec extends Spec with ShouldMatchers with MockitoSugar {
     }
   }
 
-  describe("PdfExtractor") { 
-    it ("PDFではないファイルを入力すると Noneが返る") { 
+  describe("PdfExtractor") {
+    it ("PDFではないファイルを入力すると Noneが返る") {
       PdfExtractor.extract("hoge.ppt") should be (None)
     }
   }
 
-  describe("OfficeExtractor") { 
-    it ("Officeではないファイルを入力すると Noneが返る") { 
+  describe("OfficeExtractor") {
+    it ("Officeではないファイルを入力すると Noneが返る") {
       OfficeExtractor.extract("hoge.txt") should be (None)
     }
   }
