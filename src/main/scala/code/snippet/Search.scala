@@ -28,7 +28,7 @@ class Search extends StatefulSnippet  with PaginatorSnippet[Document] {
     documents.slice(curPage*itemsPerPage, (curPage+1)*itemsPerPage)
   override def pageUrl(offset: Long) : String =
     appendParams(super.pageUrl(offset), List("q" -> query))
-  def currentXml: NodeSeq =
+  override def currentXml: NodeSeq =
     Text((first+1)+"-"+(first+itemsPerPage min count)+" of "+count)
 
   def searchForm(xhtml : NodeSeq) : NodeSeq = {
