@@ -23,6 +23,10 @@ body {
     margin: auto;
 }
 
+.search-navigator{
+    text-align: center;
+}
+
 .search-form * {
     vertical-align: middle;
 }
@@ -39,6 +43,10 @@ input[type="submit"] {
 
 .search-result {
     margin: 20px;
+}
+
+.search-result pre {
+    border: 1px solid #ddd;
 }
 
 .result-item {
