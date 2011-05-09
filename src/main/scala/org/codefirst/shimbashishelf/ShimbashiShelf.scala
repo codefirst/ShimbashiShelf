@@ -29,12 +29,13 @@ object ShimbashiShelf {
       case "search-by-path"::args =>
 	if (args.length < 1) {
           println("usage: search-by-path <path>")
-	} else try {
-          val document : Document = Searcher.searchByPath(args(0))
-          println("found:")
-          println("[%s] %s".format(document.manageID, document.path))
-	} catch {
-          case e : Exception => e.printStackTrace()
+	} else {
+	  Searcher.searchByPath(args(0)) match {
+	    case Some(doc) =>
+              println("[%s] %s".format(doc.manageID, doc.path))
+	    case None =>
+              println("not found")
+	  }
 	}
       case "index"::args =>
 	if (args.length < 1) {

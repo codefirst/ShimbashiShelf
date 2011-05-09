@@ -13,6 +13,7 @@ import scala.collection.immutable.Stream
 
 trait IdGenerator {
   def generate(file : File, status : Status) : String
+  def generate(file : String, status : Status) : String = generate(new File(file), status)
 }
 
 class SeqIdGenerator extends IdGenerator {
@@ -31,8 +32,8 @@ object Indexer {
       Stream.cons(file, Stream.empty)
     }else{
       for {
-	sub  <- file.listFiles.toStream
-	file <- allFiles(sub)
+        sub  <- file.listFiles.toStream
+        file <- allFiles(sub)
       } yield file
     }
   }
@@ -44,22 +45,25 @@ class Indexer(idGenerator : IdGenerator) {
 
   def index(path : String, text : String) {
     using(FSDirectory.open(new File(INDEX_PATH))) { case dir =>
-      using(new IndexWriter(dir, config)){
-	case writer =>
-	  Status.withDefault { case status => {
-	    val manageID = idGenerator.generate( new File(path), status)
-	    println(manageID)
-	    writer.deleteDocuments(("path", path))
-	    val doc = new org.apache.lucene.document.Document()
-	    doc.add(("path", path, Store.YES, Index.NOT_ANALYZED))
-	    doc.add(("manageID", manageID, Store.YES, Index.NOT_ANALYZED))
-	    doc.add(("content", text, Store.YES, Index.ANALYZED))
-	    writer.addDocument(doc)
-	  }}}}
+      using(new IndexWriter(dir, config)){ case writer =>
+        Status.withDefault { case status => {
+          val manageID = Searcher.searchByPath(path) match {
+            case Some(doc) =>
+              doc.manageID
+            case None =>
+              idGenerator.generate(path, status)
+          }
+          writer.deleteDocuments(("path", path))
+          val doc = new org.apache.lucene.document.Document()
+          doc.add(("path", path, Store.YES, Index.NOT_ANALYZED))
+          doc.add(("manageID", manageID, Store.YES, Index.NOT_ANALYZED))
+          doc.add(("content", text, Store.YES, Index.ANALYZED))
+          writer.addDocument(doc)
+        }}}}
   }
 
   def index(file : File) {
     index(file.getAbsolutePath(),
-	  TextExtractor.extract(file.getAbsolutePath()))
+          TextExtractor.extract(file.getAbsolutePath()))
   }
 }

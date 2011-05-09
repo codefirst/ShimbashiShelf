@@ -33,19 +33,17 @@ object Searcher {
     searchByQuery(parser.parse(query),field)
   }
 
-  def searchByPath(path : String) : Document = {
+  def searchByPath(path : String) : Option[Document] = {
     if (path == null) {
       throw new Exception("null path is not allowed")
     }
     val term : Term = new Term("path", path)
     val query : Query = new TermQuery(term)
     searchByQuery(query, "path") match {
-      case Array() =>
-	throw new Exception("cannot find: " + path)
       case Array(x) =>
-	x
+	Some(x)
       case _ =>
-	throw new Exception("found multiply: " + path)
+	None
     }
   }
 }
