@@ -1,13 +1,6 @@
 <lift:surround with="default" at="content">
   <lift:embed what="search_header" />
 
-  <div class="search-navigator" >
-    <lift:documents.paginate>
-      <div><nav:records /></div>
-      <div><nav:prev /> <nav:allpages> | </nav:allpages> <nav:next/></div>
-    </lift:documents.paginate>
-  </div>
-
   <div class="search-result">
     <lift:documents.show>
       <div class="result-item">
@@ -21,7 +14,7 @@
     </lift:documents.show>
   </div>
 
-  <div class="documents-navigator" >
+  <div class="search-navigator" >
     <lift:documents.paginate>
       <div><nav:prev /> <nav:allpages> | </nav:allpages> <nav:next/></div>
       <div><nav:records /></div>

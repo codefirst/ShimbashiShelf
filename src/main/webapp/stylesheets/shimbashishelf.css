@@ -18,6 +18,19 @@ body {
     text-align: center;
 }
 
+.search-form .left {
+    margin-left: 40px;
+    float: left;
+}
+.search-form .right {
+    margin-right: 40px;
+    margin-top: 36px;
+    float: right;
+}
+.clear {
+    clear: both;
+}
+
 .search-form {
     text-align: center;
     margin: auto;
