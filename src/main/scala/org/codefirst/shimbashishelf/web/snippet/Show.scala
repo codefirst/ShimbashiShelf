@@ -17,7 +17,11 @@ class Show {
   lazy val document : Document = Document.find(id.toInt)
 
   def render(xhtml : NodeSeq) : NodeSeq = {
+    val seq =
+      List("link" -> { (x:NodeSeq) => <a class="download" href={"/download/" + document.id}>{x}</a>}) ++
+      document.toBindParams
     bind("result", xhtml,
-         document.toBindParams : _*)
+         seq : _*)
   }
+
 }

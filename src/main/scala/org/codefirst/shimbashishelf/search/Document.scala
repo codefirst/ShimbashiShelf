@@ -18,7 +18,17 @@ object Document {
       using( new IndexSearcher(dir, true) ) { case searcher => {
         val doc   = searcher.doc(id)
         new Document(id, doc,"<pre />")
-      }}}
+      }}					   }
+  }
+
+  def get(id : Int) = {
+    try{
+      using( FSDirectory.open(new File(INDEX_PATH)) ) { case dir =>
+	using( new IndexSearcher(dir, true) ) { case searcher => {
+          val doc   = searcher.doc(id)
+          Some(new Document(id, doc,"<pre />"))
+	}}					   }
+    }catch { case _ => None }
   }
 }
 
@@ -28,6 +38,8 @@ class Document(val id : Int, doc : org.apache.lucene.document.Document, high : S
   def content  = getString("content")
   def manageID  = getString("manageID")
   val highlight = try { XML.loadString(high) } catch { case _ => <pre /> }
+  def is : Option[Array[Byte]] = FileUtil.readArray(path)
+
 
   def toBindParams : List[BindParam]=
     List("path" -> path,

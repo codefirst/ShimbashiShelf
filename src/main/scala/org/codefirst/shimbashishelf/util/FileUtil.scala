@@ -33,4 +33,18 @@ object FileUtil {
 	Some(sb.toString)
       } finally { in.close }
     } catch { case _ => None}
+
+  def readArray(path : String) : Option[Array[Byte]] =
+    try {
+      val in = new FileInputStream(path)
+      try{
+	val ab = new scala.collection.mutable.ArrayBuffer[Byte]()
+	var c  : Int = in.read
+	while( c != -1){
+	  ab.append(c.toByte)
+	  c = in.read
+	}
+	Some(ab.toArray)
+      } finally { in.close }
+    } catch { case _ => None}
 }
