@@ -14,14 +14,16 @@ import org.codefirst.shimbashishelf.search.Document
 
 class Show {
   val id = S.param("id").openOr("0")
-  lazy val document : Document = Document.find(id.toInt)
+  lazy val document : Box[Document] = Box(Document.get(id.toInt))
 
   def render(xhtml : NodeSeq) : NodeSeq = {
-    val seq =
-      List("link" -> { (x:NodeSeq) => <a class="download" href={"/download/" + document.id}>{x}</a>}) ++
-      document.toBindParams
+    val seq = for {
+      doc <-document
+      val extra = List(
+        "link" -> { (x:NodeSeq) => <a class="download" href={"/download/" + doc.id}>{x}</a>})
+      val base = doc.toBindParams
+    } yield extra ++ base
     bind("result", xhtml,
-         seq : _*)
+         seq.getOrElse(List()) : _*)
   }
-
 }

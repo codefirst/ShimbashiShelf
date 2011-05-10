@@ -35,7 +35,7 @@ class Documents extends PaginatorSnippet[Document] {
     }
 
     bind("f", xhtml,
-         "q" -> text(query, query = _) % ("autofocus" -> true) % ("id" -> "q"),
+         "q" -> text(query, query = _) % ("autofocus" -> S.attr("autofocus")) % ("id" -> "q"),
          "search" -> SHtml.submit(S.?("Search"), doSearch))
   }
 
@@ -47,6 +47,4 @@ class Documents extends PaginatorSnippet[Document] {
       bind("result", xhtml,
            seq : _*)})
   }
-
-
 }

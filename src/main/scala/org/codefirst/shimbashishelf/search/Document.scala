@@ -10,24 +10,16 @@ import org.codefirst.shimbashishelf._
 import org.codefirst.shimbashishelf.util.FileUtil
 
 object Document {
-  def apply(id : Int, doc : org.apache.lucene.document.Document, hightligth : String) =
+  private[search] def apply(id : Int, doc : org.apache.lucene.document.Document, hightligth : String) =
     new Document(id, doc, hightligth)
 
-  def find(id : Int) = {
-    using( FSDirectory.open(new File(INDEX_PATH)) ) { case dir =>
-      using( new IndexSearcher(dir, true) ) { case searcher => {
-        val doc   = searcher.doc(id)
-        new Document(id, doc,"<pre />")
-      }}					   }
-  }
-
-  def get(id : Int) = {
+  def get(id : Int) : Option[Document] = {
     try{
       using( FSDirectory.open(new File(INDEX_PATH)) ) { case dir =>
-	using( new IndexSearcher(dir, true) ) { case searcher => {
+	    using( new IndexSearcher(dir, true) ) { case searcher => {
           val doc   = searcher.doc(id)
           Some(new Document(id, doc,"<pre />"))
-	}}					   }
+	    }}					   }
     }catch { case _ => None }
   }
 }
