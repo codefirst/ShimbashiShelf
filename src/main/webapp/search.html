@@ -2,14 +2,14 @@
   <lift:embed what="search_header" />
 
   <div class="search-navigator" >
-    <lift:search.paginate>
-      <div><nav:prev /> <nav:allpages> | </nav:allpages> <nav:next/></div>
+    <lift:documents.paginate>
       <div><nav:records /></div>
-    </lift:search.paginate>
+      <div><nav:prev /> <nav:allpages> | </nav:allpages> <nav:next/></div>
+    </lift:documents.paginate>
   </div>
 
   <div class="search-result">
-    <lift:search.show>
+    <lift:documents.show>
       <div class="result-item">
 	    <div class="title"><result:link /></div>
 	    <div class="info">
@@ -18,13 +18,13 @@
 	    </div>
 	    <result:highlight />
       </div>
-    </lift:search.show>
+    </lift:documents.show>
   </div>
 
-  <div class="search-navigator" >
-    <lift:search.paginate>
+  <div class="documents-navigator" >
+    <lift:documents.paginate>
       <div><nav:prev /> <nav:allpages> | </nav:allpages> <nav:next/></div>
       <div><nav:records /></div>
-    </lift:search.paginate>
+    </lift:documents.paginate>
   </div>
 </lift:surround>

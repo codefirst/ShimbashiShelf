@@ -11,15 +11,13 @@ import Helpers._
 import org.codefirst.shimbashishelf.search.{Document,Searcher}
 import net.liftweb.http._
 
-class Search extends StatefulSnippet  with PaginatorSnippet[Document] {
+class Documents extends PaginatorSnippet[Document] {
   var query = S.param("q").openOr("")
-  var documents : Array[Document] = Array()
-
-  override def dispatch : DispatchIt = {
-    case "searchForm" => searchForm(_)
-    case "show"       => show(_)
-    case "paginate"   => paginate(_)
-  }
+  lazy val documents : Array[Document] = S.param("q") match {
+    case Full(q) =>
+      Searcher.search(q, "content")
+    case _ =>
+      Array() }
 
   override def count =
     documents.size
@@ -30,13 +28,11 @@ class Search extends StatefulSnippet  with PaginatorSnippet[Document] {
   override def currentXml: NodeSeq =
     Text((first+1)+"-"+(first+itemsPerPage min count)+" of "+count)
 
-  def searchForm(xhtml : NodeSeq) : NodeSeq = {
+  def search(xhtml : NodeSeq) : NodeSeq = {
     def doSearch() {
       S.notice("doSearch : " + query)
-      documents = Searcher.search(query, "content")
-      redirectTo("/search?q="+query)
+      S.redirectTo("/search?q="+ query)
     }
-    if(!query.isEmpty) { documents = Searcher.search(query, "content") }
 
     bind("f", xhtml,
          "q" -> text(query, query = _) % ("autofocus" -> true) % ("id" -> "q"),
@@ -46,11 +42,11 @@ class Search extends StatefulSnippet  with PaginatorSnippet[Document] {
   def show(xhtml : NodeSeq) : NodeSeq = {
     page.flatMap(document => {
       val seq =
-        List("link" -> link("/show.html?id=" + document.id,
-                            ()=>"",
-                            Text(document.filename))) ++ document.toBindParams
+        List("link" -> <a href={"/show?id=" + document.id + "&q=" + query}>{document.filename}</a>) ++
+        document.toBindParams
       bind("result", xhtml,
            seq : _*)})
   }
-}
 
+
+}

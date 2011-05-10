@@ -13,8 +13,8 @@ import org.codefirst.shimbashishelf._
 import org.codefirst.shimbashishelf.search.Document
 
 class Show {
-  var id = S.param("id").openOr("0")
-  var document : Document = Document.find(id.toInt)
+  val id = S.param("id").openOr("0")
+  lazy val document : Document = Document.find(id.toInt)
 
   def render(xhtml : NodeSeq) : NodeSeq = {
     bind("result", xhtml,
