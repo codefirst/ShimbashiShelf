@@ -7,7 +7,6 @@ import _root_.net.liftweb.http.SHtml._
 import _root_.net.liftweb.util._
 import _root_.net.liftweb.common._
 import _root_.java.util.Date
-import code.lib._
 import Helpers._
 import org.codefirst.shimbashishelf.search.{Document,Searcher}
 import net.liftweb.http._
