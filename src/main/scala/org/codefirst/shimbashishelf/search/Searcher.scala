@@ -1,4 +1,4 @@
-package org.codefirst.shimbashishelf
+package org.codefirst.shimbashishelf.search
 
 import java.io.File
 import org.apache.lucene.search.highlight._
@@ -9,6 +9,7 @@ import org.apache.lucene.util.Version
 import org.apache.lucene.index.Term
 import org.apache.lucene.search._
 import org.apache.lucene.queryParser._
+import org.codefirst.shimbashishelf._
 
 object Searcher {
   val analyzer  = new CJKAnalyzer(Version.LUCENE_31)

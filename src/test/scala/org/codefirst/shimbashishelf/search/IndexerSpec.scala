@@ -1,4 +1,4 @@
-package org.codefirst.shimbashishelf
+package org.codefirst.shimbashishelf.search
 import org.specs2.mutable._
 
 class IndexerSpec extends Specification {

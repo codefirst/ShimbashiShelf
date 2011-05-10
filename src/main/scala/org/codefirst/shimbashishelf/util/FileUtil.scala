@@ -1,4 +1,4 @@
-package org.codefirst.shimbashishelf
+package org.codefirst.shimbashishelf.util
 import java.io.FileInputStream
 import scala.math.max
 

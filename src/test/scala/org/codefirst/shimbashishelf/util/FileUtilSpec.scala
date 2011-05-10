@@ -1,4 +1,4 @@
-package org.codefirst.shimbashishelf
+package org.codefirst.shimbashishelf.util
 import org.scalatest.Spec
 import org.scalatest.matchers.MustMatchers
 import org.scalatest.matchers.ShouldMatchers

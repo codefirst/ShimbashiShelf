@@ -1,4 +1,4 @@
-package org.codefirst.shimbashishelf
+package org.codefirst.shimbashishelf.search
 
 import org.eclipse.jgit.api._
 import org.eclipse.jgit.lib._
@@ -35,13 +35,13 @@ class VersionControl(repositoryDir : File) {
       Git.init().setDirectory(repositoryDir).call()
     }
 
-    // TODO: getIndex() is deprecated, but AddCommand does not work... 
+    // TODO: getIndex() is deprecated, but AddCommand does not work...
     val index = repository.getIndex()
     index.add(repositoryDir, file)
     index.write()
 
     val format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
-    // TODO: Author configuration 
+    // TODO: Author configuration
     val cal = Calendar.getInstance()
     git.commit().setAuthor("ShimbashiShelf", "ShimbashiShelf@codefirst.org").setMessage(format.format(cal.getTime())).call()
     return true

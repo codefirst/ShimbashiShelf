@@ -1,10 +1,12 @@
-package org.codefirst.shimbashishelf
+package org.codefirst.shimbashishelf.search
+
 import sjson.json._
 import sjson.json.DefaultProtocol._
 import scala.collection.mutable
 import dispatch.json.JsonParser
 import scala.util.parsing.input.CharArrayReader
 import java.io.FileWriter
+import org.codefirst.shimbashishelf.util.FileUtil
 
 object Status{
   case class JsStatus(version : Int, intMap : Map[String, Int])

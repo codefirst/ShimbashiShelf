@@ -1,4 +1,4 @@
-package org.codefirst.shimbashishelf
+package org.codefirst.shimbashishelf.search
 
 import org.eclipse.jgit.api._
 import org.eclipse.jgit.lib._
@@ -13,10 +13,10 @@ import collection.JavaConversions._
 import scala.collection.mutable._
 
 
-class RecursiveTreeWalk(repository : Repository) extends TreeWalk(repository.newObjectReader()){ 
+class RecursiveTreeWalk(repository : Repository) extends TreeWalk(repository.newObjectReader()){
   setRecursive(true)
 
-  def getFileDiffCommits(commit : RevCommit) : FileDiffCommit = { 
+  def getFileDiffCommits(commit : RevCommit) : FileDiffCommit = {
     reset(commit.getTree())
     if (commit.getParentCount() >= 1) {
       setFilter(TreeFilter.ANY_DIFF)

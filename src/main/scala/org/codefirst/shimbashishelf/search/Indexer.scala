@@ -1,4 +1,4 @@
-package org.codefirst.shimbashishelf
+package org.codefirst.shimbashishelf.search
 
 import java.io.File
 import java.io.IOException
@@ -10,6 +10,7 @@ import org.apache.lucene.index.{IndexWriterConfig, IndexWriter}
 import org.apache.lucene.document.Field.{Index,Store}
 import org.apache.lucene.analysis.SimpleAnalyzer
 import scala.collection.immutable.Stream
+import org.codefirst.shimbashishelf._
 
 trait IdGenerator {
   def generate(file : File, status : Status) : String

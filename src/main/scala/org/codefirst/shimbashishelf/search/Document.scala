@@ -1,10 +1,13 @@
-package org.codefirst.shimbashishelf
+package org.codefirst.shimbashishelf.search
+
 import scala.xml.XML
 import java.io.File
 import net.liftweb.util._
 import net.liftweb.util.Helpers._
 import org.apache.lucene.store.FSDirectory
 import org.apache.lucene.search.IndexSearcher
+import org.codefirst.shimbashishelf._
+import org.codefirst.shimbashishelf.util.FileUtil
 
 object Document {
   def apply(id : Int, doc : org.apache.lucene.document.Document, hightligth : String) =

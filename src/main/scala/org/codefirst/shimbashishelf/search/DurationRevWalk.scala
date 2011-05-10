@@ -1,4 +1,4 @@
-package org.codefirst.shimbashishelf
+package org.codefirst.shimbashishelf.search
 
 import org.eclipse.jgit.api._
 import org.eclipse.jgit.lib._
@@ -23,8 +23,8 @@ class DurationRevWalk(repository : Repository,  startDate : Option[Date], endDat
   markStart(parseCommit(repository.resolve("master")))
 
   def getCommits(body : RevCommit => Option[FileDiffCommit]) = null
-  
-  def walkRevisions(body : RevCommit => FileDiffCommit) : scala.collection.immutable.List[FileDiffCommit] = 
+
+  def walkRevisions(body : RevCommit => FileDiffCommit) : scala.collection.immutable.List[FileDiffCommit] =
     try { this.map(commit => body(commit)).toList } finally { dispose() }
 
 

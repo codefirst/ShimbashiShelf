@@ -17,7 +17,7 @@ import Loc._
 class Boot {
   def boot {
     // where to search snippet
-    LiftRules.addToPackages("code")
+    LiftRules.addToPackages("org.codefirst.shimbashishelf.web")
 
     // Build SiteMap
     val entries = List(

@@ -1,4 +1,4 @@
-package org.codefirst.shimbashishelf
+package org.codefirst.shimbashishelf.search
 
 import org.apache.lucene.document.Field
 import org.apache.lucene.document.Field.Index

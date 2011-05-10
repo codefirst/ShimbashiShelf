@@ -1,4 +1,5 @@
-package org.codefirst.shimbashishelf
+package org.codefirst.shimbashishelf.search
+
 import scala.io.Source
 import java.io._
 import org.apache.pdfbox.util._
@@ -12,6 +13,7 @@ import org.apache.poi.xwpf.extractor._
 import org.apache.poi.xslf.extractor._
 import org.apache.poi.xssf.extractor._
 import org.apache.poi.extractor._
+import org.codefirst.shimbashishelf.util.FileUtil
 
 trait Extractor{
   def extract(fileName : String) : Option[String]
