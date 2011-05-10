@@ -13,3 +13,5 @@ files/
 .ensime
 *~
 \#*\#
+.DS_Store
+*.swp

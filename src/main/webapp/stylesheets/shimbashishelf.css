@@ -7,9 +7,6 @@ body {
     width: 720px;
 }
 
-#main {
-}
-
 .search-header {
 /*    border-top: 1px solid #ccc; */
     padding-top: 20px;
@@ -65,14 +62,25 @@ input[type="submit"] {
     font-size: 10px;
 }
 
-.search-result pre {
+.result-item {
+    margin: 20px;
+}
+
+.result-item .title a {
+    background-image: url("../images/page_text.gif");
+    background-repeat: no-repeat;
+    padding-left: 20px;
+}
+
+pre,
+.result-item pre {
     border: 1px solid #ddd;
     padding: 5px;
     margin: 0;
-}
-
-.result-item {
-    margin: 20px;
+    background-color: #fbfbfb;
+    background: -moz-linear-gradient(top, #fefefe 41%, #fbfbfb 100%);
+    background: -o-linear-gradient(top, #fefefe 41%, #fbfbfb 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0.41, #fefefe),color-stop(1, #fbfbfb));
 }
 
 .result-item:first {
