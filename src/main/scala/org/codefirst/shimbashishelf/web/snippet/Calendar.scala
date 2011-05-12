@@ -24,11 +24,16 @@ class Calendar {
     val month  = Integer.parseInt(S.param("month").openOr((cal.get(java.util.Calendar.MONTH) + 1).toString()))
     cal.set(java.util.Calendar.YEAR, year)
     cal.set(java.util.Calendar.MONTH, month - 1)
+    val startDate = java.util.Calendar.getInstance()
+    startDate.setTime(startDayOfMonth(cal.getTime()))
+    val endDate = java.util.Calendar.getInstance()
+    endDate.setTime(endDayOfMonth(cal.getTime()))
     val calendar = <div class="calendar">
         { 
-          for (i <- 1 to endDayOfMonth(cal.getTime())) 
+          for (i <- 1 to endDate.get(java.util.Calendar.DATE)) 
           yield <div class="date"> { 
-            cal.set(java.util.Calendar.DATE, i); filesOfDay(cal.getTime(), new VersionControl(new File("files")).commitList(None, None))
+            cal.set(java.util.Calendar.DATE, i); 
+            filesOfDay(cal.getTime(), new VersionControl(new File("files")).commitList(Some(startDate.getTime()), Some(endDate.getTime())))
           } </div> 
         }
       </div>
@@ -36,16 +41,31 @@ class Calendar {
     bind("result", xhtml, "calendar" -> calendar)
   }
 
-  def endDayOfMonth(date : Date) : Int = { 
+  private def startDayOfMonth(date : Date) : Date = { 
+    val cal = java.util.Calendar.getInstance()
+    cal.setTime(date)
+    cal.set(java.util.Calendar.DATE, 1)
+    cal.set(java.util.Calendar.HOUR, 0)
+    cal.set(java.util.Calendar.MINUTE, 0)
+    cal.set(java.util.Calendar.SECOND, 0)
+    cal.set(java.util.Calendar.MILLISECOND, 0)
+    cal.getTime()
+  }
+
+  private def endDayOfMonth(date : Date) : Date = { 
     val cal = java.util.Calendar.getInstance()
     cal.setTime(date)
     cal.set(java.util.Calendar.MONTH, cal.get(java.util.Calendar.MONTH) + 1)
     cal.set(java.util.Calendar.DATE, 1)
-    cal.add(java.util.Calendar.DATE, -1)
-    cal.get(java.util.Calendar.DATE)
+    cal.set(java.util.Calendar.HOUR, 0)
+    cal.set(java.util.Calendar.MINUTE, 0)
+    cal.set(java.util.Calendar.SECOND, 0)
+    cal.set(java.util.Calendar.MILLISECOND, 0)
+    cal.add(java.util.Calendar.MINUTE, -1)
+    cal.getTime()
   }
 
-  def filesOfDay(day:Date, commits : List[FileDiffCommit]) = { 
+  private def filesOfDay(day:Date, commits : List[FileDiffCommit]) = { 
     val week_day_map = Map(1 -> "Sun", 2 -> "Mon", 3 -> "Tue", 4 -> "Wed", 5 -> "Thu", 6 -> "Fri", 7 -> "Sat")
     val cal = java.util.Calendar.getInstance()
     cal.setTime(day)
@@ -60,7 +80,7 @@ class Calendar {
     </div>
   }
 
-  def dateEquals(day1 : Date, day2 : Date) : Boolean = { 
+  private def dateEquals(day1 : Date, day2 : Date) : Boolean = { 
     val cal1 = java.util.Calendar.getInstance()
     val cal2 = java.util.Calendar.getInstance()
     cal1.setTime(day1)
