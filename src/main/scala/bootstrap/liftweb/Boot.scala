@@ -23,7 +23,8 @@ class Boot {
     val entries = List(
       Menu.i("Home") / "index",
       Menu.i("Search") / "search",
-      Menu.i("Show") / "show"
+      Menu.i("Show") / "show",
+      Menu.i("Calendar") / "calendar"
 
       // more complex because this menu allows anything in the
       // /static path to be visible
