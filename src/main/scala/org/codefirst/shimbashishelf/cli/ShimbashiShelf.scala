@@ -1,13 +1,15 @@
-package org.codefirst.shimbashishelf.search
+package org.codefirst.shimbashishelf.cli
 
 import java.io.File
 import java.util.Calendar
 import java.util.Date
 import java.text.SimpleDateFormat
 import java.text.DateFormat
+import org.codefirst.shimbashishelf.search._
+import org.codefirst.shimbashishelf.monitor._
 
 object ShimbashiShelf {
-  val commands : Array[String] = Array("index", "search", "index-all", "search-by-path", "commit", "history")
+  val commands : Array[String] = Array("index", "search", "index-all", "search-by-path", "commit", "history","monitor")
   def main(args : Array[String]) {
     args.toList match {
       case List() => {
@@ -66,7 +68,7 @@ object ShimbashiShelf {
 	  }
 	}
       case "history"::args =>
-      val vc : VersionControl = new VersionControl(new File("files"))
+	val vc : VersionControl = new VersionControl(new File("files"))
       var commits : List[FileDiffCommit] = null
       val format = new SimpleDateFormat("yyyy-MM-dd")
       if (args.length >= 2) {
@@ -97,6 +99,14 @@ object ShimbashiShelf {
         println()
       }
 
+      case "watch"::file::_ => {
+	Fam.watch(file) {
+	  case OnFileCreate(file) =>
+	    println("create: " + file)
+	  case x =>
+	    println(x)
+	}
+      }
       case _ => {
 	println("unknown command")
 	println("available commands:")
