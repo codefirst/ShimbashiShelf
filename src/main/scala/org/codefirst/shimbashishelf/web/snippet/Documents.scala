@@ -39,6 +39,11 @@ class Documents extends PaginatorSnippet[Document] {
          "search" -> SHtml.submit(S.?("Search"), doSearch))
   }
 
+  def info(xhtml : NodeSeq) : NodeSeq = {
+    bind("result", xhtml,
+	 "query" -> query)
+  }
+
   def show(xhtml : NodeSeq) : NodeSeq = {
     page.flatMap(document => {
       val seq =

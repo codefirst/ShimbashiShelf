@@ -1,15 +1,17 @@
-<lift:surround with="default" at="content">
-  <div id="main">
-    <div class="search-header">
-      <img alt="ShibashiShelf" title="ShibashiShelf" src="images/logo.png" />
-    </div>
+<lift:surround with="default">
+  <lift:bind-at name="title">Home</lift:bind-at>
+  <lift:bind-at name="content">
+    <div id="main">
+      <div class="search-header">
+	<img alt="ShibashiShelf" title="ShibashiShelf" src="images/logo.png" />
+      </div>
 
-    <div class="search-form">
-      <lift:documents.search form="get" autofocus="true">
-	<f:q />
-	<f:search />
-      </lift:documents.search>
+      <div class="search-form">
+	<lift:documents.search form="get" autofocus="true">
+	  <f:q />
+	  <f:search />
+	</lift:documents.search>
+      </div>
     </div>
-  </div>
+  </lift:bind-at>
 </lift:surround>
-
