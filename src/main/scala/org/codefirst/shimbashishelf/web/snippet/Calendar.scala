@@ -15,6 +15,7 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 import scala.collection.Iterator
+import scala.collection.immutable.HashSet
 
 class Calendar {
 
@@ -28,12 +29,13 @@ class Calendar {
     startDate.setTime(startDayOfMonth(cal.getTime()))
     val endDate = java.util.Calendar.getInstance()
     endDate.setTime(endDayOfMonth(cal.getTime()))
+    val commits = new VersionControl(new File("files")).commitList(Some(startDate.getTime()), Some(endDate.getTime()))
     val calendar = <div class="calendar">
         { 
           for (i <- 1 to endDate.get(java.util.Calendar.DATE)) 
           yield <div class="date"> { 
             cal.set(java.util.Calendar.DATE, i); 
-            filesOfDay(cal.getTime(), new VersionControl(new File("files")).commitList(Some(startDate.getTime()), Some(endDate.getTime())))
+            filesOfDay(cal.getTime(), commits)
           } </div> 
         }
       </div>
@@ -55,26 +57,36 @@ class Calendar {
   private def endDayOfMonth(date : Date) : Date = { 
     val cal = java.util.Calendar.getInstance()
     cal.setTime(date)
-    cal.set(java.util.Calendar.MONTH, cal.get(java.util.Calendar.MONTH) + 1)
-    cal.set(java.util.Calendar.DATE, 1)
-    cal.set(java.util.Calendar.HOUR, 0)
-    cal.set(java.util.Calendar.MINUTE, 0)
-    cal.set(java.util.Calendar.SECOND, 0)
-    cal.set(java.util.Calendar.MILLISECOND, 0)
-    cal.add(java.util.Calendar.MINUTE, -1)
+    cal.set(java.util.Calendar.DATE, cal.getActualMaximum(java.util.Calendar.DATE))
+    cal.set(java.util.Calendar.HOUR, 23)
+    cal.set(java.util.Calendar.MINUTE, 59)
+    cal.set(java.util.Calendar.SECOND, 59)
+    cal.set(java.util.Calendar.MILLISECOND, 999)
     cal.getTime()
   }
 
   private def filesOfDay(day:Date, commits : List[FileDiffCommit]) = { 
-    val week_day_map = Map(1 -> "Sun", 2 -> "Mon", 3 -> "Tue", 4 -> "Wed", 5 -> "Thu", 6 -> "Fri", 7 -> "Sat")
+    val week_day_map = Map(java.util.Calendar.SUNDAY -> "Sun", 
+                           java.util.Calendar.MONDAY -> "Mon",
+                           java.util.Calendar.TUESDAY -> "Tue",
+                           java.util.Calendar.WEDNESDAY -> "Wed",
+                           java.util.Calendar.THURSDAY -> "Thu",
+                           java.util.Calendar.FRIDAY -> "Fri",
+                           java.util.Calendar.SATURDAY-> "Sat")
     val cal = java.util.Calendar.getInstance()
     cal.setTime(day)
+    var files = HashSet[String]()
+    for (commit <- commits if dateEquals(day, commit.getDate())) commit.getFiles().foreach { file => files = files + file } 
     <div class="date">
-      <div>{ cal.get(java.util.Calendar.DATE) } ({ week_day_map.get(cal.get(java.util.Calendar.DAY_OF_WEEK)) match { case Some(x) => x} })</div>
+      <div>
+        { cal.get(java.util.Calendar.DATE) }
+        ({ week_day_map.get(cal.get(java.util.Calendar.DAY_OF_WEEK)) match { 
+          case Some(x) => x
+          case None => ""} })
+      </div>
       <div>
         {
-          for (commit <- commits if dateEquals(day, commit.getDate())) 
-          yield <div> { commit.getFiles().map { file => <div> { file } </div>} } </div>
+          for (file <- files) yield <div>{ file }</div>
         }
       </div>
     </div>
