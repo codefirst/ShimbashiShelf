@@ -80,7 +80,12 @@ class Calendar {
       </div>
       <div class="files">
         {
-          for (file <- files) yield <div>{ file }</div>
+          for (file <- files) yield 
+            Searcher.searchByPath(new File("files/" + file).getAbsolutePath()) match { // TODO configure root directory
+              case Some(document) => <div><a href={"/show?id=" + document.id}>{ file }</a></div>
+              case None           => <div>{ file }</div>
+
+            }
         }
       </div>
     </div>
