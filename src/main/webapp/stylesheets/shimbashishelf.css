@@ -123,9 +123,17 @@ a:active {
 }
 
 img {
-    border: none;
+  border: none;
 }
 
 .date {
-    border: 1px solid #777;
+  border: 1px solid #777;
+}
+
+.Sun > .day {
+  background-color: #ffb6c1;
+}
+
+.Sat > .day {
+  background-color: #87ceeb;
 }

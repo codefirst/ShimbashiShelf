@@ -77,14 +77,16 @@ class Calendar {
     cal.setTime(day)
     var files = HashSet[String]()
     for (commit <- commits if dateEquals(day, commit.getDate())) commit.getFiles().foreach { file => files = files + file } 
-    <div class="date">
-      <div>
+    <div class={week_day_map.get(cal.get(java.util.Calendar.DAY_OF_WEEK)) match {  
+      case Some(x) => x 
+      case None    => ""}}>
+      <div class="day">
         { cal.get(java.util.Calendar.DATE) }
         ({ week_day_map.get(cal.get(java.util.Calendar.DAY_OF_WEEK)) match { 
           case Some(x) => x
           case None => ""} })
       </div>
-      <div>
+      <div class="files">
         {
           for (file <- files) yield <div>{ file }</div>
         }
