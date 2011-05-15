@@ -1,7 +1,8 @@
 import sbt._
 import eu.henkelmann.sbt.JUnitXmlTestsListener
+import reaktor.scct.ScctProject
 
-class ShimbashiShelfProject(info: ProjectInfo) extends DefaultWebProject(info)
+class ShimbashiShelfProject(info: ProjectInfo) extends DefaultWebProject(info) with ScctProject
 {
   val lift   = "net.liftweb" %% "lift-mapper" % "2.2" % "compile"
   val jetty6 = "org.mortbay.jetty" % "jetty" % "6.1.25" % "test"
