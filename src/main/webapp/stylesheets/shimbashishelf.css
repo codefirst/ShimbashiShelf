@@ -137,3 +137,11 @@ img {
 .Sat > .day {
   background-color: #87ceeb;
 }
+
+.prev-month {
+  float: left;
+}
+
+.next-month {
+  float: right;
+}

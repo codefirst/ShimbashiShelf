@@ -37,7 +37,16 @@ class Calendar {
       } </div> 
     }
     </div>
-    bind("result", xhtml, "calendar" -> calendar)
+
+    val prevMonth = <div class="prev-month">
+      <a href={"/calendar?year=" + cal.get(java.util.Calendar.YEAR) + "&month=" + cal.get(java.util.Calendar.MONTH)}>&lt;&lt; prev</a>
+    </div>
+    cal.add(java.util.Calendar.MONTH, 2)
+    val nextMonth = <div class="next-month">
+      <a href={"/calendar?year=" + cal.get(java.util.Calendar.YEAR) + "&month=" + cal.get(java.util.Calendar.MONTH)}>next &gt;&gt;</a>
+    </div>
+
+    bind("result", xhtml, "calendar" -> calendar, "prevMonth" -> prevMonth, "nextMonth" -> nextMonth)
   }
 
   private def filesOfDay(day:Date, commits : List[FileDiffCommit]) = { 
