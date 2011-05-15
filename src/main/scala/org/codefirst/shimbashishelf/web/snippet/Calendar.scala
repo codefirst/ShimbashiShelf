@@ -11,6 +11,7 @@ import Helpers._
 
 import org.codefirst.shimbashishelf._
 import org.codefirst.shimbashishelf.search._
+import org.codefirst.shimbashishelf.util._
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -25,44 +26,18 @@ class Calendar {
     val month  = Integer.parseInt(S.param("month").openOr((cal.get(java.util.Calendar.MONTH) + 1).toString()))
     cal.set(java.util.Calendar.YEAR, year)
     cal.set(java.util.Calendar.MONTH, month - 1)
-    val startDate = java.util.Calendar.getInstance()
-    startDate.setTime(startDayOfMonth(cal.getTime()))
-    val endDate = java.util.Calendar.getInstance()
-    endDate.setTime(endDayOfMonth(cal.getTime()))
-    val commits = new VersionControl(new File("files")).commitList(Some(startDate.getTime()), Some(endDate.getTime()))
+    val scal = new SCalendar(cal.getTime())
+    val commits = new VersionControl(new File("files")).commitList(Some(scal.startDayOfMonth()), Some(scal.endDayOfMonth()))
     val calendar = <div class="calendar">
-        { 
-          for (i <- 1 to endDate.get(java.util.Calendar.DATE)) 
-          yield <div class="date"> { 
-            cal.set(java.util.Calendar.DATE, i); 
-            filesOfDay(cal.getTime(), commits)
-          } </div> 
-        }
-      </div>
-
+    { 
+      for (date <- new SCalendar(scal.startDayOfMonth()).iterator(scal.endDayOfMonth()))
+      yield <div class="date"> { 
+        cal.setTime(date) 
+        filesOfDay(cal.getTime(), commits)
+      } </div> 
+    }
+    </div>
     bind("result", xhtml, "calendar" -> calendar)
-  }
-
-  private def startDayOfMonth(date : Date) : Date = { 
-    val cal = java.util.Calendar.getInstance()
-    cal.setTime(date)
-    cal.set(java.util.Calendar.DATE, 1)
-    cal.set(java.util.Calendar.HOUR, 0)
-    cal.set(java.util.Calendar.MINUTE, 0)
-    cal.set(java.util.Calendar.SECOND, 0)
-    cal.set(java.util.Calendar.MILLISECOND, 0)
-    cal.getTime()
-  }
-
-  private def endDayOfMonth(date : Date) : Date = { 
-    val cal = java.util.Calendar.getInstance()
-    cal.setTime(date)
-    cal.set(java.util.Calendar.DATE, cal.getActualMaximum(java.util.Calendar.DATE))
-    cal.set(java.util.Calendar.HOUR, 23)
-    cal.set(java.util.Calendar.MINUTE, 59)
-    cal.set(java.util.Calendar.SECOND, 59)
-    cal.set(java.util.Calendar.MILLISECOND, 999)
-    cal.getTime()
   }
 
   private def filesOfDay(day:Date, commits : List[FileDiffCommit]) = { 
