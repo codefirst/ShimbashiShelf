@@ -100,11 +100,19 @@ object ShimbashiShelf {
       }
 
       case "watch"::file::_ => {
+	val vc : VersionControl = new VersionControl(new File("files"))
+	val f = { (file : File) =>
+	  ".git".r.findFirstIn(file.toString()) match {
+	    case Some(_) => ()
+	    case None => {
+	      println("update: " + file)
+	      vc.commit(file)
+	      Indexer().index(file) } } }
+
 	Fam.watch(file) {
-	  case OnFileCreate(file) =>
-	    println("create: " + file)
-	  case x =>
-	    println(x)
+	  case OnFileCreate(file) => f(file)
+	  case OnFileChange(file) => f(file)
+	  case _ => ()
 	}
       }
       case _ => {
