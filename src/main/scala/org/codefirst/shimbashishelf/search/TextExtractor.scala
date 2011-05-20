@@ -1,53 +1,8 @@
 package org.codefirst.shimbashishelf.search
 
-import scala.io.Source
 import java.io._
-import org.apache.pdfbox.util._
-import org.apache.pdfbox.pdfparser._
-import org.apache.pdfbox.pdmodel._
-import org.apache.poi.hwpf.extractor._
-import org.apache.poi.hssf.extractor._
-import org.apache.poi.hssf.usermodel._
-import org.apache.poi.hslf.extractor._
-import org.apache.poi.xwpf.extractor._
-import org.apache.poi.xslf.extractor._
-import org.apache.poi.xssf.extractor._
-import org.apache.poi.extractor._
-import org.codefirst.shimbashishelf.util.FileUtil
+import org.codefirst.shimbashishelf.search.extractor._
 
-trait Extractor{
-  def extract(fileName : String) : Option[String]
-}
-
-object PdfExtractor extends Extractor {
-  def extract(fileName : String) = {
-    if(FileUtil.getExtension(fileName) == "pdf") {
-      val in : InputStream = new FileInputStream(fileName)
-      val pdfParser : PDFParser = new PDFParser(in)
-      pdfParser.parse()
-      Some(new PDFTextStripper().getText(pdfParser.getPDDocument()))
-    } else
-      None
-  }
-}
-
-object OfficeExtractor extends Extractor {
-  val extensions = List("doc", "docx", "ppt", "pptx", "xls", "xlsx")
-
-  def extract(fileName : String) = {
-    val ext = FileUtil.getExtension(fileName)
-    if(extensions contains ext) {
-      val in : InputStream = new FileInputStream(fileName)
-      Some(ExtractorFactory.createExtractor(in).getText())
-    } else
-      None
-  }
-}
-
-object PlainTextExtractor extends Extractor {
-  def extract(fileName : String) =
-    FileUtil.readAll(fileName)
-}
 
 object TextExtractor {
   private val Extractors : List[Extractor] = List(PdfExtractor,
