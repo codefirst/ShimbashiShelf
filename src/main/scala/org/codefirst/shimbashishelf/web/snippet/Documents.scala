@@ -31,7 +31,7 @@ class Documents extends PaginatorSnippet[Document] {
   def search(xhtml : NodeSeq) : NodeSeq = {
     def doSearch() {
       S.notice("doSearch : " + query)
-      S.redirectTo("/search?q="+ query)
+      S.redirectTo(appendParams("/search", List("q" -> query)))
     }
 
     bind("f", xhtml,
