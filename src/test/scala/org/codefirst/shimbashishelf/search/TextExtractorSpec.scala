@@ -6,7 +6,7 @@ import scala.collection.mutable.Stack
 import org.apache.pdfbox.pdfparser._
 import org.scalatest.mock.MockitoSugar
 import java.io.InputStream
-
+import org.codefirst.shimbashishelf.search.extractor._
 class TextExtractorSpec extends Spec with ShouldMatchers with MockitoSugar {
   describe("PdfExtractor") {
     it ("PDFではないファイルを入力すると Noneが返る") {
