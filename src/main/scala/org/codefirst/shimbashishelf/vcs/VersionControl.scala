@@ -30,6 +30,15 @@ class VersionControl(repositoryDir : File) {
 
 
   def commit(file : File) : Boolean = {
+    withGit { index => index.add(repositoryDir, file)  }
+    true
+  }
+
+  def remove(file : File) {
+    withGit { index => index.remove(repositoryDir, file)  }
+  }
+
+  private def withGit(f : GitIndex => Unit) {
     if (!new File(repositoryDir.getAbsolutePath() + File.separatorChar + Constants.DOT_GIT).exists()) {
       println(new File(repositoryDir.getAbsolutePath() + File.separatorChar + Constants.DOT_GIT).getAbsolutePath() + " created")
       Git.init().setDirectory(repositoryDir).call()
@@ -37,15 +46,16 @@ class VersionControl(repositoryDir : File) {
 
     // TODO: getIndex() is deprecated, but AddCommand does not work...
     val index = repository.getIndex()
-    index.add(repositoryDir, file)
+    f(index)
     index.write()
 
     val format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
     // TODO: Author configuration
     val cal = Calendar.getInstance()
     git.commit().setAuthor("ShimbashiShelf", "ShimbashiShelf@codefirst.org").setMessage(format.format(cal.getTime())).call()
-    return true
   }
+
+
 
   def commitList(startDate : Option[Date], endDate : Option[Date]) : scala.collection.immutable.List[FileDiffCommit] = {
     val tw : RecursiveTreeWalk = new RecursiveTreeWalk(repository)

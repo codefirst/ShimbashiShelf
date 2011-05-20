@@ -42,29 +42,38 @@ object Indexer {
 
 class Indexer(idGenerator : IdGenerator) {
   import SLucene._
-  val config = new IndexWriterConfig(Version.LUCENE_31, new CJKAnalyzer(Version.LUCENE_31))
 
-  def index(path : String, text : String) {
+  private def withWriter(f : IndexWriter => Unit) {
+    val config = new IndexWriterConfig(Version.LUCENE_31, new CJKAnalyzer(Version.LUCENE_31))
     using(FSDirectory.open(new File(INDEX_PATH))) { case dir =>
       using(new IndexWriter(dir, config)){ case writer =>
-        Status.withDefault { case status => {
-          val manageID = Searcher.searchByPath(path) match {
-            case Some(doc) =>
-              doc.manageID
-            case None =>
-              idGenerator.generate(path, status)
-          }
-          writer.deleteDocuments(("path", path))
-          val doc = new org.apache.lucene.document.Document()
-          doc.add(("path", path, Store.YES, Index.NOT_ANALYZED))
-          doc.add(("manageID", manageID, Store.YES, Index.NOT_ANALYZED))
-          doc.add(("content", text, Store.YES, Index.ANALYZED))
-          writer.addDocument(doc)
-        }}}}
+	f(writer) } }
+  }
+
+  private def index(path : String, text : String) {
+    withWriter { writer =>
+      Status.withDefault { case status => {
+        val manageID = Searcher.searchByPath(path) match {
+          case Some(doc) =>
+            doc.manageID
+          case None =>
+            idGenerator.generate(path, status)
+        }
+        writer.deleteDocuments(("path", path))
+        val doc = new org.apache.lucene.document.Document()
+        doc.add(("path", path, Store.YES, Index.NOT_ANALYZED))
+        doc.add(("manageID", manageID, Store.YES, Index.NOT_ANALYZED))
+        doc.add(("content", text, Store.YES, Index.ANALYZED))
+        writer.addDocument(doc)
+      } } }
   }
 
   def index(file : File) {
     index(file.getAbsolutePath(),
           TextExtractor.extract(file.getAbsolutePath()))
+  }
+
+  def delete(file : File) {
+    withWriter { writer => writer.deleteDocuments(("path", file.getAbsolutePath())) }
   }
 }

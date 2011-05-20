@@ -100,7 +100,10 @@ object ShimbashiShelf {
         println()
       }
 
-      case "watch"::file::_ => {
+      case "monitor"::_ => {
+        val vc = new VersionControl(new File("files"))
+        val indexer = Indexer()
+        new Monitor(indexer, vc).start(new File("files"))
       }
       case _ => {
         println("unknown command")
