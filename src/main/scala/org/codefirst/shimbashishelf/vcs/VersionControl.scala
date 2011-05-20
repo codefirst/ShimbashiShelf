@@ -1,4 +1,4 @@
-package org.codefirst.shimbashishelf.search
+package org.codefirst.shimbashishelf.vcs
 
 import org.eclipse.jgit.api._
 import org.eclipse.jgit.lib._

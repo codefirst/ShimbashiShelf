@@ -7,68 +7,69 @@ import java.text.SimpleDateFormat
 import java.text.DateFormat
 import org.codefirst.shimbashishelf.search._
 import org.codefirst.shimbashishelf.monitor._
+import org.codefirst.shimbashishelf.vcs._
 
 object ShimbashiShelf {
   val commands : Array[String] = Array("index", "search", "index-all", "search-by-path", "commit", "history","monitor")
   def main(args : Array[String]) {
     args.toList match {
       case List() => {
-	println("no arguments found")
-	println("available commands:")
-	commands.foreach((command) => println("   " + command))
+        println("no arguments found")
+        println("available commands:")
+        commands.foreach((command) => println("   " + command))
       }
       case "search"::args =>
-	if(args.length < 1) {
+        if(args.length < 1) {
           println("usage: search <word>")
-	} else {
-	  val documents : Array[Document] = Searcher.search(args(0), "content")
-	  println(documents.length + " documents found:")
-	  for(doc <- documents){
+        } else {
+          val documents : Array[Document] = Searcher.search(args(0), "content")
+          println(documents.length + " documents found:")
+          for(doc <- documents){
             println("[%s] %s".format(doc.manageID, doc.path))
-	    println(doc.highlight)
-	  }
-	}
+            println(doc.highlight)
+          }
+        }
       case "search-by-path"::args =>
-	if (args.length < 1) {
+        if (args.length < 1) {
           println("usage: search-by-path <path>")
-	} else {
-	  Searcher.searchByPath(args(0)) match {
-	    case Some(doc) =>
+        } else {
+          Searcher.searchByPath(args(0)) match {
+            case Some(doc) =>
               println("[%s] %s".format(doc.manageID, doc.path))
-	    case None =>
+            case None =>
               println("not found")
-	  }
-	}
+          }
+        }
       case "index"::args =>
-	if (args.length < 1) {
+        if (args.length < 1) {
           println("usage: index <filepath>")
-	} else {
-	  val file : File = new File(args(0))
-	  Indexer().index(file)
-	}
+        } else {
+          val file : File = new File(args(0))
+          Indexer().index(file)
+        }
       case "index-all"::args =>
-	if (args.length < 1) {
+        if (args.length < 1) {
           println("usage: index-all <directory-path>")
-	} else {
-	  val dir : File = new File(args(0))
-	  for(file <- Indexer.allFiles(dir)){
-	    println(file)
-	    Indexer().index(file)
-	  }
-	}
+        } else {
+          val dir : File = new File(args(0))
+          for(file <- Indexer.allFiles(dir)){
+            println(file)
+            Indexer().index(file)
+          }
+        }
       case "commit"::args =>
-	if (args.length < 1) {
+        if (args.length < 1) {
           println("usage: commit <filepath>")
-	} else {
-	  val vc : VersionControl = new VersionControl(new File("files"))
-	  if (vc.commit(new File(args(0)))) {
+        } else {
+          val vc : VersionControl = new VersionControl(new File("files"))
+          if (vc.commit(new File(args(0)))) {
             println("commit successful")
-	  } else {
+          } else {
             println("commit failure")
-	  }
-	}
+          }
+        }
       case "history"::args =>
-	val vc : VersionControl = new VersionControl(new File("files"))
+        val vc : VersionControl = new VersionControl(new File("files"))
       var commits : List[FileDiffCommit] = null
       val format = new SimpleDateFormat("yyyy-MM-dd")
       if (args.length >= 2) {
@@ -100,26 +101,13 @@ object ShimbashiShelf {
       }
 
       case "watch"::file::_ => {
-	val vc : VersionControl = new VersionControl(new File("files"))
-	val f = { (file : File) =>
-	  ".git".r.findFirstIn(file.toString()) match {
-	    case Some(_) => ()
-	    case None => {
-	      println("update: " + file)
-	      vc.commit(file)
-	      Indexer().index(file) } } }
-
-	Fam.watch(file) {
-	  case OnFileCreate(file) => f(file)
-	  case OnFileChange(file) => f(file)
-	  case _ => ()
-	}
       }
       case _ => {
-	println("unknown command")
-	println("available commands:")
-	commands.foreach((command) => println("   " + command))
+        println("unknown command")
+        println("available commands:")
+        commands.foreach((command) => println("   " + command))
       }
     }
   }
 }
+
