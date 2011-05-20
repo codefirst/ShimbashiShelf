@@ -31,3 +31,4 @@ commands
 - search-by-path        : search by a absolute path (enclosed phrase)
 - commit <filepath>     : commit a file to a version control system (repository directory is ./files/)
 - history               : show history
+- monitor               : monitor repository direcotry ( auto commit / remove )
