@@ -20,6 +20,7 @@ class ShimbashiShelfProject(info: ProjectInfo) extends DefaultWebProject(info) w
   val specs2 = "org.specs2" % "specs2_2.8.1" % "1.2"
   val jgit = "com.madgag" % "org.eclipse.jgit" % "0.11.99.4-UNOFFICIAL-ROBERTO-RELEASE"
   val scalaTest = "org.scalatest" % "scalatest" % "1.3"
+  val jchardet = "net.sourceforge.jchardet" % "jchardet" % "1.0"
 
   // def specs2Framework = new TestFramework("org.specs2.runner.SpecsFramework")
   // override def testFrameworks = super.testFrameworks ++ Seq(specs2Framework)
