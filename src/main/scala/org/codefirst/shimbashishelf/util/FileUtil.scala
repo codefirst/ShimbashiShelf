@@ -21,18 +21,7 @@ object FileUtil {
   }
 
   def readAll(path : String) : Option[String] =
-    try {
-      val in = new FileInputStream(path)
-      try{
-	val sb = new StringBuffer()
-	var c  : Int = in.read
-	while( c != -1){
-	  sb.append(c.toChar)
-	  c = in.read
-	}
-	Some(sb.toString)
-      } finally { in.close }
-    } catch { case _ => None}
+    readArray(path).map(new String(_))
 
   def readArray(path : String) : Option[Array[Byte]] =
     try {
