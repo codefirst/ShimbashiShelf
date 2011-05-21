@@ -10,7 +10,6 @@ object PlainTextExtractor extends Extractor {
     detector.DoIt( xs, xs.length, false)
     detector.DataEnd()
     val cs = detector.getProbableCharsets()
-    println(cs.toList)
     if(cs.length > 0) cs(0) else "Ascii"
   }
 
