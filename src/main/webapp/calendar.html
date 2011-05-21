@@ -1,10 +1,12 @@
 <lift:surround with="default" at="content">
   <lift:embed what="search_header" />
+  <lift:embed what="main_menu" />
+
   <lift:calendar>
     <result:monthTitle />
     <result:prevMonth />
     <result:nextMonth />
-    <div style="clear: both;"/>
+    <br class="clear"/>
     <result:calendar />
   </lift:calendar>
 </lift:surround>
