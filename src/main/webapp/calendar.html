@@ -3,10 +3,14 @@
   <lift:embed what="main_menu" />
 
   <lift:calendar>
-    <result:monthTitle />
-    <result:prevMonth />
-    <result:nextMonth />
-    <br class="clear"/>
+    <div class="month-title">
+      <h2><result:monthTitle /></h2>
+    </div>
+    <div class="calendar-navigator">
+      <result:prevMonth />
+      <result:nextMonth />
+      <br class="clear"/>
+    </div>
     <result:calendar />
   </lift:calendar>
 </lift:surround>

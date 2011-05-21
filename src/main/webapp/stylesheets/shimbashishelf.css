@@ -73,12 +73,14 @@ body {
 .search-navigator{
     text-align: center;
 }
+.calendar-navigator span,
 .search-navigator span {
     padding: 6px;
     border: 1px solid #eee;
     background-color: #fafafa;
     font-size: 90%;
 }
+.calendar-navigator a:link,
 .search-navigator a:link {
     text-decoration: none;
 }
@@ -166,53 +168,87 @@ pre,
 }
 
 a {
-  color: #0044cc;
-  font-style: normal;
-  text-decoration: underline;
+    color: #0044cc;
+    font-style: normal;
+    text-decoration: underline;
 }
 
 a:link {
-  color: #0044cc;
-  font-style: normal;
-  text-decoration: underline;
+    color: #0044cc;
+    font-style: normal;
+    text-decoration: underline;
 }
 
 a:visited {
-  color: #002882;
-  text-decoration: underline;
+    color: #002882;
+    text-decoration: underline;
 }
 
 a:hover {
-  color: #0044cc;
-  font-style: normal;
-  text-decoration: underline;
+    color: #0044cc;
+    font-style: normal;
+    text-decoration: underline;
 }
 
 a:active {
-  text-decoration: none;
+    text-decoration: none;
 }
 
 img {
-  border: none;
+    border: none;
 }
 
-.date {
-  border: 1px solid #777;
+.month-title h2 {
+    margin-bottom: 5px;
+    font-size: 100%;
+    color: #444;
+    width: 65%;
+}
+.month-title {
+    margin-right: 40px;
+    margin-left: 40px;
+}
+.calendar {
+    margin-top: 10px;
+    margin-left: 40px;
+    margin-right: 40px;
+    font-size: 90%;
+    border: 1px solid #cecece;
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 640px;
+}
+.calendar td {
+    border-bottom: 1px solid #ccc;
+    padding: 3px;
+}
+.calendar .odd {
+    background-color: #fbfbfb;
+}
+.calendar .day {
+    text-align: right;
+    width: 25px;
+}
+.calendar .dayname {
+    border-right: 1px solid #ccc;
+    color: #777;
+    width: 40px;
+}
+.sun .dayname {
+    color: #ffb6c1;
+}
+.sat .dayname {
+    color: #87ceeb;
 }
 
-.Sun > .day {
-  background-color: #ffb6c1;
+.calendar-navigator {
+    margin-left: 40px;
+    margin-right: 40px;
 }
-
-.Sat > .day {
-  background-color: #87ceeb;
-}
-
 .prev-month {
-  float: left;
+    float: left;
 }
-
 .next-month {
-  float: right;
+    float: right;
 }
 

@@ -20,6 +20,7 @@ import scala.collection.Iterator
 import scala.collection.immutable.HashSet
 
 class Calendar {
+  private val filesRoot : String = "files" // TODO configure root directory
 
   def render(xhtml : NodeSeq) : NodeSeq = {
     val cal = java.util.Calendar.getInstance()
@@ -28,68 +29,76 @@ class Calendar {
     cal.set(java.util.Calendar.YEAR, year)
     cal.set(java.util.Calendar.MONTH, month - 1)
     val scal = new SCalendar(cal.getTime())
-    val commits = new VersionControl(new File("files")).commitList(Some(scal.startDayOfMonth()), Some(scal.endDayOfMonth()))
-    val calendar = <div class="calendar">
+    val commits = new VersionControl(new File(filesRoot)).commitList(Some(scal.startDayOfMonth()), Some(scal.endDayOfMonth()))
+    val calendar = <table class="calendar">
     {
       for (date <- new SCalendar(scal.startDayOfMonth()).iterator(scal.endDayOfMonth()))
-      yield <div class="date"> {
+      yield {
         cal.setTime(date)
         filesOfDay(cal.getTime(), commits)
-      } </div>
-    }
-    </div>
-
-    val monthTitle = <div class="month-title">{
-      if (month == 0) {
-        (year - 1) + "/" + 12
-      } else {
-        year + "/" + month
       }
-    }</div>
+    }
+    </table>
 
+    val monthTitle = {
+      if (month == 0)
+        (year - 1) + "/" + 12
+      else
+        year + "/" + month
+    }
+
+    // make navigator
+    var url = "/calendar?year=" + cal.get(java.util.Calendar.YEAR) + "&month=" + cal.get(java.util.Calendar.MONTH)
     val prevMonth = <div class="prev-month">
-      <a href={"/calendar?year=" + cal.get(java.util.Calendar.YEAR) + "&month=" + cal.get(java.util.Calendar.MONTH)}>&lt;&lt; prev</a>
+      <a href={url}><span>{S.?("< prev")}</span></a>
     </div>
     cal.add(java.util.Calendar.MONTH, 2)
+    url = "/calendar?year=" + cal.get(java.util.Calendar.YEAR) + "&month=" + cal.get(java.util.Calendar.MONTH)
     val nextMonth = <div class="next-month">
-      <a href={"/calendar?year=" + cal.get(java.util.Calendar.YEAR) + "&month=" + cal.get(java.util.Calendar.MONTH)}>next &gt;&gt;</a>
+      <a href={url}><span>{S.?("next >")}</span></a>
     </div>
 
     bind("result", xhtml, "calendar" -> calendar, "prevMonth" -> prevMonth, "nextMonth" -> nextMonth, "monthTitle" -> monthTitle)
   }
 
   private def filesOfDay(day:Date, commits : List[FileDiffCommit]) = {
-    val week_day_map = Map(java.util.Calendar.SUNDAY -> "Sun",
-                           java.util.Calendar.MONDAY -> "Mon",
-                           java.util.Calendar.TUESDAY -> "Tue",
-                           java.util.Calendar.WEDNESDAY -> "Wed",
-                           java.util.Calendar.THURSDAY -> "Thu",
-                           java.util.Calendar.FRIDAY -> "Fri",
-                           java.util.Calendar.SATURDAY-> "Sat")
     val cal = java.util.Calendar.getInstance()
     cal.setTime(day)
     var files = HashSet[String]()
     for (commit <- commits if dateEquals(day, commit.getDate())) commit.getFiles().foreach { file => files = files + file }
-    <div class={week_day_map.get(cal.get(java.util.Calendar.DAY_OF_WEEK)) match {
-      case Some(x) => x
-      case None    => ""}}>
-      <div class="day">
+
+    <tr class={getDayName(cal, true) + " " + cycle}>
+      <td class="day">
         { cal.get(java.util.Calendar.DATE) }
-        ({ week_day_map.get(cal.get(java.util.Calendar.DAY_OF_WEEK)) match {
-          case Some(x) => x
-          case None => ""} })
-      </div>
-      <div class="files">
+      </td>
+      <td class="dayname">
+        ({ getDayName(cal) })
+      </td>
+      <td class="files">
         {
           for (file <- files) yield
-            Searcher.searchByPath(new File("files/" + file).getAbsolutePath()) match { // TODO configure root directory
-              case Some(document) => <div><a href={"/show?id=" + document.id}>{ file }</a></div>
+            Searcher.searchByPath(new File(filesRoot + "/" + file).getAbsolutePath()) match {
+              case Some(document) => <div><a title={ file } href={"/show?id=" + document.id}>{ file }</a></div>
               case None           => <div>{ file }</div>
-
             }
         }
-      </div>
-    </div>
+      </td>
+    </tr>
+  }
+
+  private def getDayName(cal : java.util.Calendar, isLower : Boolean = false) : String = {
+    val ret = Map(java.util.Calendar.SUNDAY -> "Sun",
+        java.util.Calendar.MONDAY -> "Mon",
+        java.util.Calendar.TUESDAY -> "Tue",
+        java.util.Calendar.WEDNESDAY -> "Wed",
+        java.util.Calendar.THURSDAY -> "Thu",
+        java.util.Calendar.FRIDAY -> "Fri",
+        java.util.Calendar.SATURDAY-> "Sat").get(cal.get(java.util.Calendar.DAY_OF_WEEK)) match {
+      case Some(x) => x
+      case None    => ""
+    }
+    if (isLower) ret.toLowerCase
+    else ret
   }
 
   private def dateEquals(day1 : Date, day2 : Date) : Boolean = {
@@ -100,6 +109,13 @@ class Calendar {
     cal1.get(java.util.Calendar.YEAR) == cal2.get(java.util.Calendar.YEAR) &&
     cal1.get(java.util.Calendar.MONTH) == cal2.get(java.util.Calendar.MONTH) &&
     cal1.get(java.util.Calendar.DATE) == cal2.get(java.util.Calendar.DATE)
+  }
+
+  private var cycleCounter : Int = 1
+  private def cycle : String = {
+    cycleCounter += 1
+    if (cycleCounter % 2 == 1) "odd"
+    else "even"
   }
 }
 
