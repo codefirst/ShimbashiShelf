@@ -13,15 +13,14 @@ object Document {
   private[search] def apply(id : Int, doc : org.apache.lucene.document.Document, hightligth : String) =
     new Document(id, doc, hightligth)
 
-  def get(id : Int) : Option[Document] = {
+  def get(id : Int) : Option[Document] =
     try{
       using( FSDirectory.open(new File(INDEX_PATH)) ) { case dir =>
-	    using( new IndexSearcher(dir, true) ) { case searcher => {
+	using( new IndexSearcher(dir, true) ) { case searcher => {
           val doc   = searcher.doc(id)
           Some(new Document(id, doc,"<pre />"))
-	    }}					   }
-    }catch { case _ => None }
-  }
+	}}}
+    } catch { case _ => None }
 }
 
 class Document(val id : Int, doc : org.apache.lucene.document.Document, high : String){
