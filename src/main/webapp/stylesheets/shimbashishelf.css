@@ -28,11 +28,6 @@ body {
     padding-bottom: 5px;
     text-align: center;
 }
-.main-menu a:hover,
-.main-menu li:hover {
-    color: #fff;
-    background-color: #2580a2;
-}
 
 .main-menu {
     color: #bbb;
@@ -42,6 +37,11 @@ body {
 .main-menu a:link {
     color: #ddd;
     text-decoration: none;
+}
+.main-menu a:hover,
+.main-menu li:hover {
+    color: #fff;
+    background-color: #2580a2;
 }
 
 .search-header {

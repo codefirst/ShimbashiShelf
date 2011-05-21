@@ -22,9 +22,11 @@ class Boot {
     // Build SiteMap
     val entries = List(
       Menu.i("Home") / "index",
-      Menu.i("Search") / "search",
-      Menu.i("Show") / "show",
-      Menu.i("Calendar") / "calendar"
+      Menu.i("Search") / "search" >> Hidden,
+      Menu.i("Show") / "show" >> Hidden,
+      Menu.i("Calendar") / "calendar",
+      Menu.i("Setting") / "setting",
+      Menu.i("About") / "about"
 
       // more complex because this menu allows anything in the
       // /static path to be visible
