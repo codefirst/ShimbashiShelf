@@ -73,6 +73,20 @@ body {
 .search-navigator{
     text-align: center;
 }
+.search-navigator span {
+    padding: 6px;
+    border: 1px solid #eee;
+    background-color: #fafafa;
+    font-size: 90%;
+}
+.search-navigator a:link {
+    text-decoration: none;
+}
+.search-navigator-info {
+    margin-top: 5px;
+    color: #aaa;
+    font-size: 10px;
+}
 
 .search-form * {
     vertical-align: middle;

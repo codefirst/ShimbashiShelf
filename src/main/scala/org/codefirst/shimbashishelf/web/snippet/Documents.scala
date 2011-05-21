@@ -26,7 +26,16 @@ class Documents extends PaginatorSnippet[Document] {
   override def pageUrl(offset: Long) : String =
     appendParams(super.pageUrl(offset), List("q" -> query))
   override def currentXml: NodeSeq =
-    Text((first+1)+"-"+(first+itemsPerPage min count)+" of "+count)
+    Text((first+1)+"-"+(first+itemsPerPage min count)+" of "+count+" files")
+  override def prevXml: NodeSeq =
+    Text(S.?("< prev"))
+  override def nextXml: NodeSeq =
+    Text(S.?("next >"))
+  override def pageXml(newFirst: Long, ns: NodeSeq): NodeSeq =
+    if(first==newFirst)
+      <span>{ns}</span>
+    else
+      <a href={pageUrl(newFirst)}><span>{ns}</span></a>
 
   def search(xhtml : NodeSeq) : NodeSeq = {
     def doSearch() {
