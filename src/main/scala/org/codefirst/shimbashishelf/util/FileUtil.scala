@@ -1,5 +1,5 @@
 package org.codefirst.shimbashishelf.util
-import java.io.FileInputStream
+import java.io.{File,FileInputStream,FileWriter}
 import scala.math.max
 
 object FileUtil {
@@ -36,4 +36,25 @@ object FileUtil {
 	Some(ab.toArray)
       } finally { in.close }
     } catch { case _ => None}
+
+
+  def delete(f : File) {
+    if(f.exists() != false) {
+      if(f.isFile())
+        f.delete()
+      else if(f.isDirectory()){
+        for(x <- f.listFiles()) delete(x)
+        f.delete()
+      }
+    }
+  }
+
+  def touch(f : File, body : String) {
+    val writer = new FileWriter(f.getAbsolutePath())
+    try {
+      writer.write(body)
+    } finally {
+      writer.close()
+    }
+  }
 }

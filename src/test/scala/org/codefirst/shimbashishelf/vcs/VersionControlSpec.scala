@@ -4,6 +4,7 @@ import org.scalatest.Spec
 import org.scalatest.matchers.ShouldMatchers
 import org.scalatest.BeforeAndAfterEach
 import java.io.{File,FileWriter}
+import org.codefirst.shimbashishelf.util.FileUtil
 
 class VersionControlSpec extends Spec with ShouldMatchers with BeforeAndAfterEach {
   val Repository = "__vcs_git__"
@@ -20,18 +21,8 @@ class VersionControlSpec extends Spec with ShouldMatchers with BeforeAndAfterEac
     }
   }
 
-  private def delete(f : File) {
-    if(f.exists() != false) {
-      if(f.isFile())
-        f.delete()
-      else if(f.isDirectory()){
-        for(x <- f.listFiles()) delete(x)
-        f.delete()
-      }
-    }
-  }
   override def afterEach(){
-    delete(new File(Repository))
+    FileUtil.delete(new File(Repository))
   }
 
   describe("コミットリスト"){

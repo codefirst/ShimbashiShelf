@@ -35,17 +35,16 @@ object Searcher {
   }
 
   def searchByPath(path : String) : Option[Document] = {
-    if (path == null) {
-      throw new Exception("null path is not allowed")
-    }
-    val term : Term = new Term("path", path)
-    val query : Query = new TermQuery(term)
-    searchByQuery(query, "path") match {
-      case Array(x) =>
+    try {
+      val term : Term = new Term("path", path)
+      val query : Query = new TermQuery(term)
+      searchByQuery(query, "path") match {
+        case Array(x) =>
 	  Some(x)
-      case _ =>
+        case _ =>
 	  None
-    }
+      }
+    } catch { case _ => None }
   }
 }
 
