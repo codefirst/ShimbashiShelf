@@ -5,10 +5,19 @@
 
   <lift:bind-at name="content">
     <lift:embed what="search_header" />
-    <lift:show>
-      <h2><result:filename /></h2>
-      <result:link>DL</result:link>
-      <pre><result:content /></pre>
-    </lift:show>
+    <div class="show-container">
+      <lift:show>
+        <h2><result:filename /></h2>
+        <div class="download-container">
+          <result:link>Download</result:link>
+        </div>
+        <br class="clear" />
+        <div class="info">
+	        ID: <result:manageID />
+	        Path: <result:path/>
+        </div>
+        <pre class="show-bod"><result:content /></pre>
+      </lift:show>
+    </div>
   </lift:bind-at>
 </lift:surround>
