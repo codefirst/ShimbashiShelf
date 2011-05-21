@@ -19,6 +19,8 @@ class Documents extends PaginatorSnippet[Document] {
     case _ =>
       Array() }
 
+  override def itemsPerPage =
+    10
   override def count =
     documents.size
   override def page  =
