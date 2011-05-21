@@ -23,11 +23,9 @@ class FileDiffCommit(hash : String, author : String, email : String, date : Date
 }
 
 class VersionControl(repositoryDir : File) {
-
   val repository : Repository = new RepositoryBuilder()
     .setGitDir(new File(repositoryDir.getAbsolutePath() + File.separatorChar + Constants.DOT_GIT)).readEnvironment().findGitDir().build()
   val git : Git = new Git(repository)
-
 
   def commit(file : File) : Boolean = {
     withGit { index => index.add(repositoryDir, file)  }
@@ -55,12 +53,9 @@ class VersionControl(repositoryDir : File) {
     git.commit().setAuthor("ShimbashiShelf", "ShimbashiShelf@codefirst.org").setMessage(format.format(cal.getTime())).call()
   }
 
-
-
   def commitList(startDate : Option[Date], endDate : Option[Date]) : scala.collection.immutable.List[FileDiffCommit] = {
     val tw : RecursiveTreeWalk = new RecursiveTreeWalk(repository)
     new DurationRevWalk(repository, startDate, endDate).walkRevisions { case commit => { tw.getFileDiffCommits(commit) }}
   }
-
 }
 
