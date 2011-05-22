@@ -16,6 +16,11 @@ for developer
     $ sbt package
     $ sbt jar
 
+* setup
+
+    $ export SHIMBASHI_SHELF_HOME=/path/to/something
+    $ cp -r home/* $SHIMBASHI_SHELF_HOME
+
 * start webserver
 
     $ sbt jetty-run
