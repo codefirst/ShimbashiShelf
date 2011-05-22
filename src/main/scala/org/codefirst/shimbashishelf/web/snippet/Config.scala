@@ -18,7 +18,7 @@ class Config {
       config.save()
     }
     def updateIgnoreFiles(s : String) {
-      config.ignoreFiles = s.split("\n").toList
+      config.ignoreFiles = s.split("\n").toList.map(_.trim())
     }
 
     bind("config", xhtml,

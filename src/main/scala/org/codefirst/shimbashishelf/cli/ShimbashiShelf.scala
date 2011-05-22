@@ -103,6 +103,7 @@ object ShimbashiShelf {
       case "monitor"::_ => {
         val vc = new VersionControl(new File("files"))
         val indexer = Indexer()
+        println("start monitoring...")
         new Monitor(indexer, vc).start(new File("files"))
       }
       case _ => {

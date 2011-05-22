@@ -4,8 +4,11 @@ import org.codefirst.shimbashishelf.search.Indexer
 import java.io.File
 
 class Monitor(indexer : Indexer, vc : VersionControl) {
+  private val config = org.codefirst.shimbashishelf.common.Config.default
+  private val globs  = config.ignoreFiles.map(Glob(_))
+
   private def isWatch(file : File) : Boolean =
-    ".git".r.findFirstIn(file.toString()).isEmpty
+    !globs.exists(_.isMatch(file))
 
 
   private def update(file : File){

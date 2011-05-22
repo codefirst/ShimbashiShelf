@@ -4,7 +4,6 @@ import org.apache.commons.jci.monitor.FilesystemAlterationListener
 import org.apache.commons.jci.monitor.FilesystemAlterationMonitor
 import org.apache.commons.jci.monitor.FilesystemAlterationObserver
 
-
 sealed abstract class FileEvent
 case class OnStart(observer : FilesystemAlterationObserver) extends FileEvent
 case class OnStop(observer : FilesystemAlterationObserver) extends FileEvent
@@ -14,8 +13,6 @@ case class OnFileDelete(file : File) extends FileEvent
 case class OnDirectoryCreate(file : File) extends FileEvent
 case class OnDirectoryChange(file : File) extends FileEvent
 case class OnDirectoryDelete(file : File) extends FileEvent
-
-
 
 object Fam {
   def watch(file : String)(f : FileEvent => Unit) {
