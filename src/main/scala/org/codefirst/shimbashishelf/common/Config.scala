@@ -11,11 +11,7 @@ object Config{
     new Config(new File(path))
 
   def default(getenv : String => String) : Config = {
-    val home = getenv("SHIMBASHI_SHELF_HOME")
-    if( home != null && home != "")
-      new Config(new File(home, "config.json"))
-    else
-      new Config(new File("config.json"))
+    new Config( Home.file("config.json",getenv) )
   }
   def default : Config = default(System.getenv(_))
 }
