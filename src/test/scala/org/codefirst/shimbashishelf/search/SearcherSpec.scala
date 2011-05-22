@@ -6,8 +6,8 @@ import org.codefirst.shimbashishelf.util.FileUtil
 import org.scalatest.BeforeAndAfterEach
 
 class SearcherSpec extends Spec with ShouldMatchers with BeforeAndAfterEach {
-  val IndexFile = "index_test/index"
-  val SampleFile = new File("index_test/index_test1.txt")
+  val IndexFile = "search_test/index"
+  val SampleFile = new File("search_test/index_test1.txt")
 
   override def beforeEach() {
     new File(IndexFile).mkdirs()
@@ -53,8 +53,8 @@ class SearcherSpec extends Spec with ShouldMatchers with BeforeAndAfterEach {
     def doc =
       Searcher(IndexFile).search("hello", "content")(0)
     it("IDからドキュメントを取得できる") {
-      Document.get(doc.id).orNull.id should be (doc.id)
-      Document.get(doc.id).orNull.path should be (doc.path)
+      Document.get(doc.id, IndexFile).orNull.id should be (doc.id)
+      Document.get(doc.id, IndexFile).orNull.path should be (doc.path)
     }
   }
 }
