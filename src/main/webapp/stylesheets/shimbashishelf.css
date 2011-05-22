@@ -1,5 +1,6 @@
 body {
     color: #333;
+    font-size: 14px;
 }
 
 .container {
@@ -92,6 +93,29 @@ body {
 
 .search-form * {
     vertical-align: middle;
+}
+
+.config-form p > * {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.config-items {
+    border: 1px solid #ccc;
+    background-color: #fbfbfb;
+    margin-bottom: 10px;
+}
+
+.config-form p > label {
+    font-weight: bold;
+    text-align: right;
+    width: 200px;
+    margin-right: 10px;
+}
+
+.config-form p > textarea {
+    width: 400px;
+    height: 150px;
 }
 
 input[type="text"] {

@@ -23,7 +23,7 @@ class Config {
 
     bind("config", xhtml,
          "ignoreFiles" -> textarea(config.ignoreFiles.mkString("\n"),
-                                   updateIgnoreFiles),
+                                   updateIgnoreFiles) % ("id" -> "ignore-files"),
          "submit" -> SHtml.submit(S.?("Save"), doSave))
   }
 }
