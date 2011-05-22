@@ -24,10 +24,13 @@ body {
 }
 .main-menu li {
     float: left;
-    width: 70px;
+    width: 80px;
     padding-top: 5px;
     padding-bottom: 5px;
     text-align: center;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
 }
 
 .main-menu {
