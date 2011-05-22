@@ -1,10 +1,11 @@
 package org.codefirst.shimbashishelf.common
-import org.codefirst.shimbashishelf.util.FileUtil
 import java.io.File
-import scala.util.parsing.input.CharArrayReader
-import dispatch.json.JsonParser
-import sjson.json._
-import sjson.json.DefaultProtocol._
+
+import net.liftweb.json._
+import net.liftweb.json.JsonAST._
+import net.liftweb.json.JsonDSL._
+
+import org.codefirst.shimbashishelf.util.FileUtil
 
 object Config{
   def open(path : String) =
@@ -25,26 +26,23 @@ class Config(val path : File){
   // ------------------------------
   // serialize
   // ------------------------------
-  private case class T(version : Int, ignoreFiles : List[String])
-  private implicit val format: Format[T] =
-    asProduct2("version", "ignoreFiles")(T)(T.unapply(_).get)
-  private def json() : String =
-    JsonSerialization.tojson(T(1, ignoreFiles)).toString
+  def toJson = {
+    ("version" -> 1) ~
+    ("ignoreFiles" -> ignoreFiles)
+  }
 
-  // ------------------------------
-  // deserialize
-  // ------------------------------
   FileUtil.readAll(path.getAbsolutePath()) match {
     case None => ()
-    case  Some(body) => {
-      val reader = new CharArrayReader(body.toArray)
-      val js = JsonParser(reader)
-      val t = JsonSerialization.fromjson[T](js)
-      ignoreFiles = t.ignoreFiles
+    case Some(body) => {
+      val json = JsonParser.parse(body)
+      ignoreFiles = for {
+        JField("ignoreFiles", JArray(xs)) <- json
+        JString(x) <- xs
+      } yield x
     }
   }
 
   def save() {
-    FileUtil.touch(path, json)
+    FileUtil.touch(path, compact(JsonAST.render(toJson)))
   }
 }

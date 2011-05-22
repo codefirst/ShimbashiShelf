@@ -1,18 +1,14 @@
 package org.codefirst.shimbashishelf.search
 
-import sjson.json._
-import sjson.json.DefaultProtocol._
+import net.liftweb.json._
+import net.liftweb.json.JsonAST._
+import net.liftweb.json.JsonDSL._
+
 import scala.collection.mutable
-import dispatch.json.JsonParser
-import scala.util.parsing.input.CharArrayReader
-import java.io.FileWriter
+import java.io.File
 import org.codefirst.shimbashishelf.util.FileUtil
 
 object Status{
-  case class JsStatus(version : Int, intMap : Map[String, Int])
-  implicit val JsStatusFormat: Format[JsStatus] =
-    asProduct2("version", "intMap")(JsStatus)(JsStatus.unapply(_).get)
-
   def empty =
     new Status(mutable.Map())
 
@@ -22,16 +18,16 @@ object Status{
       case None => empty
     }
     proc(status)
-    val w = new FileWriter(STATUS_PATH)
-    try { w.write(status.toJson) }
-    finally{  w.close }
+    FileUtil.touch(new File(STATUS_PATH), status.toJson)
   }
 
-  def fromJson(json : String) = {
-    val reader = new CharArrayReader(json.toArray)
-    val js     = JsonParser(reader)
-    val status = JsonSerialization.fromjson[JsStatus](js)
-    new Status(scala.collection.mutable.Map(status.intMap.toSeq: _*))
+  def fromJson(body : String) = {
+    val json = JsonParser.parse(body)
+    val xs : List[(String,Int)] = for {
+      JField("intMap", JObject(xs)) <- json
+      JField(key, JInt(value)) <- xs
+    } yield (key -> value.toInt)
+      new Status(mutable.Map(xs : _*))
   }
 }
 
@@ -46,6 +42,11 @@ class Status(intMap : mutable.Map[String, Int] ){
     intMap.get(key)
 
   import Status._
-  def toJson : String =
-     JsonSerialization.tojson(JsStatus(1, intMap.toMap)).toString
+  def toJson : String = {
+    val json = ("version" -> 1) ~
+               ("intMap" ->
+                  intMap.foldLeft(JObject(List())){ case (obj, (k, v)) =>
+                    obj ~ (k -> v) })
+    compact(JsonAST.render(json))
+  }
 }
