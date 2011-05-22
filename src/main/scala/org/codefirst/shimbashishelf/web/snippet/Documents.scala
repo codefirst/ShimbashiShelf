@@ -15,7 +15,7 @@ class Documents extends PaginatorSnippet[Document] {
   var query = S.param("q").openOr("")
   lazy val documents : Array[Document] = S.param("q") match {
     case Full(q) =>
-      Searcher.search(q, "content")
+      Searcher().search(q, "content")
     case _ =>
       Array() }
 

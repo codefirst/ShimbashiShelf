@@ -77,7 +77,7 @@ class Calendar {
       <td class="files">
         {
           for (file <- files) yield
-            Searcher.searchByPath(new File(filesRoot + "/" + file).getAbsolutePath()) match {
+            Searcher().searchByPath(new File(filesRoot + "/" + file).getAbsolutePath()) match {
               case Some(document) => <div><a title={ file } href={"/show?id=" + document.id}>{ file }</a></div>
               case None           => <div>{ file }</div>
             }

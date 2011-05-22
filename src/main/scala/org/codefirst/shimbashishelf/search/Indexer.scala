@@ -26,7 +26,8 @@ class SeqIdGenerator extends IdGenerator {
 }
 
 object Indexer {
-  def apply() = new Indexer(new SeqIdGenerator)
+  def apply() = new Indexer(INDEX_PATH, new SeqIdGenerator)
+  def apply(path : String) = new Indexer(path, new SeqIdGenerator)
 
   def allFiles(file : File) : Stream[File] = {
     if (file.isFile()) {
@@ -40,12 +41,12 @@ object Indexer {
   }
 }
 
-class Indexer(idGenerator : IdGenerator) {
+class Indexer(indexPath : String, idGenerator : IdGenerator) {
   import SLucene._
 
   private def withWriter(f : IndexWriter => Unit) {
     val config = new IndexWriterConfig(Version.LUCENE_31, new CJKAnalyzer(Version.LUCENE_31))
-    using(FSDirectory.open(new File(INDEX_PATH))) { case dir =>
+    using(FSDirectory.open(new File(indexPath))) { case dir =>
       using(new IndexWriter(dir, config)){ case writer =>
 	f(writer) } }
   }
@@ -53,7 +54,7 @@ class Indexer(idGenerator : IdGenerator) {
   private def index(path : String, text : String) {
     withWriter { writer =>
       Status.withDefault { case status => {
-        val manageID = Searcher.searchByPath(path) match {
+        val manageID = Searcher(indexPath).searchByPath(path) match {
           case Some(doc) =>
             doc.manageID
           case None =>

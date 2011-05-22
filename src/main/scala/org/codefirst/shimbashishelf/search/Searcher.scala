@@ -11,12 +11,18 @@ import org.apache.lucene.search._
 import org.apache.lucene.queryParser._
 import org.codefirst.shimbashishelf._
 
-object Searcher {
+object Searcher{
+  def apply() = new Searcher(INDEX_PATH)
+  def apply(path : String) = new Searcher(path)
+
+}
+
+class Searcher(indexPath : String) {
   val analyzer  = new CJKAnalyzer(Version.LUCENE_31)
   val formatter = new SimpleHTMLFormatter("]]><strong>","</strong><![CDATA[")
 
   private def searchByQuery(query : Query, field : String) : Array[Document] =
-    using( FSDirectory.open(new File(INDEX_PATH)) ) { case dir =>
+    using( FSDirectory.open(new File(indexPath)) ) { case dir =>
       using( new IndexSearcher(dir, true) ) { case searcher => {
 	    val scorer = new QueryScorer(query, field)
 	    val hightlighter = new Highlighter(formatter, scorer)
