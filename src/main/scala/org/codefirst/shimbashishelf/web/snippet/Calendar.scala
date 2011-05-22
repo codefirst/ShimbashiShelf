@@ -39,8 +39,9 @@ class Calendar {
                                                          Some(cal.endOfMonth.time))
     val calendar =
       <table class="calendar">{
-        for(c <- (cal.startOfMonth to cal.endOfMonth))
-          yield filesOfDay(c.time, commits)
+        (cal.startOfMonth to cal.endOfMonth).zipWithIndex.map { case (c, i) => {
+          filesOfDay(c.time, commits, i % 2 == 0)
+        }}
       }</table>
 
     val monthTitle =
@@ -67,13 +68,13 @@ class Calendar {
          "monthTitle" -> monthTitle)
   }
 
-  private def filesOfDay(day:Date, commits : List[FileDiffCommit]) = {
+  private def filesOfDay(day:Date, commits : List[FileDiffCommit], even : Boolean) = {
     val cal = java.util.Calendar.getInstance()
     cal.setTime(day)
     var files = HashSet[String]()
     for (commit <- commits if dateEquals(day, commit.getDate())) commit.getFiles().foreach { file => files = files + file }
 
-    <tr class={getDayName(cal, true) + " " + cycle + (if(dateEquals(day, today.time)) " today" else "")}>
+    <tr class={getDayName(cal, true) + " " + (if(even) "even" else "odd") + (if(dateEquals(day, today.time)) " today" else "")}>
       <td class="day">
         { cal.get(java.util.Calendar.DATE) }
       </td>
@@ -117,11 +118,5 @@ class Calendar {
     cal1.get(java.util.Calendar.DATE) == cal2.get(java.util.Calendar.DATE)
   }
 
-  private var cycleCounter : Int = 1
-  private def cycle : String = {
-    cycleCounter += 1
-    if (cycleCounter % 2 == 1) "odd"
-    else "even"
-  }
 }
 
