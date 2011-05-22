@@ -36,6 +36,9 @@ class Searcher(indexPath : String) {
       } } }
 
   def search(query : String, field : String) : Array[Document] = {
+    if (query == null || query.trim().length() == 0) {
+      return Array()
+    }
     val parser : QueryParser = new QueryParser(Version.LUCENE_31, field, analyzer)
     searchByQuery(parser.parse(query),field)
   }
@@ -45,10 +48,8 @@ class Searcher(indexPath : String) {
       val term : Term = new Term("path", path)
       val query : Query = new TermQuery(term)
       searchByQuery(query, "path") match {
-        case Array(x) =>
-	  Some(x)
-        case _ =>
-	  None
+        case Array(x) => Some(x)
+        case _ => None
       }
     } catch { case _ => None }
   }

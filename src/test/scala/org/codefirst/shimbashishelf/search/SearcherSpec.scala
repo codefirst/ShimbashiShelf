@@ -20,7 +20,19 @@ class SearcherSpec extends Spec with ShouldMatchers with BeforeAndAfterEach {
     FileUtil.delete(SampleFile)
   }
 
-  describe("検索"){
+  describe("空白文字列で検索") {
+    it("検索結果") {
+      Searcher(IndexFile).search("", "content").length should be (0)
+    }
+  }
+
+  describe("nullで検索") {
+    it("検索結果") {
+      Searcher(IndexFile).search(null, "content").length should be (0)
+    }
+  }
+
+  describe("検索") {
     def doc =
       Searcher(IndexFile).search("hello", "content")(0)
 
