@@ -142,7 +142,6 @@ input[type="submit"] {
 }
 
 .search-result {
-    margin: 20px;
     margin-top: 0px;
     overflow: hidden;
 }
@@ -153,7 +152,8 @@ input[type="submit"] {
 }
 
 .result-item {
-    margin: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .result-item .title a {
@@ -179,7 +179,6 @@ pre,
 }
 
 .show-container {
-    padding: 40px;
     padding-top: 10px;
 }
 .show-container h2 {
@@ -241,10 +240,6 @@ img {
     color: #444;
     width: 65%;
 }
-.month-title {
-    margin-right: 40px;
-    margin-left: 40px;
-}
 
 .calendar {
     margin-top: 10px;
@@ -282,10 +277,6 @@ img {
     color: #87ceeb;
 }
 
-.calendar-navigator {
-    margin-left: 40px;
-    margin-right: 40px;
-}
 .prev-month {
     float: left;
 }
