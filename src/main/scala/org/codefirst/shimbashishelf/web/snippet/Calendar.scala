@@ -22,44 +22,49 @@ import scala.collection.immutable.HashSet
 
 class Calendar {
   private val filesRoot : String = Config.default.repository
+  private val today = SCalendar.today
 
   def render(xhtml : NodeSeq) : NodeSeq = {
-    val cal = java.util.Calendar.getInstance()
-    val year  = Integer.parseInt(S.param("year").openOr(cal.get(java.util.Calendar.YEAR).toString()))
-    val month  = Integer.parseInt(S.param("month").openOr((cal.get(java.util.Calendar.MONTH) + 1).toString()))
-    cal.set(java.util.Calendar.YEAR, year)
-    cal.set(java.util.Calendar.MONTH, month - 1)
-    val scal = new SCalendar(cal.getTime())
-    val commits = new VersionControl(new File(filesRoot)).commitList(Some(scal.startDayOfMonth()), Some(scal.endDayOfMonth()))
-    val calendar = <table class="calendar">
-    {
-      for (date <- new SCalendar(scal.startDayOfMonth()).iterator(scal.endDayOfMonth()))
-      yield {
-        cal.setTime(date)
-        filesOfDay(cal.getTime(), commits)
-      }
-    }
-    </table>
+    val year   = S.param("year") match {
+      case Full(s) => Integer.parseInt(s)
+      case _ => today.year }
+    val month   = S.param("month") match {
+      case Full(s) => Integer.parseInt(s)
+      case _ => today.month }
 
-    val monthTitle = {
+    val cal    = SCalendar(year, month, 1)
+
+    val commits =
+      new VersionControl(new File(filesRoot)).commitList(Some(cal.startOfMonth.time),
+                                                         Some(cal.endOfMonth.time))
+    val calendar =
+      <table class="calendar">{
+        for(c <- (cal.startOfMonth to cal.endOfMonth))
+          yield filesOfDay(c.time, commits)
+      }</table>
+
+    val monthTitle =
       if (month == 0)
         (year - 1) + "/" + 12
       else
         year + "/" + month
-    }
 
-    // make navigator
-    var url = "/calendar?year=" + cal.get(java.util.Calendar.YEAR) + "&month=" + cal.get(java.util.Calendar.MONTH)
+    def navi(cal : SCalendar) =
+      "/calendar?year=%d&month=%d".format(cal.year, cal.month)
+
     val prevMonth = <div class="prev-month">
-      <a href={url}><span>{S.?("< prev")}</span></a>
-    </div>
-    cal.add(java.util.Calendar.MONTH, 2)
-    url = "/calendar?year=" + cal.get(java.util.Calendar.YEAR) + "&month=" + cal.get(java.util.Calendar.MONTH)
-    val nextMonth = <div class="next-month">
-      <a href={url}><span>{S.?("next >")}</span></a>
+      <a href={navi(cal.addMonth(-1))}><span>{S.?("< prev")}</span></a>
     </div>
 
-    bind("result", xhtml, "calendar" -> calendar, "prevMonth" -> prevMonth, "nextMonth" -> nextMonth, "monthTitle" -> monthTitle)
+    val nextMonth = <div class="next-month">
+      <a href={navi(cal.addMonth(1))}><span>{S.?("next >")}</span></a>
+    </div>
+
+    bind("result", xhtml,
+         "calendar" -> calendar,
+         "prevMonth" -> prevMonth,
+         "nextMonth" -> nextMonth,
+         "monthTitle" -> monthTitle)
   }
 
   private def filesOfDay(day:Date, commits : List[FileDiffCommit]) = {
@@ -68,7 +73,7 @@ class Calendar {
     var files = HashSet[String]()
     for (commit <- commits if dateEquals(day, commit.getDate())) commit.getFiles().foreach { file => files = files + file }
 
-    <tr class={getDayName(cal, true) + " " + cycle}>
+    <tr class={getDayName(cal, true) + " " + cycle + (if(dateEquals(day, today.time)) " today" else "")}>
       <td class="day">
         { cal.get(java.util.Calendar.DATE) }
       </td>

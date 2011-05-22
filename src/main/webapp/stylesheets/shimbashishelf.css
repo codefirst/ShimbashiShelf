@@ -261,6 +261,11 @@ img {
 .calendar .odd {
     background-color: #fbfbfb;
 }
+
+.calendar .today {
+    background-color: #e0ffe0;
+}
+
 .calendar .day {
     text-align: right;
     width: 25px;

@@ -9,25 +9,35 @@ class SCalendarSpec extends Spec with ShouldMatchers {
     val scalendar = SCalendar(2011,4,14)
 
     it("最初の日付の取得") {
-      new SCalendar(scalendar.startDayOfMonth()).get(Calendar.DATE) should be (1)
+      scalendar.startOfMonth.year should be  (2011)
+      scalendar.startOfMonth.month should be (4)
+      scalendar.startOfMonth.date should be  (1)
     }
 
     it("最後の日付の取得") {
-      new SCalendar(scalendar.endDayOfMonth()).get(Calendar.DATE) should be (30)
+      scalendar.endOfMonth.year  should be  (2011)
+      scalendar.endOfMonth.month should be (4)
+      scalendar.endOfMonth.date  should be  (30)
     }
 
     it("文字列化") {
       scalendar.toString should be("2011/4/14 0:0:0 0 AM")
+    }
+
+    it("今日") {
+      SCalendar.today.hour   should be(0)
+      SCalendar.today.minute should be(0)
+      SCalendar.today.second should be(0)
     }
   }
 
   describe("イテレータ") {
     it("開始日・終了日指定") {
       val cal = SCalendar(2011,4, 1)
-      val startDate = new SCalendar(cal.getTime()).startDayOfMonth()
-      val endDate = new SCalendar(cal.getTime()).endDayOfMonth()
+      val startDate = cal.startOfMonth
+      val endDate   = cal.endOfMonth
 
-      new SCalendar(startDate).iterator(endDate).length should be (30)
+      (startDate to endDate).length should be (30)
     }
   }
 }
