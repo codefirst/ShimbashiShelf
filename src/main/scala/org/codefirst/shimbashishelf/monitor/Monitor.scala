@@ -12,7 +12,7 @@ class Monitor(indexer : Indexer, vc : VersionControl) {
 
 
   private def update(file : File){
-    println("update: " + file)
+    println("update: " + file.getAbsolutePath())
     vc.commit(file)
     indexer.index(file)
   }

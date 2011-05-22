@@ -24,6 +24,8 @@ class Config {
     bind("config", xhtml,
          "ignoreFiles" -> textarea(config.ignoreFiles.mkString("\n"),
                                    updateIgnoreFiles) % ("id" -> "ignore-files"),
+         "repository" -> text(config.repository,
+                              config.repository = _) % ("id" -> "repository"),
          "submit" -> SHtml.submit(S.?("Save"), doSave))
   }
 }

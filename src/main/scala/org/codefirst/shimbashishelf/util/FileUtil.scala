@@ -49,6 +49,9 @@ object FileUtil {
     }
   }
 
+  def join(parent : String, name : String) : String =
+    new File(parent,name).getPath()
+
   def touch(f : File, body : String) {
     val writer = new FileWriter(f.getAbsolutePath())
     try {

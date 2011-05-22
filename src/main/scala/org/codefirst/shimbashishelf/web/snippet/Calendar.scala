@@ -13,6 +13,7 @@ import org.codefirst.shimbashishelf._
 import org.codefirst.shimbashishelf.vcs._
 import org.codefirst.shimbashishelf.search._
 import org.codefirst.shimbashishelf.util._
+import org.codefirst.shimbashishelf.common.Config
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -20,7 +21,7 @@ import scala.collection.Iterator
 import scala.collection.immutable.HashSet
 
 class Calendar {
-  private val filesRoot : String = "files" // TODO configure root directory
+  private val filesRoot : String = Config.default.repository
 
   def render(xhtml : NodeSeq) : NodeSeq = {
     val cal = java.util.Calendar.getInstance()

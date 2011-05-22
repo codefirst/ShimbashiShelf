@@ -22,13 +22,14 @@ class Config(val path : File){
   // field
   // ------------------------------
   var ignoreFiles : List[String] = List()
-
+  var repository  : String = FileUtil.join(System.getProperty("user.home"),"ShimbashiShelf")
   // ------------------------------
   // serialize
   // ------------------------------
   def toJson = {
     ("version" -> 1) ~
-    ("ignoreFiles" -> ignoreFiles)
+    ("ignoreFiles" -> ignoreFiles) ~
+    ("repository" -> repository)
   }
 
   FileUtil.readAll(path.getAbsolutePath()) match {
@@ -39,6 +40,9 @@ class Config(val path : File){
         JField("ignoreFiles", JArray(xs)) <- json
         JString(x) <- xs
       } yield x
+      for {
+        JField("repository", JString(x)) <- json
+      } repository = x
     }
   }
 

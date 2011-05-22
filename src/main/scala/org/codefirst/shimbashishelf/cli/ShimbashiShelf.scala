@@ -8,8 +8,15 @@ import java.text.DateFormat
 import org.codefirst.shimbashishelf.search._
 import org.codefirst.shimbashishelf.monitor._
 import org.codefirst.shimbashishelf.vcs._
+import org.codefirst.shimbashishelf.common.Config
 
 object ShimbashiShelf {
+  def repository = {
+    val f = new File(Config.default.repository)
+    f.mkdirs()
+    f
+  }
+
   val commands : Array[String] = Array("index", "search", "index-all", "search-by-path", "commit", "history","monitor")
   def main(args : Array[String]) {
     args.toList match {
@@ -61,7 +68,7 @@ object ShimbashiShelf {
         if (args.length < 1) {
           println("usage: commit <filepath>")
         } else {
-          val vc : VersionControl = new VersionControl(new File("files"))
+          val vc : VersionControl = new VersionControl(repository)
           if (vc.commit(new File(args(0)))) {
             println("commit successful")
           } else {
@@ -69,7 +76,7 @@ object ShimbashiShelf {
           }
         }
       case "history"::args =>
-        val vc : VersionControl = new VersionControl(new File("files"))
+        val vc : VersionControl = new VersionControl(repository)
       var commits : List[FileDiffCommit] = null
       val format = new SimpleDateFormat("yyyy-MM-dd")
       if (args.length >= 2) {
@@ -101,10 +108,10 @@ object ShimbashiShelf {
       }
 
       case "monitor"::_ => {
-        val vc = new VersionControl(new File("files"))
+        val vc = new VersionControl(repository)
         val indexer = Indexer()
-        println("start monitoring...")
-        new Monitor(indexer, vc).start(new File("files"))
+        println("start monitoring[%s]...".format(repository))
+        new Monitor(indexer, vc).start(repository)
       }
       case _ => {
         println("unknown command")

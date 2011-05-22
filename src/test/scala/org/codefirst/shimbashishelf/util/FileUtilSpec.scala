@@ -5,6 +5,10 @@ import org.scalatest.matchers.ShouldMatchers
 import java.io.{File,FileWriter}
 
 class FileUtilSpec extends Spec with ShouldMatchers {
+  it("パスの結合") {
+    FileUtil.join("/foo/bar","baz") should be ("/foo/bar/baz")
+  }
+
   describe("getExtension") {
     it("ファイル名から取得する") {
       FileUtil.getExtension("hoge.txt") should be ("txt")
@@ -69,6 +73,5 @@ class FileUtilSpecWithIO extends Spec with ShouldMatchers with BeforeAndAfterEac
       FileUtil.readArray("/path/to/not/exists") should be (None)
     }
   }
-
 }
 

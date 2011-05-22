@@ -11,8 +11,14 @@
       <lift:config form="post">
         <div class="config-items">
           <p>
-            <label for="ignore-files">Ignore Files</label>
+            <label for="ignore-files"><span class="title">Ignore Files</span></label>
             <config:ignoreFiles />
+          </p>
+
+          <p>
+            <label for="repository"><span class="title">Repository</span><br/>
+              * You need restart crowler.</label>
+            <config:repository /><br />
           </p>
         </div>
 
