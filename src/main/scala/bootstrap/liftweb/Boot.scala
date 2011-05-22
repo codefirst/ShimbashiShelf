@@ -25,7 +25,7 @@ class Boot {
       Menu.i("Search") / "search" >> Hidden,
       Menu.i("Show") / "show" >> Hidden,
       Menu.i("Calendar") / "calendar",
-      Menu.i("Setting") / "setting",
+      Menu.i("Config") / "config",
       Menu.i("About") / "about"
 
       // more complex because this menu allows anything in the
