@@ -3,6 +3,11 @@ body {
     font-size: 14px;
 }
 
+h2 {
+    font-size: 100%;
+    color: #444;
+}
+
 .container {
     margin: auto;
     width: 720px;
@@ -181,8 +186,6 @@ pre,
 }
 .show-container h2 {
     margin-bottom: 0px;
-    font-size: 100%;
-    color: #444;
     float: left;
     width: 65%;
 }
@@ -234,8 +237,6 @@ img {
 
 .month-title h2 {
     margin-bottom: 5px;
-    font-size: 100%;
-    color: #444;
     width: 65%;
 }
 
@@ -280,5 +281,13 @@ img {
 }
 .next-month {
     float: right;
+}
+
+.about li,
+.about p {
+    font-size: 90%;
+}
+.about h2 {
+    margin-top: 20px;
 }
 
