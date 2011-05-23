@@ -13,8 +13,9 @@ import java.text.SimpleDateFormat
 
 import collection.JavaConversions._
 import scala.collection.mutable._
+import scala.collection.{immutable => im}
 
-class FileDiffCommit(hash : String, author : String, email : String, date : Date, files : scala.collection.immutable.List[String]) {
+class FileDiffCommit(hash : String, author : String, email : String, date : Date, files : im.List[String]) {
   def getHash() = hash
   def getAuthor() = author
   def getEmailAddress() = email
@@ -53,9 +54,14 @@ class VersionControl(repositoryDir : File) {
     git.commit().setAuthor("ShimbashiShelf", "ShimbashiShelf@codefirst.org").setMessage(format.format(cal.getTime())).call()
   }
 
-  def commitList(startDate : Option[Date], endDate : Option[Date]) : scala.collection.immutable.List[FileDiffCommit] = {
-    val tw : RecursiveTreeWalk = new RecursiveTreeWalk(repository)
-    new DurationRevWalk(repository, startDate, endDate).walkRevisions { case commit => { tw.getFileDiffCommits(commit) }}
-  }
+  def commitList(startDate : Option[Date], endDate : Option[Date]) : im.List[FileDiffCommit] =
+    try {
+      val tw : RecursiveTreeWalk = new RecursiveTreeWalk(repository)
+      new DurationRevWalk(repository, startDate, endDate)
+          .walkRevisions { case commit =>
+            tw.getFileDiffCommits(commit) }
+    } catch { case _ =>
+      im.List()
+    }
 }
 
