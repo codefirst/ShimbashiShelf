@@ -22,19 +22,19 @@ class SearcherSpec extends Spec with ShouldMatchers with BeforeAndAfterEach {
 
   describe("空白文字列で検索") {
     it("検索結果") {
-      Searcher(IndexFile).search("", "content").length should be (0)
+      Searcher(IndexFile).search("").length should be (0)
     }
   }
 
   describe("nullで検索") {
     it("検索結果") {
-      Searcher(IndexFile).search(null, "content").length should be (0)
+      Searcher(IndexFile).search(null).length should be (0)
     }
   }
 
   describe("検索") {
     def doc =
-      Searcher(IndexFile).search("hello", "content")(0)
+      Searcher(IndexFile).search("hello")(0)
 
     describe("ドキュメント") {
       it("パス") {
@@ -61,9 +61,40 @@ class SearcherSpec extends Spec with ShouldMatchers with BeforeAndAfterEach {
     }
   }
 
+  describe("searchByPath") {
+    it("seacrhbypath") {
+      Searcher(IndexFile).searchByPath(SampleFile.getAbsolutePath()) should not be(None)
+    }
+  }
+
+  describe("パスによる検索") {
+    def doc =
+      Searcher(IndexFile).search("index_test1")(0)
+
+    describe("ドキュメント") {
+      it("パス") {
+        doc.path should be ( SampleFile.getAbsolutePath())
+      }
+
+      it("ファイル名") {
+        doc.filename should be ( "index_test1.txt" )
+      }
+
+      it("content") {
+        val s = new String(doc.content)
+        s should be ("hello world")
+      }
+
+      it("is") {
+        val s = new String(doc.is.orNull)
+        s should be ("hello world")
+      }
+    }
+  }
+
   describe("ドキュメントID") {
     def doc =
-      Searcher(IndexFile).search("hello", "content")(0)
+      Searcher(IndexFile).search("hello")(0)
     it("IDからドキュメントを取得できる") {
       Document.get(doc.id, IndexFile).orNull.id should be (doc.id)
       Document.get(doc.id, IndexFile).orNull.path should be (doc.path)

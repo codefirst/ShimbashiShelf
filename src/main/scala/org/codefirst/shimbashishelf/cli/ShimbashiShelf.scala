@@ -29,7 +29,7 @@ object ShimbashiShelf {
         if(args.length < 1) {
           println("usage: search <word>")
         } else {
-          val documents : Array[Document] = Searcher().search(args(0), "content")
+          val documents : Array[Document] = Searcher().search(args(0))
           println(documents.length + " documents found:")
           for(doc <- documents){
             println("[%s] %s".format(doc.manageID, doc.path))

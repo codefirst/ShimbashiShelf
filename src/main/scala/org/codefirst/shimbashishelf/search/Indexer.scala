@@ -62,9 +62,10 @@ class Indexer(indexPath : String, idGenerator : IdGenerator) {
         }
         writer.deleteDocuments(("path", path))
         val doc = new org.apache.lucene.document.Document()
-        doc.add(("path", path, Store.YES, Index.NOT_ANALYZED))
-        doc.add(("manageID", manageID, Store.YES, Index.NOT_ANALYZED))
-        doc.add(("content", text, Store.YES, Index.ANALYZED))
+        doc.add(("path"     , path,     Store.YES, Index.NOT_ANALYZED))
+        doc.add(("manageID" , manageID, Store.YES, Index.NOT_ANALYZED))
+        doc.add(("content"  , text,     Store.YES, Index.ANALYZED))
+        doc.add(("file_path", path,     Store.YES, Index.ANALYZED))
         writer.addDocument(doc)
       } } }
   }
