@@ -11,19 +11,18 @@ for developer
 
 * build ShimbashiShelf
 
-    $ sbt update
-    $ sbt compile
-    $ sbt package
+    $ sbt embed
     $ sbt jar
 
 * setup
 
     $ export SHIMBASHI_SHELF_HOME=/path/to/something
+    $ mkdir -p $SHIMBASHI_SHELF_HOME
     $ cp -r home/* $SHIMBASHI_SHELF_HOME
 
 * start webserver
 
-    $ sbt jetty-run
+    $ java -jar ./target/scala_2.8.1/shimbashi-shelf_2.8.1-embedded-0.1.jar
 
 * run by scripts
 

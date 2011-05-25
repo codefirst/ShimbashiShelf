@@ -2,7 +2,10 @@ import sbt._
 import eu.henkelmann.sbt.JUnitXmlTestsListener
 import reaktor.scct.ScctProject
 
-class ShimbashiShelfProject(info: ProjectInfo) extends DefaultWebProject(info) with ScctProject
+class ShimbashiShelfProject(info: ProjectInfo)
+  extends DefaultWebProject(info)
+  with    ScctProject
+  with    WinstoneProject
 {
   val lift   = "net.liftweb" %% "lift-mapper" % "2.2" % "compile"
   val jetty6 = "org.mortbay.jetty" % "jetty" % "6.1.25" % "test"
@@ -23,8 +26,6 @@ class ShimbashiShelfProject(info: ProjectInfo) extends DefaultWebProject(info) w
   override def testListeners: Seq[TestReportListener] = super.testListeners ++ Seq(junitXmlListener)
 
   override def includeTest(s: String) = { s.endsWith("Spec") || s.contains("UserGuide") }
-
-  override def mainClass = Some("org.codefirst.shimbashishelf.cli.ShimbashiShelf")
 
   lazy val jar = packageTask(packagePaths, jarPath, packageOptions).dependsOn(compile) describedAs "Creates a jar file."
 }
