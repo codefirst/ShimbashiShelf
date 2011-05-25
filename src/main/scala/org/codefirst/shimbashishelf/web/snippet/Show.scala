@@ -20,7 +20,8 @@ class Show {
     val seq = for {
       doc <-document
       val extra = List(
-        "link" -> { (x:NodeSeq) => <a class="download" href={"/download/" + doc.id}>{x}</a>})
+        "link" -> { (x:NodeSeq) => <a class="download" href={"/download/" + doc.id}>{x}</a>},
+        "pathfield" -> { (x:NodeSeq) => <input type="text" class="info" value={doc.path} onmousedown="this.select();"/>})
       val base = doc.toBindParams
     } yield extra ++ base
     bind("result", xhtml,
