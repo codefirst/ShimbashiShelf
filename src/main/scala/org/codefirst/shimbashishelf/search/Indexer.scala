@@ -11,6 +11,7 @@ import org.apache.lucene.document.Field.{Index,Store}
 import org.apache.lucene.analysis.SimpleAnalyzer
 import scala.collection.immutable.Stream
 import org.codefirst.shimbashishelf._
+import org.codefirst.shimbashishelf.search.extractor.Item
 
 trait IdGenerator {
   def generate(file : File, status : Status) : String
@@ -51,7 +52,7 @@ class Indexer(indexPath : String, idGenerator : IdGenerator) {
 	f(writer) } }
   }
 
-  private def index(path : String, text : String) {
+  private def index(path : String, item : Item) {
     withWriter { writer =>
       Status.withDefault { case status => {
         val manageID = Searcher(indexPath).searchByPath(path) match {
@@ -64,7 +65,8 @@ class Indexer(indexPath : String, idGenerator : IdGenerator) {
         val doc = new org.apache.lucene.document.Document()
         doc.add(("path"     , path,     Store.YES, Index.NOT_ANALYZED))
         doc.add(("manageID" , manageID, Store.YES, Index.NOT_ANALYZED))
-        doc.add(("content"  , text,     Store.YES, Index.ANALYZED))
+        doc.add(("content"  , item.content, Store.YES, Index.ANALYZED))
+        doc.add(("mimeType" , item.mimeType, Store.YES, Index.NOT_ANALYZED))
         doc.add(("file_path", path,     Store.YES, Index.ANALYZED))
         writer.addDocument(doc)
       } } }

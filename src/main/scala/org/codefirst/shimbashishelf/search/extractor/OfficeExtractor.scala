@@ -12,15 +12,21 @@ import org.codefirst.shimbashishelf.util.FileUtil
 
 import java.io.{InputStream,FileInputStream}
 
-object OfficeExtractor extends Extractor {
-  val extensions = List("doc", "docx", "ppt", "pptx", "xls", "xlsx")
+object OfficeExtractor extends ExtensionExtractor {
+  val map = Map("doc"  -> "application/msword",
+                "docx" -> "application/msword",
+                "ppt"  -> "application/mspowerpoint",
+                "pptx" -> "application/mspowerpoint",
+                "xls"  -> "application/msexcel",
+                "xlsx" -> "application/msexcel")
 
-  def extract(fileName : String) = {
-    val ext = FileUtil.getExtension(fileName)
-    if(extensions contains ext) {
-      val in : InputStream = new FileInputStream(fileName)
-      Some(ExtractorFactory.createExtractor(in).getText())
-    } else
-      None
-  }
+  def extensions =
+    map.keys.toList
+
+  def mimeType(key : String) =
+    map(key)
+
+  def extract(in : InputStream) =
+    Some(ExtractorFactory.createExtractor(in).getText())
+
 }

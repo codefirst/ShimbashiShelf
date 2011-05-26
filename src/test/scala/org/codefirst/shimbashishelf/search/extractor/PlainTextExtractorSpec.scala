@@ -4,13 +4,17 @@ import org.scalatest.matchers.ShouldMatchers
 
 class PlainTextExtractorSpec extends Spec with ShouldMatchers {
   def extractText(filename : String) {
-    val text = PlainTextExtractor.extract(filename).getOrElse("<not found>")
+    val text = PlainTextExtractor.extract(filename).getOrElse(Item("",""))
     it ("テキストが抽出できる") {
-      text should include regex ("codefirst")
+      text.content should include regex ("codefirst")
     }
 
     it ("日本語が抽出できる") {
-      text should include regex ("世界中のコーダ")
+      text.content should include regex ("世界中のコーダ")
+    }
+
+    it ("mimetypeがplain/text") {
+      text.mimeType should be ("plain/text")
     }
   }
 

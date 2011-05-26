@@ -7,6 +7,8 @@ import java.io.{InputStream,FileInputStream}
 
 object PdfExtractor extends ExtensionExtractor {
   def extensions = List("pdf")
+  def mimeType(s : String) = "application/pdf"
+
   def extract(in : InputStream) = {
     val pdfParser : PDFParser = new PDFParser(in)
     pdfParser.parse()

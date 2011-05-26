@@ -17,6 +17,6 @@ object PlainTextExtractor extends Extractor {
     for {
       raw <- FileUtil.readArray(fileName)
       encoding = detect(raw)
-    } yield new String(raw, encoding)
+    } yield Item(new String(raw, encoding),"plain/text")
   }
 }

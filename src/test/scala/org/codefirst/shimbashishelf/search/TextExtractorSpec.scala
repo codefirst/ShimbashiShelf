@@ -7,7 +7,7 @@ class TextExtractorSpec extends Spec with ShouldMatchers {
   val text = TextExtractor.extract(FileName)
   describe("PDF") {
     it("PDFからテキストが抜ける") {
-      text should include regex("codefirst")
+      text.content should include regex("codefirst")
     }
   }
 }

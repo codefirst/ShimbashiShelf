@@ -20,6 +20,9 @@ object TextExtractor {
     }
   }
 
-  def extract(fileName : String) : String =
-    any(Extractors){ e => e.extract(fileName) }.getOrElse("")
+  def extract(fileName : String) : Item =
+    any(Extractors){ e => e.extract(fileName) } match {
+      case Some(item) => item
+      case None => Item("","")
+    }
 }
