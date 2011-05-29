@@ -19,7 +19,7 @@ object Fam {
     watch(new File(file))(f)
   }
 
-  def watch(file : File)(f : FileEvent => Unit) {
+  def thread(file : File)(f : FileEvent => Unit) : FilesystemAlterationMonitor = {
     val monitor = new FilesystemAlterationMonitor();
     monitor.addListener(file, new FilesystemAlterationListener{
       def onStart(observer : FilesystemAlterationObserver) {
@@ -53,6 +53,10 @@ object Fam {
 	f(OnStop(observer))
       }
     });
-    monitor.run();
+    monitor
+  }
+
+  def watch(file : File)(f : FileEvent => Unit) {
+    thread(file)(f).run()
   }
 }

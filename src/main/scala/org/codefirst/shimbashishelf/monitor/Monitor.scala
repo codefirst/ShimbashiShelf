@@ -24,11 +24,14 @@ class Monitor(indexer : Indexer, vc : VersionControl) {
   }
 
   def start(file : File){
-    Fam.watch(file) {
+    thread(file).run()
+  }
+
+  def thread(file : File) =
+    Fam.thread(file) {
       case OnFileCreate(file) if isWatch(file) => update(file)
       case OnFileChange(file) if isWatch(file) => update(file)
       case OnFileDelete(file) if isWatch(file) => delete(file)
       case _ => ()
     }
-  }
 }

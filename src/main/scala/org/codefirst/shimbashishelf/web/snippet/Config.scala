@@ -10,13 +10,17 @@ import net.liftweb.http._
 import Helpers._
 
 import org.codefirst.shimbashishelf.common.{Config => C}
+import org.codefirst.shimbashishelf.monitor.RepositoryMonitor
 
 class Config {
   def render(xhtml : NodeSeq) : NodeSeq = {
     val config = C.default
+
     def doSave() {
       config.save()
+      RepositoryMonitor.restart()
     }
+
     def updateIgnoreFiles(s : String) {
       config.ignoreFiles = s.split("\n").toList.map(_.trim())
     }
