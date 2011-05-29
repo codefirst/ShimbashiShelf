@@ -72,7 +72,7 @@ class Calendar {
     val cal = java.util.Calendar.getInstance()
     cal.setTime(day)
     var files = HashSet[String]()
-    for (commit <- commits if dateEquals(day, commit.getDate())) commit.getFiles().foreach { file => files = files + file }
+    for (commit <- commits if dateEquals(day, commit.date)) commit.files.foreach { file => files = files + file }
 
     <tr class={getDayName(cal, true) + " " + (if(even) "even" else "odd") + (if(dateEquals(day, today.time)) " today" else "")}>
       <td class="day">

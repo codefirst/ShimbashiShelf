@@ -15,12 +15,7 @@ import collection.JavaConversions._
 import scala.collection.mutable._
 import scala.collection.{immutable => im}
 
-class FileDiffCommit(hash : String, author : String, email : String, date : Date, files : im.List[String]) {
-  def getHash() = hash
-  def getAuthor() = author
-  def getEmailAddress() = email
-  def getDate() = date
-  def getFiles() = files
+class FileDiffCommit(val hash : String, val author : String, val email : String, val date : Date, val files : im.List[String]) {
 }
 
 class VersionControl(repositoryDir : File) {

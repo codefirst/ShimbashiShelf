@@ -98,12 +98,12 @@ object ShimbashiShelf {
       val cal = Calendar.getInstance()
 
       for (commit <- commits) {
-        println("hash    : " + commit.getHash())
-        println("author  : " + commit.getAuthor())
-        println("email   : " + commit.getEmailAddress())
-        println("date    : " + commitDateFormat.format(commit.getDate()))
+        println("hash    : " + commit.hash)
+        println("author  : " + commit.author)
+        println("email   : " + commit.email)
+        println("date    : " + commitDateFormat.format(commit.date))
         println("modified: ")
-        commit.getFiles().foreach { file => println("   " + file) }
+        commit.files.foreach { file => println("   " + file) }
         println()
       }
 

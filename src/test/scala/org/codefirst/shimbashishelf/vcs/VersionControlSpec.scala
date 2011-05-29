@@ -48,15 +48,15 @@ class VersionControlSpec extends Spec with ShouldMatchers with BeforeAndAfterEac
     }
 
     it("Author") {
-      commit.getAuthor() should be("ShimbashiShelf")
+      commit.author should be("ShimbashiShelf")
     }
 
     it("email") {
-      commit.getEmailAddress() should be("ShimbashiShelf@codefirst.org")
+      commit.email should be("ShimbashiShelf@codefirst.org")
     }
 
     it("files") {
-      commit.getFiles() should be(List("hello.txt"))
+      commit.files should be(List("hello.txt"))
     }
   }
 }
