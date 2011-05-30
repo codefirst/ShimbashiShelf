@@ -23,34 +23,34 @@ object Fam {
     val monitor = new FilesystemAlterationMonitor();
     monitor.addListener(file, new FilesystemAlterationListener{
       def onStart(observer : FilesystemAlterationObserver) {
-	f(OnStart(observer))
+        f(OnStart(observer))
       }
 
       def onFileCreate(file : File) {
-	f(OnFileCreate(file))
+        f(OnFileCreate(file))
       }
 
       def onFileDelete(file : File) {
-	f(OnFileDelete(file))
+        f(OnFileDelete(file))
       }
       def onFileChange(file : File) {
-	f(OnFileChange(file))
+        f(OnFileChange(file))
       }
 
       def onDirectoryCreate(dir : File) {
-	f(OnDirectoryCreate(dir))
+        f(OnDirectoryCreate(dir))
       }
 
       def onDirectoryChange(dir : File) {
-	f(OnDirectoryChange(dir))
+        f(OnDirectoryChange(dir))
       }
 
       def onDirectoryDelete(dir : File) {
-	f(OnDirectoryDelete(dir))
+        f(OnDirectoryDelete(dir))
       }
 
       def onStop(observer : FilesystemAlterationObserver) {
-	f(OnStop(observer))
+        f(OnStop(observer))
       }
     });
     monitor

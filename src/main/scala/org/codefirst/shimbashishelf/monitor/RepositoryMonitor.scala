@@ -7,6 +7,7 @@ import org.codefirst.shimbashishelf.common
 import org.codefirst.shimbashishelf.search.Indexer
 import org.codefirst.shimbashishelf.common._
 import org.codefirst.shimbashishelf.vcs.VersionControl
+import org.apache.log4j.Logger
 
 object RepositoryMonitor {
   case object Reset
@@ -17,9 +18,11 @@ object RepositoryMonitor {
     def stop() : Unit
   }
 
+  private val logger = Logger.getLogger(classOf[RepositoryMonitor])
+
   private def monitorThread = {
     val repository = tee { new File(Config.default.repository) } { _.mkdirs() }
-    println("start monitoring[%s]...".format(repository))
+    logger.info("start monitoring[%s]...".format(repository))
     val vc      = new VersionControl(repository)
     val indexer = Indexer()
     tee { new Monitor(indexer, vc).thread(repository) } { _.start() }
@@ -47,3 +50,5 @@ object RepositoryMonitor {
     monitorActor ! Reset
   }
 }
+
+class RepositoryMonitor{}

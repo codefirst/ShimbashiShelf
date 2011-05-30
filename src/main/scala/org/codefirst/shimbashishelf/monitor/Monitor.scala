@@ -2,11 +2,10 @@ package org.codefirst.shimbashishelf.monitor
 import org.codefirst.shimbashishelf.vcs.VersionControl
 import org.codefirst.shimbashishelf.search.Indexer
 import java.io.File
-import org.slf4j.LoggerFactory
 import org.apache.log4j.Logger
 
 class Monitor(indexer : Indexer, vc : VersionControl) {
-  val logger = Logger.getLogger(classOf[Monitor])
+  private val logger = Logger.getLogger(classOf[Monitor])
   private val config = org.codefirst.shimbashishelf.common.Config.default
   private val globs  = config.ignoreFiles.map(Glob(_))
 

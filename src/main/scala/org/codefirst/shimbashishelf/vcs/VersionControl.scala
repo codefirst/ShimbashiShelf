@@ -14,11 +14,14 @@ import java.text.SimpleDateFormat
 import collection.JavaConversions._
 import scala.collection.mutable._
 import scala.collection.{immutable => im}
+import org.apache.log4j.Logger
 
 class FileDiffCommit(val hash : String, val author : String, val email : String, val date : Date, val files : im.List[String]) {
 }
 
 class VersionControl(repositoryDir : File) {
+  private val logger = Logger.getLogger(classOf[VersionControl])
+
   val repository : Repository = new RepositoryBuilder()
     .setGitDir(new File(repositoryDir.getAbsolutePath() + File.separatorChar + Constants.DOT_GIT)).readEnvironment().findGitDir().build()
   val git : Git = new Git(repository)
@@ -34,7 +37,7 @@ class VersionControl(repositoryDir : File) {
 
   private def withGit(f : GitIndex => Unit) {
     if (!new File(repositoryDir.getAbsolutePath() + File.separatorChar + Constants.DOT_GIT).exists()) {
-      println(new File(repositoryDir.getAbsolutePath() + File.separatorChar + Constants.DOT_GIT).getAbsolutePath() + " created")
+      logger.info(new File(repositoryDir.getAbsolutePath() + File.separatorChar + Constants.DOT_GIT).getAbsolutePath() + " created")
       Git.init().setDirectory(repositoryDir).call()
     }
 
