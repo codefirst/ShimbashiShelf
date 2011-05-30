@@ -52,7 +52,7 @@ class Documents extends PaginatorSnippet[Document] {
 
   def info(xhtml : NodeSeq) : NodeSeq = {
     bind("result", xhtml,
-	 "query" -> query)
+         "query" -> query)
   }
 
   def show(xhtml : NodeSeq) : NodeSeq = {

@@ -16,10 +16,10 @@ object Document {
   def get(id : Int, path : String = INDEX_PATH) : Option[Document] =
     try{
       using( FSDirectory.open(new File(path)) ) { case dir =>
-	using( new IndexSearcher(dir, true) ) { case searcher => {
+        using( new IndexSearcher(dir, true) ) { case searcher => {
           val doc   = searcher.doc(id)
           Some(new Document(id, doc,"<pre />"))
-	}}}
+        }}}
     } catch { case _ => None }
 }
 

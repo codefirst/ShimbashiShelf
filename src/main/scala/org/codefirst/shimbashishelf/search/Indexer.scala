@@ -48,7 +48,7 @@ class Indexer(indexPath : String, idGenerator : IdGenerator) {
     val config = new IndexWriterConfig(Version.LUCENE_31, new CJKAnalyzer(Version.LUCENE_31))
     using(FSDirectory.open(new File(indexPath))) { case dir =>
       using(new IndexWriter(dir, config)){ case writer =>
-	f(writer) } }
+        f(writer) } }
   }
 
   private def index(path : String, text : String) {

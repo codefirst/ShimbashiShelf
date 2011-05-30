@@ -29,16 +29,16 @@ class Searcher(indexPath : String) {
   private def searchByQuery(query : Query) : Array[Document] =
     using( FSDirectory.open(new File(indexPath)) ) { case dir =>
       using( new IndexSearcher(dir, true) ) { case searcher => {
-	    val scorer = new QueryScorer(query, "content")
-	    val hightlighter = new Highlighter(formatter, scorer)
-	    val td : TopDocs = searcher.search(query, 1000)
-	    for {
-	      scoreDoc    <- td.scoreDocs
-	      val doc     = searcher.doc(scoreDoc.doc)
-	      val content = doc.getField("content").stringValue()
-	      val fragment = hightlighter.getBestFragment(analyzer, "content", content)
+            val scorer = new QueryScorer(query, "content")
+            val hightlighter = new Highlighter(formatter, scorer)
+            val td : TopDocs = searcher.search(query, 1000)
+            for {
+              scoreDoc    <- td.scoreDocs
+              val doc     = searcher.doc(scoreDoc.doc)
+              val content = doc.getField("content").stringValue()
+              val fragment = hightlighter.getBestFragment(analyzer, "content", content)
               val high = if(fragment eq null) prefix(content,100) else fragment
-	    } yield Document(scoreDoc.doc, doc,"<pre><![CDATA[" + high + "]]></pre>")
+            } yield Document(scoreDoc.doc, doc,"<pre><![CDATA[" + high + "]]></pre>")
       } } }
 
   def search(query : String) : Array[Document] = {

@@ -13,10 +13,10 @@ class StatusSpec extends Spec with ShouldMatchers {
 
     describe("safe-way") {
       it("should return Some"){
-	status.safeInt("hi") should be(Some(42))
+        status.safeInt("hi") should be(Some(42))
       }
       it("should return None"){
-	status.safeInt("ho") should be(None)
+        status.safeInt("ho") should be(None)
       }
     }
   }
