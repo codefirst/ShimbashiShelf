@@ -8,7 +8,6 @@ class ShimbashiShelfProject(info: ProjectInfo)
   with    WinstoneProject
 {
   val lift   = "net.liftweb" %% "lift-mapper" % "2.2" % "compile"
-  val jetty6 = "org.mortbay.jetty" % "jetty" % "6.1.25" % "test"
   val fam  = "org.apache.commons" % "commons-jci-fam" % "1.0" % "compile"
   val pdfbox = "org.apache.pdfbox" % "pdfbox" % "1.5.0"
   val poi = "org.apache.poi" % "poi" % "3.8-beta2"
@@ -19,10 +18,12 @@ class ShimbashiShelfProject(info: ProjectInfo)
   val luceneAnalyzers = "org.apache.lucene" % "lucene-analyzers" % "3.1.0"
   val luceneHightlighter = "org.apache.lucene" % "lucene-highlighter" % "3.1.0"
   val jgit = "com.madgag" % "org.eclipse.jgit" % "0.11.99.4-UNOFFICIAL-ROBERTO-RELEASE"
-  val scalaTest = "org.scalatest" % "scalatest" % "1.3"
   val jchardet = "net.sourceforge.jchardet" % "jchardet" % "1.0"
   val log4j = "log4j" % "log4j" % "1.2.16"
-  val slf4j = "org.slf4j" % "slf4j-log4j12" % "1.5.6"
+
+  // for development
+  val jetty6 = "org.mortbay.jetty" % "jetty" % "6.1.25" % "test"
+  val scalaTest = "org.scalatest" % "scalatest" % "1.3"
 
   def junitXmlListener: TestReportListener = new JUnitXmlTestsListener(outputPath.toString)
   override def testListeners: Seq[TestReportListener] = super.testListeners ++ Seq(junitXmlListener)

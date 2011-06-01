@@ -71,8 +71,9 @@ ShimbashiShelf depends on:
  * Apache POI - The Apache License, Version 2.0
  * Apache Lucene - The Apache License, Version 2.0
  * Apache log4j - The Apache License, Version 2.0
- * SLF4J - The MIT License
+ * Apache Commons JCI - The Apache License, Version 2.0
  * JGit - Eclipse Distribution License - v 1.0
  * jChardet - Mozilla Public License 1.1
+ * Winstone - the Common Development and Distribution License (CDDL)
 
 codefirst.org thanks to these open source software.
