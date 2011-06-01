@@ -71,8 +71,6 @@ class Calendar {
   private def filesOfDay(day:Date, commits : List[FileDiffCommit], even : Boolean) = {
     val cal = java.util.Calendar.getInstance()
     cal.setTime(day)
-    var files = HashSet[String]()
-    for (commit <- commits if dateEquals(day, commit.date)) commit.files.foreach { file => files = files + file }
 
     <tr class={getDayName(cal, true) + " " + (if(even) "even" else "odd") + (if(dateEquals(day, today.time)) " today" else "")}>
       <td class="day">
@@ -83,11 +81,13 @@ class Calendar {
       </td>
       <td class="files">
         {
-          for (file <- files) yield
-            Searcher().searchByPath(new File(filesRoot + "/" + file).getAbsolutePath()) match {
-              case Some(document) => <div><a title={ file } href={"/show?id=" + document.id}>{ file }</a></div>
-              case None           => <div>{ file }</div>
-            }
+          for {
+            commit <- commits.toSet if dateEquals(day, commit.date)
+            file <- commit.files
+          } yield Searcher().searchByPath(new File(filesRoot + "/" + file).getAbsolutePath()) match {
+            case Some(document) => <div><a title={ file.getClass().toString() } href={"/show?id=" + document.id}>{ file }</a></div>
+            case None           => <div>{ file }</div>
+          }
         }
       </td>
     </tr>
