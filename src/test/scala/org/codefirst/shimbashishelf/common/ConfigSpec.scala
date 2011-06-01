@@ -18,10 +18,6 @@ class ConfigSpec extends Spec with ShouldMatchers with BeforeAndAfterEach with M
 
   def config = Config.open(FileName)
   describe("無視ファイルの設定・取得"){
-    it("初期状態は空") {
-      config.ignoreFiles should be ('empty)
-    }
-
     it("設定・取得できる")  {
       val c = config
       c.ignoreFiles = List(".git", "*~")
