@@ -21,7 +21,7 @@ class Config(val path : File){
   // ------------------------------
   // field
   // ------------------------------
-  var ignoreFiles : List[String] = List()
+  var ignoreFiles : List[String] = List(".git")
   var repository  : String = FileUtil.join(System.getProperty("user.home"),"ShimbashiShelf")
   // ------------------------------
   // serialize
