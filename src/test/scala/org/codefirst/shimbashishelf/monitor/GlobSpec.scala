@@ -7,27 +7,37 @@ import org.codefirst.shimbashishelf.util.FileUtil
 import java.io.File
 
 class GlobSpec extends Spec with ShouldMatchers {
-   describe("ファイル名によるマッチ") {
-     it("成功") {
-       Glob("foo").isMatch(new File("foo")) should be(true)
-     }
+  describe("パスごとに分割する") {
+    it("パスごとに分割する(Unix)") {
+      Glob.split(new File("foo/bar/baz"), "/") should be(List("foo","bar","baz"))
+    }
 
-     it("サブディレクトリにあってもマッチする") {
-       Glob("foo").isMatch(new File("bar/foo")) should be(true)
-     }
+    it("パスごとに分割する(Windows)") {
+      Glob.split(new File("foo\\bar\\baz"), "\\") should be(List("foo","bar","baz"))
+    }
+  }
 
-     it("部分マッチはしない") {
-       Glob("foo").isMatch(new File("fooo")) should be(false)
-     }
+  describe("ファイル名によるマッチ") {
+    it("成功") {
+      Glob("foo").isMatch(new File("foo")) should be(true)
+    }
+
+    it("サブディレクトリにあってもマッチする") {
+      Glob("foo").isMatch(new File("bar/foo")) should be(true)
+    }
+
+    it("部分マッチはしない") {
+      Glob("foo").isMatch(new File("fooo")) should be(false)
+    }
 
     it("親ディレトリにもマッチする") {
       Glob("foo").isMatch(new File("foo/bar")) should be(true)
     }
 
-     it("失敗"){
-       Glob("foo").isMatch(new File("bar")) should be(false)
-     }
-   }
+    it("失敗"){
+      Glob("foo").isMatch(new File("bar")) should be(false)
+    }
+  }
 
   describe("*によるマッチ") {
     it("全体") {

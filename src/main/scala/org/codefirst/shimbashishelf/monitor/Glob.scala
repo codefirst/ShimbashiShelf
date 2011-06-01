@@ -14,13 +14,12 @@ object Glob{
       .replace(star, "*")
     "^%s$".format(pattern).r
   }
+
+  def split(file : File, sep : String = File.separator) : List[String] =
+    file.getPath().split(sep.replace("\\","\\\\")).toList
 }
 
 class Glob(pattern : Regex){
-
   def isMatch(file : java.io.File) =
-    parents(file).exists(pattern.findFirstIn(_).isDefined)
-
-  private def parents(file : File) : List[String] =
-    file.getPath().split(File.separator).toList
+    Glob.split(file).exists(pattern.findFirstIn(_).isDefined)
 }
