@@ -85,7 +85,7 @@ class Calendar {
             commit <- commits.toSet if dateEquals(day, commit.date)
             file <- commit.files
           } yield Searcher().searchByPath(new File(filesRoot + "/" + file).getAbsolutePath()) match {
-            case Some(document) => <div><a title={ file.getClass().toString() } href={"/show?id=" + document.id}>{ file }</a></div>
+            case Some(document) => <div><a title={ document.path } href={"/show?id=" + document.id}>{ file }</a></div>
             case None           => <div>{ file }</div>
           }
         }
