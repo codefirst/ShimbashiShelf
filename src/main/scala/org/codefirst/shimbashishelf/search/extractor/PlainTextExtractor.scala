@@ -1,7 +1,6 @@
 package org.codefirst.shimbashishelf.search.extractor
 
 import org.codefirst.shimbashishelf.util.FileUtil
-import org.mozilla.intl.chardet._
 import org.mozilla.universalchardet.UniversalDetector
 
 object PlainTextExtractor extends Extractor {
