@@ -21,5 +21,9 @@ class PlainTextExtractorSpec extends Spec with ShouldMatchers {
   describe("EUC_JP") {
     it should behave like extractText("src/test/scala/org/codefirst/shimbashishelf/search/extractor/sample-euc.txt")
   }
+
+  describe("sjis") {
+    it should behave like extractText("src/test/scala/org/codefirst/shimbashishelf/search/extractor/sample-sjis.txt")
+  }
 }
 

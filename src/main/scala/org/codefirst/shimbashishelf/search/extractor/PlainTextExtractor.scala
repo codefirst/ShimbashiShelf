@@ -2,15 +2,16 @@ package org.codefirst.shimbashishelf.search.extractor
 
 import org.codefirst.shimbashishelf.util.FileUtil
 import org.mozilla.intl.chardet._
+import org.mozilla.universalchardet.UniversalDetector
 
 object PlainTextExtractor extends Extractor {
 
   def detect( xs : Array[Byte]) : String = {
-    val detector = new nsDetector( nsPSMDetector.ALL )
-    detector.DoIt( xs, xs.length, false)
-    detector.DataEnd()
-    val cs = detector.getProbableCharsets()
-    if(cs.length > 0) cs(0) else "Ascii"
+    val detector = new UniversalDetector(null)
+    detector.handleData( xs, 0, xs.length)
+    detector.dataEnd()
+    val charset = detector.getDetectedCharset
+    if(charset == null) "Ascii" else charset
   }
 
   def extract(fileName : String) = {

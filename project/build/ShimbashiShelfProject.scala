@@ -18,7 +18,6 @@ class ShimbashiShelfProject(info: ProjectInfo)
   val luceneAnalyzers = "org.apache.lucene" % "lucene-analyzers" % "3.1.0"
   val luceneHightlighter = "org.apache.lucene" % "lucene-highlighter" % "3.1.0"
   val jgit = "com.madgag" % "org.eclipse.jgit" % "0.11.99.4-UNOFFICIAL-ROBERTO-RELEASE"
-  val jchardet = "net.sourceforge.jchardet" % "jchardet" % "1.0"
   val log4j = "log4j" % "log4j" % "1.2.16"
 
   // for development
