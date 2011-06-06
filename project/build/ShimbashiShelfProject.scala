@@ -20,6 +20,7 @@ class ShimbashiShelfProject(info: ProjectInfo)
   val jgit = "com.madgag" % "org.eclipse.jgit" % "0.11.99.4-UNOFFICIAL-ROBERTO-RELEASE"
   val log4j = "log4j" % "log4j" % "1.2.16"
   val mimeUtil = "eu.medsea.mimeutil" % "mime-util" % "2.1.3"
+  val codec = "commons-codec" % "commons-codec" % "1.3"
 
   // for development
   val jetty6 = "org.mortbay.jetty" % "jetty" % "6.1.25" % "test"

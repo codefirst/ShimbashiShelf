@@ -27,18 +27,20 @@ class Document(val id : Int, doc : org.apache.lucene.document.Document, high : S
   def path     = getString("path")
   def filename = FileUtil.basename(path)
   def content  = getString("content")
-  def manageID  = getString("manageID")
-  val highlight = try { XML.loadString(high) } catch { case _ => <pre /> }
+  def manageID = getString("manageID")
+  def mimeType = getString("mimeType")
+  val highlight= try { XML.loadString(high) } catch { case _ => <pre /> }
   def is : Option[Array[Byte]] = FileUtil.readArray(path)
 
 
   def toBindParams : List[BindParam]=
-    List("path" -> path,
-         "id"   -> id,
-         "content" -> content,
-         "filename" -> filename,
+    List("path"      -> path,
+         "id"        -> id,
+         "content"   -> content,
+         "filename"  -> filename,
          "highlight" -> highlight,
-         "manageID" -> manageID)
+         "mimeType"  -> mimeType,
+         "manageID"  -> manageID)
 
   private def getString(key : String) : String = {
     doc.getField(key).stringValue()

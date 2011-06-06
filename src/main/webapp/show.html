@@ -1,21 +1,21 @@
 <lift:surround with="default">
   <lift:bind-at name="title">
-    <lift:show><result:filename /></lift:show>
+    <lift:show><doc:filename /></lift:show>
   </lift:bind-at>
 
   <lift:bind-at name="content">
     <div class="show-container">
       <lift:show>
-        <h2><result:filename /></h2>
+        <h2><doc:filename /></h2>
         <div class="download-container">
           <result:link>Download</result:link>
         </div>
         <br class="clear" />
         <div class="info">
-	        ID: <result:manageID />
+	        ID: <doc:manageID />
 	        Path: <result:pathfield />
         </div>
-        <pre class="show-bod"><result:content /></pre>
+        <div class="show-body"><result:content /></div>
       </lift:show>
     </div>
   </lift:bind-at>

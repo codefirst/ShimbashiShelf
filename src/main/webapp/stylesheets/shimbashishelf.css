@@ -165,8 +165,13 @@ input[type="submit"] {
     padding-left: 20px;
 }
 
+div.show-body{
+    margin-top: 10px;
+}
+
 pre,
-.result-item pre {
+.result-item pre,
+div.show-body img {
     border: 1px solid #ddd;
     padding: 5px;
     margin: 0;
@@ -176,6 +181,7 @@ pre,
     background: -o-linear-gradient(top, #fefefe 41%, #fbfbfb 100%);
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0.41, #fefefe),color-stop(1, #fbfbfb));
 }
+
 
 .result-item:first {
     margin-top: 0px;
