@@ -69,7 +69,14 @@ class Indexer(indexPath : String, idGenerator : IdGenerator) {
         doc.add(("manageID" , manageID, Store.YES, Index.NOT_ANALYZED))
         doc.add(("content"  , text,     Store.YES, Index.ANALYZED))
         doc.add(("file_path", path,     Store.YES, Index.ANALYZED))
-        writer.addDocument(doc)
+        doc.add(("mimeType" , MimeDetector(new File(path)), Store.YES, Index.NOT_ANALYZED))
+        try {
+          writer.addDocument(doc)
+        } catch { case _ =>
+          doc.removeField("content")
+          doc.add(("content", "<binary>", Store.YES, Index.ANALYZED))
+          writer.addDocument(doc)
+        }
       } } }
   }
 
