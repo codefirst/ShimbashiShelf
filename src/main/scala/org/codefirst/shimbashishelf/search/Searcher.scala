@@ -10,6 +10,8 @@ import org.apache.lucene.index.Term
 import org.apache.lucene.search._
 import org.apache.lucene.queryParser._
 import org.codefirst.shimbashishelf._
+import net.reduls.igo.Tagger
+import net.reduls.igo.analysis.ipadic.IpadicAnalyzer
 
 object Searcher{
   def apply() = new Searcher(INDEX_PATH)
@@ -18,7 +20,7 @@ object Searcher{
 }
 
 class Searcher(indexPath : String) {
-  val analyzer  = new CJKAnalyzer(Version.LUCENE_31)
+  val analyzer = new IpadicAnalyzer(new Tagger("ipadic"));
   val formatter = new SimpleHTMLFormatter("]]><strong>","</strong><![CDATA[")
   val parser : QueryParser = new MultiFieldQueryParser(Version.LUCENE_31,
                                                        Array("content","file_path"),
