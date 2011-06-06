@@ -27,19 +27,19 @@ class HomeSpec extends Spec with ShouldMatchers with BeforeAndAfterEach {
     }
 
     it("ディレクトリの取得もできる") {
-      Home.dir("test_path_spec", env(null)) should be(new File("test_path_spec"))
+      Home.dir("test_home_spec", env(null)) should be(new File("test_home_spec"))
     }
   }
 
   describe("ディレクトリの自動生成") {
     it("ファイルの場合親ディレクトリができる") {
-      val f = Home.file("test_path_spec/bar/baz.txt", env(null))
+      val f = Home.file("test_home_spec/bar/baz.txt", env(null))
       f.exists() should be(false)
       new File(f.getParent()).exists() should be(true)
     }
 
     it("ディレクトリの場合ディレクトリができる") {
-      val f = Home.dir("test_path_spec/bar/baz", env(null))
+      val f = Home.dir("test_home_spec/bar/baz", env(null))
       f.exists() should be(true)
     }
   }
