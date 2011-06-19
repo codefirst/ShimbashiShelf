@@ -16,7 +16,7 @@ import scala.collection.mutable._
 class RecursiveTreeWalk(repository : Repository) extends TreeWalk(repository.newObjectReader()){
   setRecursive(true)
 
-  def getFileDiffCommits(commit : RevCommit) : FileDiffCommit = {
+  def getCommits(commit : RevCommit) : Commit[String] = {
     reset(commit.getTree())
     if (commit.getParentCount() >= 1) {
       setFilter(TreeFilter.ANY_DIFF)
@@ -30,7 +30,7 @@ class RecursiveTreeWalk(repository : Repository) extends TreeWalk(repository.new
     }
     val cal = Calendar.getInstance()
     cal.setTimeInMillis(commit.getCommitTime().asInstanceOf[Long] * 1000)
-    new FileDiffCommit(commit.getName(), commit.getAuthorIdent().getName(),
+    new Commit[String](commit.getName(), commit.getAuthorIdent().getName(),
                        commit.getAuthorIdent().getEmailAddress(), cal.getTime(), files.toList)
   }
 

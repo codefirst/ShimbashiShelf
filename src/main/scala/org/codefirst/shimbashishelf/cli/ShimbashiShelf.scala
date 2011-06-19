@@ -79,7 +79,7 @@ object ShimbashiShelf {
         }
       case "history"::args =>
         val vc : VersionControl = new VersionControl(repository)
-      var commits : List[FileDiffCommit] = null
+      var commits : List[Commit[String]] = null
       val format = new SimpleDateFormat("yyyy-MM-dd")
       if (args.length >= 2) {
         val cal = Calendar.getInstance()

@@ -58,7 +58,7 @@ class Documents extends PaginatorSnippet[(FileObject,Node)] {
 
   def show(xhtml : NodeSeq) : NodeSeq =
     page.flatMap {
-      case   (Directory(), high) =>
+      case   (Directory(_,_), high) =>
         xhtml
       case (file@File(id, _, _, _, _), high) =>
         xhtml.

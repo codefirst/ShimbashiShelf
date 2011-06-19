@@ -10,18 +10,17 @@ import net.liftweb.http._
 import Helpers._
 
 import org.codefirst.shimbashishelf._
-import org.codefirst.shimbashishelf.vcs._
-import org.codefirst.shimbashishelf.search._
 import org.codefirst.shimbashishelf.util._
-import org.codefirst.shimbashishelf.common.Config
-import java.io.File
+import java.io.{File => JFile}
 import java.text.SimpleDateFormat
 import java.util.Date
 import scala.collection.Iterator
 import scala.collection.immutable.HashSet
 
+import org.codefirst.shimbashishelf.vcs.Commit
+import org.codefirst.shimbashishelf.filesystem.{File, FileSystem}
+
 class Calendar {
-  private val filesRoot : String = Config.default.repository
   private val today = SCalendar.today
 
   def render(xhtml : NodeSeq) : NodeSeq = {
@@ -35,8 +34,8 @@ class Calendar {
     val cal    = SCalendar(year, month, 1)
 
     val commits =
-      new VersionControl(new File(filesRoot)).commitList(Some(cal.startOfMonth.time),
-                                                         Some(cal.endOfMonth.time))
+      FileSystem.commitList(Some(cal.startOfMonth.time),
+                            Some(cal.endOfMonth.time))
     val calendar =
       <table class="calendar">{
         (cal.startOfMonth to cal.endOfMonth).zipWithIndex.map { case (c, i) => {
@@ -68,7 +67,7 @@ class Calendar {
          "monthTitle" -> monthTitle)
   }
 
-  private def filesOfDay(day:Date, commits : List[FileDiffCommit], even : Boolean) = {
+  private def filesOfDay(day:Date, commits : Seq[Commit[File]], even : Boolean) = {
     val cal = java.util.Calendar.getInstance()
     cal.setTime(day)
 
@@ -84,26 +83,22 @@ class Calendar {
           for {
             commit <- commits.toSet if dateEquals(day, commit.date)
             file <- commit.files
-          } yield Searcher().searchByPath(new File(filesRoot + "/" + file).getAbsolutePath()) match {
-            case Some(document) => <div><a title={ document.path } href={"/show?id=" + document.id}>{ file }</a></div>
-            case None           => <div>{ file }</div>
           }
+            yield <div><a title={ file.path } href={"/show?id=" + file.id}>{ file.name }</a></div>
         }
       </td>
     </tr>
   }
 
   private def getDayName(cal : java.util.Calendar, isLower : Boolean = false) : String = {
-    val ret = Map(java.util.Calendar.SUNDAY -> "Sun",
-        java.util.Calendar.MONDAY -> "Mon",
-        java.util.Calendar.TUESDAY -> "Tue",
-        java.util.Calendar.WEDNESDAY -> "Wed",
-        java.util.Calendar.THURSDAY -> "Thu",
-        java.util.Calendar.FRIDAY -> "Fri",
-        java.util.Calendar.SATURDAY-> "Sat").get(cal.get(java.util.Calendar.DAY_OF_WEEK)) match {
-      case Some(x) => x
-      case None    => ""
-    }
+    val ret = Map(
+      java.util.Calendar.SUNDAY -> "Sun",
+      java.util.Calendar.MONDAY -> "Mon",
+      java.util.Calendar.TUESDAY -> "Tue",
+      java.util.Calendar.WEDNESDAY -> "Wed",
+      java.util.Calendar.THURSDAY -> "Thu",
+      java.util.Calendar.FRIDAY -> "Fri",
+      java.util.Calendar.SATURDAY-> "Sat").getOrElse(cal.get(java.util.Calendar.DAY_OF_WEEK),"")
     if (isLower) ret.toLowerCase
     else ret
   }
@@ -117,6 +112,5 @@ class Calendar {
     cal1.get(java.util.Calendar.MONTH) == cal2.get(java.util.Calendar.MONTH) &&
     cal1.get(java.util.Calendar.DATE) == cal2.get(java.util.Calendar.DATE)
   }
-
 }
 

@@ -29,7 +29,7 @@ class Show {
 
   def render(xhtml : NodeSeq) : NodeSeq =
     file match {
-      case Full(Directory()) => xhtml
+      case Full(Directory(_,_)) => xhtml
       case Full(file@File(id,mimeType,path,_,_)) if mimeType startsWith "image" =>
         FileSystem.read(file) match {
           case Some(xs) =>

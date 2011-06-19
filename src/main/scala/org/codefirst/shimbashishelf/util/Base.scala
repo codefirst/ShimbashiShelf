@@ -7,6 +7,11 @@ object Base{
   def sure[A](f : => A) : Option[A] =
     try { Some(f) } catch { case _ => None }
 
+  def tee[A](f : A => Unit, x : A) : A = {
+    f(x)
+    x
+  }
+
   def notNull[A <: AnyRef](x : A, default : => A) : A =
     if(x eq null) default else x
 

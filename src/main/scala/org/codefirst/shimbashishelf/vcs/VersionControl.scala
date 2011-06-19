@@ -16,10 +16,14 @@ import scala.collection.mutable._
 import scala.collection.{immutable => im}
 import org.apache.log4j.Logger
 
-class FileDiffCommit(val hash : String, val author : String, val email : String, val date : Date, val files : im.List[String]) {
-}
+case class Commit[A](hash : String,
+                     author : String,
+                     email : String,
+                     date : Date,
+                     files : im.List[A])
 
 class VersionControl(repositoryDir : File) {
+
   private val logger = Logger.getLogger(classOf[VersionControl])
 
   val repository : Repository = new RepositoryBuilder()
@@ -52,12 +56,12 @@ class VersionControl(repositoryDir : File) {
     git.commit().setAuthor("ShimbashiShelf", "ShimbashiShelf@codefirst.org").setMessage(format.format(cal.getTime())).call()
   }
 
-  def commitList(startDate : Option[Date], endDate : Option[Date]) : im.List[FileDiffCommit] =
+  def commitList(startDate : Option[Date], endDate : Option[Date]) : im.List[Commit[String]] =
     try {
       val tw : RecursiveTreeWalk = new RecursiveTreeWalk(repository)
       new DurationRevWalk(repository, startDate, endDate)
           .walkRevisions { case commit =>
-            tw.getFileDiffCommits(commit) }
+            tw.getCommits(commit) }
     } catch { case _ =>
       im.List()
     }

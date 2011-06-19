@@ -22,9 +22,9 @@ class DurationRevWalk(repository : Repository,  startDate : Option[Date], endDat
   }
   markStart(parseCommit(repository.resolve("master")))
 
-  def getCommits(body : RevCommit => Option[FileDiffCommit]) = null
+  def getCommits(body : RevCommit => Option[Commit[String]]) = null
 
-  def walkRevisions(body : RevCommit => FileDiffCommit) : scala.collection.immutable.List[FileDiffCommit] =
+  def walkRevisions(body : RevCommit => Commit[String]) : scala.collection.immutable.List[Commit[String]] =
     try { this.map(commit => body(commit)).toList } finally { dispose() }
 
 
