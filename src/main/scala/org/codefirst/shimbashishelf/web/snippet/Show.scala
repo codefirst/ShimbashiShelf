@@ -9,29 +9,43 @@ import _root_.net.liftweb.common._
 import net.liftweb.http._
 import Helpers._
 
-import org.codefirst.shimbashishelf._
-import org.codefirst.shimbashishelf.search.Document
+import org.codefirst.shimbashishelf.filesystem._
 import net.liftweb.util.BindPlus._
 import org.apache.commons.codec.binary.Base64
-
+import org.codefirst.shimbashishelf.web.helper.FileHelper
 
 class Show {
   val id = S.param("id").openOr("0")
-  lazy val document : Box[Document] = Box(Document.get(id.toInt))
+  lazy val file : Box[FileObject] = Box(FileSystem(id))
 
-  def render(xhtml : NodeSeq) : NodeSeq = {
-    val seq = for {
-      doc <- document
-      val content = for {
-        is <- doc.is if doc.mimeType startsWith "image"
-        val base64 = Base64.encodeBase64String(is)
-      } yield <div><img src={"data:%s;base64,%s".format(doc.mimeType, base64)} /></div>
-    } yield  xhtml
-             .bind("doc", doc.toBindParams : _*)
-             .bind("result",
-                   "content" -> content.getOrElse(<pre>{doc.content}</pre>),
-                   "link" -> { (x:NodeSeq) => <a class="download" href={"/download/" + doc.id}>{x}</a>},
-                   "pathfield" -> { (x:NodeSeq) => <input type="text" class="info" value={doc.path} onmousedown="this.select();"/>})
-    seq.getOrElse(xhtml)
-  }
+  def bind(xhtml : NodeSeq, file : File) =
+    xhtml.
+      bind("doc", FileHelper.asBind(file) : _* ).
+      bind("result",
+           "link" -> { (x:NodeSeq) =>
+             <a class="download" href={"/download/" + file.id}>{x}</a>},
+           "pathfield" ->
+             <input type="text" class="info" value={file.path} onmousedown="this.select();"/>)
+
+  def render(xhtml : NodeSeq) : NodeSeq =
+    file match {
+      case Full(Directory()) => xhtml
+      case Full(file@File(id,mimeType,path,_,_)) if mimeType startsWith "image" =>
+        FileSystem.read(file) match {
+          case Some(xs) =>
+            val base64 = Base64.encodeBase64String( xs )
+            bind(xhtml, file).
+              bind("result",
+                   "content" -> <div><img src={"data:%s;base64,%s".format(mimeType, base64)} /></div>)
+          case None =>
+            bind(xhtml, file).
+              bind("result",
+                   "content" -> <div class="error no-image">no image</div>)
+        }
+      case Full(file@File(_,_,_,content,_)) =>
+        bind(xhtml, file).
+          bind("result",
+               "content" -> <pre>{content}</pre>)
+      case _ => xhtml
+    }
 }

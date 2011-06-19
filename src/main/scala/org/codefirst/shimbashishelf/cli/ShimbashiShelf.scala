@@ -1,6 +1,5 @@
 package org.codefirst.shimbashishelf.cli
 
-import java.io.File
 import java.util.Calendar
 import java.util.Date
 import java.text.SimpleDateFormat
@@ -8,11 +7,14 @@ import java.text.DateFormat
 import org.codefirst.shimbashishelf.search._
 import org.codefirst.shimbashishelf.monitor._
 import org.codefirst.shimbashishelf.vcs._
+import org.codefirst.shimbashishelf.filesystem.File
 import org.codefirst.shimbashishelf.common.Config
+import java.io.{File => JFile}
+
 
 object ShimbashiShelf {
   def repository = {
-    val f = new File(Config.default.repository)
+    val f = new JFile(Config.default.repository)
     f.mkdirs()
     f
   }
@@ -29,11 +31,11 @@ object ShimbashiShelf {
         if(args.length < 1) {
           println("usage: search <word>")
         } else {
-          val documents : Array[Document] = Searcher().search(args(0))
-          println(documents.length + " documents found:")
-          for(doc <- documents){
-            println("[%s] %s".format(doc.manageID, doc.path))
-            println(doc.highlight)
+          val files = Searcher().searchByQuery(args(0))
+          println(files.length + " documents found:")
+          for((file,highlight) <- files){
+            println("[%s] %s".format(file.manageID, file.path))
+            println(highlight)
           }
         }
       case "search-by-path"::args =>
@@ -51,14 +53,14 @@ object ShimbashiShelf {
         if (args.length < 1) {
           println("usage: index <filepath>")
         } else {
-          val file : File = new File(args(0))
+          val file = new JFile(args(0))
           Indexer().index(file)
         }
       case "index-all"::args =>
         if (args.length < 1) {
           println("usage: index-all <directory-path>")
         } else {
-          val dir : File = new File(args(0))
+          val dir = new JFile(args(0))
           for(file <- Indexer.allFiles(dir)){
             println(file)
             Indexer().index(file)
@@ -69,7 +71,7 @@ object ShimbashiShelf {
           println("usage: commit <filepath>")
         } else {
           val vc : VersionControl = new VersionControl(repository)
-          if (vc.commit(new File(args(0)))) {
+          if (vc.commit(new JFile(args(0)))) {
             println("commit successful")
           } else {
             println("commit failure")

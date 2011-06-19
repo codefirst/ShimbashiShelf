@@ -8,7 +8,7 @@ import common._
 import http._
 import sitemap._
 import Loc._
-import org.codefirst.shimbashishelf.search.Document
+//import org.codefirst.shimbashishelf.search.Document
 import org.codefirst.shimbashishelf.monitor.RepositoryMonitor
 
 /**
@@ -35,7 +35,7 @@ class Boot {
       // Menu(Loc("Static", Link(List("static"), true, "/static/index"),
       //      "Static Content"))
     )
-
+/*
     LiftRules.dispatch.append {
       case Req(List("download", id), _, _) =>
         () => {
@@ -47,7 +47,7 @@ class Boot {
                                          "Content-Disposition" -> "attachment; filename=\"%s\"".format(doc.filename)),
                                     Nil, 200))
         }
-    }
+    }*/
 
     // set the sitemap.  Note if you don't want access control for
     // each page, just comment this line out.

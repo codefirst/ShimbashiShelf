@@ -1,6 +1,7 @@
 package org.codefirst.shimbashishelf.search
 
-import java.io.File
+import java.io.{File => JFile}
+import org.apache.lucene.document.{Document => LDocument}
 import org.apache.lucene.search.highlight._
 import org.apache.lucene.analysis.cjk.CJKAnalyzer
 import org.apache.lucene.store.Directory
@@ -9,14 +10,15 @@ import org.apache.lucene.util.Version
 import org.apache.lucene.index.Term
 import org.apache.lucene.search._
 import org.apache.lucene.queryParser._
-import org.codefirst.shimbashishelf._
 import net.reduls.igo.Tagger
 import net.reduls.igo.analysis.ipadic.IpadicAnalyzer
+import scala.xml.{Node, XML}
+import org.codefirst.shimbashishelf.util.Base._
+import org.codefirst.shimbashishelf.filesystem.File
 
 object Searcher{
   def apply() = new Searcher(INDEX_PATH)
   def apply(path : String) = new Searcher(path)
-
 }
 
 class Searcher(indexPath : String) {
@@ -28,39 +30,51 @@ class Searcher(indexPath : String) {
 
   private def prefix(s : String, n : Int) : String =
     s.substring(0, scala.math.min(s.length, n))
-  private def searchByQuery(query : Query) : Array[Document] =
-    using( FSDirectory.open(new File(indexPath)) ) { case dir =>
+
+  private def field(doc : LDocument, key : String) =
+    doc.getField(key).stringValue()
+
+  private def file(id : String, doc : LDocument) : File =
+    File(id         = id,
+         mimeType   = field(doc, "mimeType"),
+         path       = field(doc, "path"),
+         content    = field(doc, "content"),
+         attributes = Map("manageID" -> field(doc, "manageID")))
+
+  private def search(query : Query) : Seq[(File,Node)] =
+    using( FSDirectory.open(new JFile(indexPath)) ) { case dir =>
       using( new IndexSearcher(dir, true) ) { case searcher => {
-            val scorer = new QueryScorer(query, "content")
-            val hightlighter = new Highlighter(formatter, scorer)
-            val td : TopDocs = searcher.search(query, 1000)
-            for {
-              scoreDoc    <- td.scoreDocs
-              val doc     = searcher.doc(scoreDoc.doc)
-              val content = doc.getField("content").stringValue()
-              val fragment = hightlighter.getBestFragment(analyzer, "content", content)
-              val high = if(fragment eq null) prefix(content,100) else fragment
-            } yield Document(scoreDoc.doc, doc,"<pre><![CDATA[" + high + "]]></pre>")
+        val scorer = new QueryScorer(query, "content")
+        val hightlighter = new Highlighter(formatter, scorer)
+        val td : TopDocs = searcher.search(query, 1000)
+        for {
+          scoreDoc    <- td.scoreDocs
+          val doc      = searcher.doc(scoreDoc.doc)
+          val content  = doc.getField("content").stringValue()
+          val fragment = hightlighter.getBestFragment(analyzer, "content",content)
+          val high     = notNull(fragment, prefix(content,100))
+        } yield (file(scoreDoc.doc.toString, doc), XML.loadString("<pre><![CDATA[" + high + "]]></pre>"))
       } } }
 
-  def search(query : String) : Array[Document] = {
+  def searchByQuery(query : String) : Seq[(File, scala.xml.Node)] = {
     if (query == null || query.trim().length() == 0)
-      Array()
+      Seq()
     else
-      searchByQuery(parser.parse(query))
+      search(parser.parse(query))
   }
 
-  def searchByPath(path : String) : Option[Document] = {
-    try {
+  def searchByPath(path : String) : Option[File] =
+    safe {
       val term : Term = new Term("path", path)
       val query : Query = new TermQuery(term)
-      searchByQuery(query) match {
-        case Array(x) => Some(x)
-        case _ => None
-      }
-    } catch { case _=>
-      None
+      search(query).headOption.map(_._1)
     }
-  }
+
+  def searchByID(id : String) : Option[File] =
+    safe {
+      using( FSDirectory.open(new JFile(INDEX_PATH)) ) { case dir =>
+        using( new IndexSearcher(dir, true) ) { case searcher => {
+          Some(file(id, searcher.doc(id.toInt)))
+        } } } }
 }
 
