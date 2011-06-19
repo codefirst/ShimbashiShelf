@@ -7,7 +7,9 @@ class ShimbashiShelfProject(info: ProjectInfo)
   with    ScctProject
   with    WinstoneProject
 {
-  val lift = "net.liftweb" %% "lift-mapper" % "2.4-M2" % "compile"
+  val uf_filter = "net.databinder" %% "unfiltered-filter" % "0.3.4"
+  val uf_jetty  = "net.databinder" %% "unfiltered-jetty" % "0.3.4"
+
   val json = "net.liftweb" %% "lift-json" % "2.4-M2" % "compile"
   val fam  = "org.apache.commons" % "commons-jci-fam" % "1.0" % "compile"
   val pdfbox = "org.apache.pdfbox" % "pdfbox" % "1.5.0"
@@ -24,7 +26,7 @@ class ShimbashiShelfProject(info: ProjectInfo)
   val codec = "commons-codec" % "commons-codec" % "1.3"
 
   // for development
-  val jetty6 = "org.mortbay.jetty" % "jetty" % "6.1.25" % "test"
+  val jetty7 = "org.eclipse.jetty" % "jetty-webapp" % "7.0.2.RC0" % "test"
   val scalaTest = "org.scalatest" % "scalatest_2.9.0" % "1.6.1"
 
   def junitXmlListener: TestReportListener = new JUnitXmlTestsListener(outputPath.toString)
