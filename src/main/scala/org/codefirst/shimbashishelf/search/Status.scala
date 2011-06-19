@@ -1,7 +1,6 @@
 package org.codefirst.shimbashishelf.search
 
 import net.liftweb.json._
-import net.liftweb.json.JsonAST._
 import net.liftweb.json.JsonDSL._
 
 import scala.collection.mutable
