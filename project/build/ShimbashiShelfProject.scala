@@ -25,7 +25,7 @@ class ShimbashiShelfProject(info: ProjectInfo)
 
   // for development
   val jetty6 = "org.mortbay.jetty" % "jetty" % "6.1.25" % "test"
-  val scalaTest = "org.scalatest" % "scalatest" % "1.3"
+  val scalaTest = "org.scalatest" % "scalatest_2.9.0" % "1.6.1"
 
   def junitXmlListener: TestReportListener = new JUnitXmlTestsListener(outputPath.toString)
   override def testListeners: Seq[TestReportListener] = super.testListeners ++ Seq(junitXmlListener)

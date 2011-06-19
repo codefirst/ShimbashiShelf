@@ -72,7 +72,7 @@ class Searcher(indexPath : String) {
 
   def searchByID(id : String) : Option[File] =
     safe {
-      using( FSDirectory.open(new JFile(INDEX_PATH)) ) { case dir =>
+      using( FSDirectory.open(new JFile(indexPath)) ) { case dir =>
         using( new IndexSearcher(dir, true) ) { case searcher => {
           Some(file(id, searcher.doc(id.toInt)))
         } } } }

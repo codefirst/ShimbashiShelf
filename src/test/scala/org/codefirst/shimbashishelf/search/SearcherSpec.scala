@@ -20,21 +20,24 @@ class SearcherSpec extends Spec with ShouldMatchers with BeforeAndAfterEach {
     FileUtil.delete(SampleFile)
   }
 
+  def searcher =
+    Searcher(IndexFile)
+
   describe("空白文字列で検索") {
     it("検索結果") {
-      Searcher(IndexFile).search("").length should be (0)
+      searcher.searchByQuery("").length should be (0)
     }
   }
 
   describe("nullで検索") {
     it("検索結果") {
-      Searcher(IndexFile).search(null).length should be (0)
+      searcher.searchByQuery(null).length should be (0)
     }
   }
 
   describe("検索") {
-    def doc =
-      Searcher(IndexFile).search("hello")(0)
+    lazy val (doc, highlight) =
+      searcher.searchByQuery("hello")(0)
 
     describe("ドキュメント") {
       it("パス") {
@@ -42,34 +45,28 @@ class SearcherSpec extends Spec with ShouldMatchers with BeforeAndAfterEach {
       }
 
       it("ファイル名") {
-        doc.filename should be ( "index_test1.txt" )
+        doc.name should be ( "index_test1.txt" )
       }
 
       it("content") {
-        val s = new String(doc.content)
-        s should be ("hello world")
-      }
-
-      it("is") {
-        val s = new String(doc.is.orNull)
-        s should be ("hello world")
+        doc.content should be ("hello world")
       }
 
       it("ハイライト") {
-        doc.highlight should be (<pre><strong>hello</strong> world</pre>)
+        highlight should be (<pre><strong>hello</strong> world</pre>)
       }
     }
   }
 
   describe("searchByPath") {
     it("seacrhbypath") {
-      Searcher(IndexFile).searchByPath(SampleFile.getAbsolutePath()) should not be(None)
+      searcher.searchByPath(SampleFile.getAbsolutePath()) should not be(None)
     }
   }
 
   describe("パスによる検索") {
-    def doc =
-      Searcher(IndexFile).search("index_test1")(0)
+    lazy val (doc,_) =
+      searcher.searchByQuery("index_test1")(0)
 
     describe("ドキュメント") {
       it("パス") {
@@ -77,27 +74,21 @@ class SearcherSpec extends Spec with ShouldMatchers with BeforeAndAfterEach {
       }
 
       it("ファイル名") {
-        doc.filename should be ( "index_test1.txt" )
+        doc.name should be ( "index_test1.txt" )
       }
 
       it("content") {
-        val s = new String(doc.content)
-        s should be ("hello world")
-      }
-
-      it("is") {
-        val s = new String(doc.is.orNull)
-        s should be ("hello world")
+        doc.content should be ("hello world")
       }
     }
   }
 
   describe("ドキュメントID") {
-    def doc =
-      Searcher(IndexFile).search("hello")(0)
+    lazy val (doc,_) =
+      searcher.searchByQuery("hello")(0)
     it("IDからドキュメントを取得できる") {
-      Document.get(doc.id, IndexFile).orNull.id should be (doc.id)
-      Document.get(doc.id, IndexFile).orNull.path should be (doc.path)
+      searcher.searchByID(doc.id).orNull.id should be (doc.id)
+      searcher.searchByID(doc.id).orNull.path should be (doc.path)
     }
   }
 }
