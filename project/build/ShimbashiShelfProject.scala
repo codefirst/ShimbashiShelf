@@ -7,7 +7,8 @@ class ShimbashiShelfProject(info: ProjectInfo)
   with    ScctProject
   with    WinstoneProject
 {
-  val lift   = "net.liftweb" %% "lift-mapper" % "2.2" % "compile"
+  val lift = "net.liftweb" %% "lift-mapper" % "2.4-M2" % "compile"
+  val json = "net.liftweb" %% "lift-json" % "2.4-M2" % "compile"
   val fam  = "org.apache.commons" % "commons-jci-fam" % "1.0" % "compile"
   val pdfbox = "org.apache.pdfbox" % "pdfbox" % "1.5.0"
   val poi = "org.apache.poi" % "poi" % "3.8-beta2"

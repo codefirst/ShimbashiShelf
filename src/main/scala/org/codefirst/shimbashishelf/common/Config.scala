@@ -2,7 +2,6 @@ package org.codefirst.shimbashishelf.common
 import java.io.File
 
 import net.liftweb.json._
-import net.liftweb.json.JsonAST._
 import net.liftweb.json.JsonDSL._
 
 import org.codefirst.shimbashishelf.util.FileUtil
