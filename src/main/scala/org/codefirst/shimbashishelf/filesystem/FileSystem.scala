@@ -30,5 +30,6 @@ object FileSystem {
   def searchByQuery(query : String) =
     searcher.searchByQuery(query)
 
-//  def history()
+  def commitList(startDate : Option[Date], endDate : Option[Date]) : im.List[FileDiffCommit] =
+
 }

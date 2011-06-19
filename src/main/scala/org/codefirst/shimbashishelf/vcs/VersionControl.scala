@@ -16,8 +16,11 @@ import scala.collection.mutable._
 import scala.collection.{immutable => im}
 import org.apache.log4j.Logger
 
-class FileDiffCommit(val hash : String, val author : String, val email : String, val date : Date, val files : im.List[String]) {
-}
+class FileDiffCommit[A](val hash : String,
+                        val author : String,
+                        val email : String,
+                        val date : Date,
+                        val files : im.List[A])
 
 class VersionControl(repositoryDir : File) {
   private val logger = Logger.getLogger(classOf[VersionControl])
