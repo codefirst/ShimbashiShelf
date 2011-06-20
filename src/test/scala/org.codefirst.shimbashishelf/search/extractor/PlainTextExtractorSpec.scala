@@ -15,15 +15,15 @@ class PlainTextExtractorSpec extends Spec with ShouldMatchers {
   }
 
   describe("UTF-8") {
-    it should behave like extractText("src/test/scala/org/codefirst/shimbashishelf/search/extractor/sample-utf8.txt")
+    it should behave like extractText("src/test/scala/org.codefirst.shimbashishelf/search/extractor/sample-utf8.txt")
   }
 
   describe("EUC_JP") {
-    it should behave like extractText("src/test/scala/org/codefirst/shimbashishelf/search/extractor/sample-euc.txt")
+    it should behave like extractText("src/test/scala/org.codefirst.shimbashishelf/search/extractor/sample-euc.txt")
   }
 
   describe("sjis") {
-    it should behave like extractText("src/test/scala/org/codefirst/shimbashishelf/search/extractor/sample-sjis.txt")
+    it should behave like extractText("src/test/scala/org.codefirst.shimbashishelf/search/extractor/sample-sjis.txt")
   }
 }
 

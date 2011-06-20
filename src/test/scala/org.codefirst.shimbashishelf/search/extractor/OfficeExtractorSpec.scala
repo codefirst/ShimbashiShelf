@@ -11,7 +11,7 @@ class OfficeExtractorSpec extends Spec with ShouldMatchers {
 
   describe("オフィス") {
     it ("テキストが抽出できる") {
-      val FileName = "src/test/scala/org/codefirst/shimbashishelf/search/extractor/sample.ppt"
+      val FileName = "src/test/scala/org.codefirst.shimbashishelf/search/extractor/sample.ppt"
       val text = OfficeExtractor.extract(FileName).getOrElse("<not found>")
       text should include regex ("コードファースト")
     }

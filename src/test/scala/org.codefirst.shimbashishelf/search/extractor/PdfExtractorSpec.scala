@@ -10,8 +10,9 @@ class PdfExtractorSpec extends Spec with ShouldMatchers {
   }
 
   describe("PDF") {
-    val FileName = "src/test/scala/org/codefirst/shimbashishelf/search/extractor/sample.pdf"
+    val FileName = "src/test/scala/org.codefirst.shimbashishelf/search/extractor/sample.pdf"
     val text = PdfExtractor.extract(FileName).getOrElse("<not found>")
+
     it ("テキストが抽出できる") {
       text should include regex ("codefirst")
     }
