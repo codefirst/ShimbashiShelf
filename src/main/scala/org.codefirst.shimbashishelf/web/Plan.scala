@@ -12,7 +12,7 @@ class Plan extends unfiltered.filter.Planify({
   case req@Path("/about") =>
     Ok ~> Scalate(req, "about.scaml")
   case req@Path("/search") =>
-    Ok ~> Scalate(req, "search.scaml")
+    Search(req)
   case req@Path("/calendar") =>
     Calendar(req)
   case req@Path("/show") =>

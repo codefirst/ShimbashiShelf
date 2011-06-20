@@ -30,17 +30,9 @@ object Calendar {
   def navi(cal : SCalendar) =
     "year=%d&month=%d".format(cal.year, cal.month)
 
-  def get[A](req : HttpRequest[A], name : String, value : Int) = {
-    val xs = req.parameterValues(name)
-    if(xs eq null)
-      value
-    else
-      xs.headOption.flatMap((s : String) => sure(s.toInt)).getOrElse(value)
-  }
-
   def apply[A](req : HttpRequest[A]) = {
-    val year  = get(req, "year" , today.year)
-    val month = get(req, "month", today.month)
+    val year  = getInt(req, "year" , today.year)
+    val month = getInt(req, "month", today.month)
 
     val cal    = SCalendar(year, month, 1)
     val commits =

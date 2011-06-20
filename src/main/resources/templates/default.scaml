@@ -1,5 +1,6 @@
--@ var body: String = ""
--@ var title: String = "Top Page"
+-@ val body : String = ""
+-@ val title: String = "Top Page"
+-@ val query : String = ""
 !!! 5
 %html
   %head
@@ -20,8 +21,8 @@
             %a(href="/")
               %img(alt="ShibashiShelf" title="ShibashiShelf" src="static/images/logo.png")
           .right.clearfix
-            %form
-              %input(type="text" name="query" id="query")
+            %form(action="/search")
+              %input(type="text" name="q" id="q" value=query)
               %input(type="submit" value="Search")
           %br.clear
           .main-menu

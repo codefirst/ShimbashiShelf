@@ -1,0 +1,15 @@
+-@ val query  : String = ""
+-@ val page   : Seq[(org.codefirst.shimbashishelf.filesystem.File, scala.xml.Node)] = List()
+- attributes("title") = query
+
+.search-result
+  - for((file, highlight) <- page)
+    .result-item
+      .title
+        %a(href="/show/#{file.id}") =file.name
+      .info
+        ID #{file.manageID}
+        Path: #{file.path}
+      .highlight
+        =unescape(highlight)
+
