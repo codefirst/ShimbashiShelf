@@ -2,9 +2,9 @@ package org.codefirst.shimbashishelf.web
 
 import unfiltered.request._
 import unfiltered.response._
-import unfiltered._
+import unfiltered.scalate._
 
 class Plan extends unfiltered.filter.Planify({
-   case _ => ResponseString("hello world")
+   case req => Ok ~> Scalate(req, "index.scaml")
 })
 

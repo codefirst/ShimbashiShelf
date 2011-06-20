@@ -9,6 +9,7 @@ class ShimbashiShelfProject(info: ProjectInfo)
 {
   val uf_filter = "net.databinder" %% "unfiltered-filter" % "0.3.4"
   val uf_jetty  = "net.databinder" %% "unfiltered-jetty" % "0.3.4"
+  val scalate_core = "org.fusesource.scalate" % "scalate-core" % "1.5.0"
 
   val json = "net.liftweb" %% "lift-json" % "2.4-M2" % "compile"
   val fam  = "org.apache.commons" % "commons-jci-fam" % "1.0" % "compile"
