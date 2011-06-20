@@ -2,6 +2,7 @@
 package unfiltered.scalate
 
 import org.fusesource.scalate.{TemplateEngine, Binding, DefaultRenderContext, RenderContext}
+import org.fusesource.scalate.layout.DefaultLayoutStrategy
 
 import unfiltered.response.{HttpResponse, Responder}
 import unfiltered.request.HttpRequest
@@ -12,6 +13,8 @@ import unfiltered.request.HttpRequest
 private[scalate] object ScalateDefaults{
   val defaultTemplateDirs = List(new java.io.File("src/main/resources/templates"))
   implicit val engine = new TemplateEngine(defaultTemplateDirs)
+  engine.layoutStrategy = new DefaultLayoutStrategy(engine,
+                                                    "src/main/resources/templates/default.scaml")
 
   implicit def renderContext(req: HttpRequest[_], res: HttpResponse[_], engine: TemplateEngine) =
     new DefaultRenderContext(unfiltered.util.Optional(req.uri).getOrElse("").split('?')(0), engine, res.getWriter)
@@ -41,9 +44,11 @@ case class Scalate[A, B](request: HttpRequest[A], template: String, attributes:(
       val scalateTemplate = engine.load(template, bindings)
       val context = contextBuilder(request, res, engine)
       for(attr <- additionalAttributes) context.attributes(attr._1) = attr._2
+      context.attributes("layout") = "src/main/resources/templates/default.scaml"
       for(attr <- attributes) context.attributes(attr._1) = attr._2
       engine.layout(scalateTemplate, context)
     }
     finally { writer.close() }
   }
 }
+
