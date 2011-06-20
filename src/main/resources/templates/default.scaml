@@ -1,8 +1,30 @@
--@ var body: String = "def"
--@ var title: String = "Some Default Title"
-
+-@ var body: String = ""
+-@ var title: String = "Top Page"
+!!! 5
 %html
-  %head= title
+  %head
+    %meta(http-equiv="content" content="text/thml; charset=utf-8")
+    %meta(name = "content-style-type" content = "text/css")
+    %meta(name = "content-script-type" content = "text/javascript")
+    %meta(name="description" content="")
+    %meta(name="keywords" content="")
+    %link(href="static/images/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon")
+    %link(href="static/stylesheets/shimbashishelf.css" rel="stylesheet" type="text/css")
+    %script(src="static/javascripts/jquery.js" type="text/javascript")
+    %title= "%s - ShimbashiShelf".format(title)
   %body
-    %p hello, everyone
-    != body
+    .container
+      .header
+        .search-form
+          .left
+            %a(href="/")
+              %img(alt="ShibashiShelf" title="ShibashiShelf" src="static/images/logo.png")
+          .right.clearfix
+            %form
+              %input(type="text" name="query" id="query")
+              %input(type="submit" value="Search")
+          %br.clear
+      .content
+        =unescape(body)
+      .footer
+        %p Copyright (C) 2011 codefirst.org. All rights reserved.

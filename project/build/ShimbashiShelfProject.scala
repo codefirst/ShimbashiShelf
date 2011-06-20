@@ -1,11 +1,13 @@
 import sbt._
 import eu.henkelmann.sbt.JUnitXmlTestsListener
 import reaktor.scct.ScctProject
+import org.fusesource.scalate.sbt.PrecompilerWebProject
 
 class ShimbashiShelfProject(info: ProjectInfo)
   extends DefaultWebProject(info)
   with    ScctProject
   with    WinstoneProject
+  with    PrecompilerWebProject
 {
   val uf_filter = "net.databinder" %% "unfiltered-filter" % "0.3.4"
   val uf_jetty  = "net.databinder" %% "unfiltered-jetty" % "0.3.4"

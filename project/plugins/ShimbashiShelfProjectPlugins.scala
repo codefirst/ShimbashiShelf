@@ -7,4 +7,5 @@ class ShimbashiShelfProjectPlugins(info: ProjectInfo) extends PluginDefinition(i
   lazy val scctPlugin = "reaktor" % "sbt-scct-for-2.8" % "0.1-SNAPSHOT"
   val github = "GitHub" at "http://petrh.github.com/m2/"
   val winstone = "com.github.petrh" % "sbt-winstone-plugin" % "1.0-SNAPSHOT"
+  lazy val scalate_plugin = "org.fusesource.scalate" % "sbt-scalate-plugin" % "1.5.0"
 }
