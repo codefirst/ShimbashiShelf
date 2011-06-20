@@ -5,6 +5,8 @@ import unfiltered.response._
 import unfiltered.scalate._
 
 class Plan extends unfiltered.filter.Planify({
-   case req => Ok ~> Scalate(req, "index.scaml")
+  case Path(Seg("static" :: name)) =>
+    Pass
+  case req => Ok ~> Scalate(req, "index.scaml")
 })
 
