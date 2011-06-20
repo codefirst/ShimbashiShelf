@@ -1,0 +1,23 @@
+-@ val days : Seq[org.codefirst.shimbashishelf.web.Day] = List()
+-@ val next : String = ""
+-@ val prev : String = ""
+-@ val title : String = ""
+- attributes("title") = "Calendar"
+.month-title
+  =title
+.calendar-navigator
+  %a(href="/calendar?#{prev}")
+    %span < prev
+  %a(href="/calendar?#{next}")
+    %span next >
+  %br.clear
+%table.calendar
+  - for(day <- days)
+    %tr(class="#{day.wday} #{day.klass}")
+      %td.day= day.day
+      %td.dayname= day.wday
+      %td.files
+        - for(file <- day.files)
+          %div
+            %a(title="#{file.path}" href="/show/#{file.id}")
+              =file.name

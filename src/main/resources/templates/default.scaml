@@ -11,7 +11,7 @@
     %link(href="static/images/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon")
     %link(href="static/stylesheets/shimbashishelf.css" rel="stylesheet" type="text/css")
     %script(src="static/javascripts/jquery.js" type="text/javascript")
-    %title= "%s - ShimbashiShelf".format(title)
+    %title #{title} - ShimbashiShelf
   %body
     .container
       .header
@@ -24,7 +24,21 @@
               %input(type="text" name="query" id="query")
               %input(type="submit" value="Search")
           %br.clear
+          .main-menu
+            %ul
+              %li
+                %a(href="/") Top
+              %li
+                %a(href="/calendar") Calendar
+              %li
+                %a(href="/preferences")  Preferences
+              %li
+                %a(href="/about") About
+            %br.clear
       .content
         =unescape(body)
       .footer
-        %p Copyright (C) 2011 codefirst.org. All rights reserved.
+        %p
+          Copyright (C) 2011
+          %a(href="http://codefirst.org") codefirst.org.
+          All rights reserved.

@@ -31,7 +31,7 @@ h2 {
 }
 .main-menu li {
     float: left;
-    width: 80px;
+    width: 100px;
     padding-top: 5px;
     padding-bottom: 5px;
     text-align: center;
@@ -79,7 +79,7 @@ h2 {
     margin: auto;
 }
 
-.search-navigator{
+.search-navigator, .calendar-navigator {
     text-align: center;
 }
 .calendar-navigator span,
@@ -258,7 +258,7 @@ img {
     border-bottom: 1px solid #ccc;
     padding: 3px;
 }
-.calendar .odd {
+table.calendar tr:nth-child(odd)  {
     background-color: #fbfbfb;
 }
 

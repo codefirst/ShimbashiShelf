@@ -7,6 +7,11 @@ import org.fusesource.scalate.layout.DefaultLayoutStrategy
 import unfiltered.response.{HttpResponse, Responder}
 import unfiltered.request.HttpRequest
 
+trait RenderHelper{
+  def cycle[A](xs : A*) : Stream[A] =
+    Stream(xs : _*).append(cycle(xs : _*))
+}
+
 /**
  * private object that holds the default engine
 */
@@ -17,7 +22,7 @@ private[scalate] object ScalateDefaults{
                                                     "src/main/resources/templates/default.scaml")
 
   implicit def renderContext(req: HttpRequest[_], res: HttpResponse[_], engine: TemplateEngine) =
-    new DefaultRenderContext(unfiltered.util.Optional(req.uri).getOrElse("").split('?')(0), engine, res.getWriter)
+    new DefaultRenderContext(unfiltered.util.Optional(req.uri).getOrElse("").split('?')(0), engine, res.getWriter) with RenderHelper
 }
 
 object Scalate {
