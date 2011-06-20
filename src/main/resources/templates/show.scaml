@@ -1,0 +1,15 @@
+-@ val file : org.codefirst.shimbashishelf.filesystem.File
+-@ val body : scala.xml.Node
+- attributes("title") = file.name
+
+.show-container
+  %h2 =file.name
+  .download-container
+    %a(href="/download/#{file.id}") Download
+  %br.clear
+  .info
+    ID #{file.manageID}
+    Path: #{file.path}
+    %input(type="text" class="info" value={file.path} onmousedown="this.select();")
+  .show-body
+    = unescape(body)

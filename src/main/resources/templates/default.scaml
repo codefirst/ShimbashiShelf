@@ -9,9 +9,9 @@
     %meta(name = "content-script-type" content = "text/javascript")
     %meta(name="description" content="")
     %meta(name="keywords" content="")
-    %link(href="static/images/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon")
-    %link(href="static/stylesheets/shimbashishelf.css" rel="stylesheet" type="text/css")
-    %script(src="static/javascripts/jquery.js" type="text/javascript")
+    %link(href="/static/images/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon")
+    %link(href="/static/stylesheets/shimbashishelf.css" rel="stylesheet" type="text/css")
+    %script(src="/static/javascripts/jquery.js" type="text/javascript")
     %title #{title} - ShimbashiShelf
   %body
     .container
@@ -19,7 +19,7 @@
         .search-form
           .left
             %a(href="/")
-              %img(alt="ShibashiShelf" title="ShibashiShelf" src="static/images/logo.png")
+              %img(alt="ShibashiShelf" title="ShibashiShelf" src="/static/images/logo.png")
           .right.clearfix
             %form(action="/search")
               %input(type="text" name="q" id="q" value=query)
