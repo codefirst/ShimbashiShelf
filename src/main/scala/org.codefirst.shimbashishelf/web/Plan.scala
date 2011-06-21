@@ -17,6 +17,8 @@ class Plan extends unfiltered.filter.Planify({
     Search(req)
   case req@Path("/calendar") =>
     Calendar(req)
+  case req@Path(Seg("view"::path)) =>
+    View(req, path)
   case req@Path(Seg("show"::id::_)) =>
     Show(req, id)
   case req@Path(Seg("download"::id::_)) =>
