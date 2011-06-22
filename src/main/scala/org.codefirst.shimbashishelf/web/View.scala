@@ -11,12 +11,21 @@ import org.codefirst.shimbashishelf.vcs.Commit
 import org.codefirst.shimbashishelf.filesystem.{File, FileSystem}
 
 object View {
+  def isPjax[A](req : HttpRequest[A]) : Boolean =
+    notNull(req.headers("X-PJAX"), List()).nonEmpty
+
+  def pjax[A](req : HttpRequest[A], template : String) =
+        if( isPjax(req) )
+          Ok ~> Scalate(req, template, ("layout", ""))
+        else
+          Ok ~> Scalate(req, template)
+
   def apply[A](req : HttpRequest[A], path : List[String]) = {
     path match {
       case List() =>
-        Ok ~> Scalate(req, "index.scaml")
+        pjax(req, "index.scaml")
       case "tmp"::_ | "images"::_ | "xxx"::_ =>
-        Ok ~> Scalate(req, "dummy.scaml")
+        pjax(req, "dummy.scaml")
       case _ =>
         NotFound ~> Scalate(req, "404.scaml")
     }
