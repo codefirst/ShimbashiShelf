@@ -97,14 +97,14 @@ $.pjax = function( options ) {
     type: 'GET',
     dataType: 'html',
     beforeSend: function(xhr){
-      $container.trigger('start.pjax')
+      $container.trigger('start.pjax', options)
       xhr.setRequestHeader('X-PJAX', 'true')
     },
     error: function(){
       window.location = options.url
     },
     complete: function(){
-      $container.trigger('end.pjax')
+      $container.trigger('end.pjax', options)
     },
     success: function(data){
       // If we got no data or an entire web page, go directly
