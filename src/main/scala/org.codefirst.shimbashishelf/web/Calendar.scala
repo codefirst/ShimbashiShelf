@@ -9,10 +9,10 @@ import unfiltered.scalate._
 import org.codefirst.shimbashishelf.util.SCalendar
 import org.codefirst.shimbashishelf.util.Base._
 import org.codefirst.shimbashishelf.vcs.Commit
-import org.codefirst.shimbashishelf.filesystem.{File, FileSystem}
+import org.codefirst.shimbashishelf.filesystem.{FileObject, FileSystem}
 
 
-case class Day(day : Int, wday : String, files : Seq[File], klass : String)
+case class Day(day : Int, wday : String, files : Seq[FileObject], klass : String)
 
 object Calendar {
   val wday = Map(
@@ -58,7 +58,7 @@ object Calendar {
                   ("next", next))
   }
 
-  private def filesOfDay(day:Date, commits : Seq[Commit[File]]) = {
+  private def filesOfDay(day:Date, commits : Iterable[Commit[FileObject]]) = {
     val cal = java.util.Calendar.getInstance()
     cal.setTime(day)
     Day(cal.get(java.util.Calendar.DATE),

@@ -18,4 +18,11 @@ object Base{
   def using[A <: { def close() : Unit }, B](resource : A)(body : A => B) : B =
     try     { body(resource) }
     finally { resource.close() }
+
+  def guard(b : Boolean) : Option[Unit] = {
+    if(b)
+      Some(())
+    else
+      None
+  }
 }

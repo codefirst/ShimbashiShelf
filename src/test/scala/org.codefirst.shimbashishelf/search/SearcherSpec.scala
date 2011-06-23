@@ -49,7 +49,7 @@ class SearcherSpec extends Spec with ShouldMatchers with BeforeAndAfterEach {
       }
 
       it("content") {
-        doc.content should be ("hello world")
+        doc.metadata.content should be ("hello world")
       }
 
       it("ハイライト") {
@@ -78,17 +78,8 @@ class SearcherSpec extends Spec with ShouldMatchers with BeforeAndAfterEach {
       }
 
       it("content") {
-        doc.content should be ("hello world")
+        doc.metadata.content should be ("hello world")
       }
-    }
-  }
-
-  describe("ドキュメントID") {
-    lazy val (doc,_) =
-      searcher.searchByQuery("hello")(0)
-    it("IDからドキュメントを取得できる") {
-      searcher.searchByID(doc.id).orNull.id should be (doc.id)
-      searcher.searchByID(doc.id).orNull.path should be (doc.path)
     }
   }
 }

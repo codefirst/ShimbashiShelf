@@ -13,18 +13,20 @@ import org.codefirst.shimbashishelf.filesystem.{File, FileSystem}
 object Show {
   def apply[A](req : HttpRequest[A], id : String) = {
     FileSystem(id) match {
-      case Some(file@File(id,mimeType,_,content,_)) =>
+      case Some(file@File(_, _)) =>
+        val metadata =
+          file.metadata
         val body : scala.xml.Node =
-          if(mimeType startsWith "image") {
-            FileSystem.read(file) match {
+          if ( metadata.mimeType startsWith "image" ) {
+            file.read match {
               case Some(xs) =>
                 val base64 = Base64.encodeBase64String( xs )
-                <div><img src={"data:%s;base64,%s".format(mimeType, base64)} /></div>
+                <div><img src={"data:%s;base64,%s".format( metadata.mimeType, base64 )} /></div>
               case None =>
                 <div class="error no-image">no image</div>
             }
           } else
-            <pre>{content}</pre>
+            <pre>{metadata.content}</pre>
         Ok ~> Scalate(req, "show.scaml",
                       ("file", file),
                       ("body", body))

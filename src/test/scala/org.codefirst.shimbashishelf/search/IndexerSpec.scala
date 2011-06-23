@@ -49,7 +49,7 @@ class IndexerSpec extends Spec with ShouldMatchers with BeforeAndAfterEach {
       val doc1 = Searcher(IndexFile).searchByPath(SampleFile.getAbsolutePath()).orNull
       val doc2 = Searcher(IndexFile).searchByPath(AnotherFile.getAbsolutePath()).orNull
 
-      doc1.manageID should not be(doc2.manageID)
+      doc1.metadata.manageID should not be(doc2.metadata.manageID)
     }
 
     it("管理番号が引きつがれる") {
@@ -62,7 +62,7 @@ class IndexerSpec extends Spec with ShouldMatchers with BeforeAndAfterEach {
 
       println(doc1)
       println(doc2)
-      doc1.manageID should be (doc2.manageID)
+      doc1.metadata.manageID should be (doc2.metadata.manageID)
     }
   }
 

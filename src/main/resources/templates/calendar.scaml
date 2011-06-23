@@ -1,4 +1,4 @@
--@ val days : Seq[org.codefirst.shimbashishelf.web.Day] = List()
+-@ val days : Iterable[org.codefirst.shimbashishelf.web.Day] = List()
 -@ val next : String = ""
 -@ val prev : String = ""
 -@ val title : String = ""
@@ -19,5 +19,5 @@
       %td.files
         - for(file <- day.files)
           %div
-            %a(title="#{file.path}" href="/show/#{file.id}")
+            %a(title="#{file.path}" href="/show/#{file.path}")
               =file.name

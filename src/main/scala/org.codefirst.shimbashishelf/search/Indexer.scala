@@ -59,7 +59,7 @@ class Indexer(indexPath : String, idGenerator : IdGenerator) {
       Status.withDefault { case status => {
         val manageID = Searcher(indexPath).searchByPath(path) match {
           case Some(doc) =>
-            doc.manageID
+            doc.metadata.manageID
           case None =>
             idGenerator.generate(path, status)
         }

@@ -14,7 +14,7 @@ import net.reduls.igo.Tagger
 import net.reduls.igo.analysis.ipadic.IpadicAnalyzer
 import scala.xml.{Node, XML}
 import org.codefirst.shimbashishelf.util.Base._
-import org.codefirst.shimbashishelf.filesystem.File
+import org.codefirst.shimbashishelf.filesystem.{File, Metadata}
 
 object Searcher{
   def apply() = new Searcher(INDEX_PATH)
@@ -35,13 +35,13 @@ class Searcher(indexPath : String) {
     doc.getField(key).stringValue()
 
   private def file(id : String, doc : LDocument) : File =
-    File(id         = id,
-         mimeType   = field(doc, "mimeType"),
-         path       = field(doc, "path"),
-         content    = field(doc, "content"),
-         attributes = Map("manageID" -> field(doc, "manageID")))
+    File(field(doc, "path"),
+         Some(Metadata(
+           mimeType = field(doc, "mimeType"),
+           content  = field(doc, "content"),
+           attrs    = Map("manageID" -> field(doc, "manageID")))))
 
-  private def search(query : Query) : Seq[(File,Node)] =
+  private def search(query : Query) : Seq[(File, Node)] =
     using( FSDirectory.open(new JFile(indexPath)) ) { case dir =>
       using( new IndexSearcher(dir, true) ) { case searcher => {
         val scorer = new QueryScorer(query, "content")

@@ -15,7 +15,7 @@ object Search{
   def apply[A](req : HttpRequest[A]) = {
     val query =
       getStr(req, "q")
-    val files : Seq[(File, scala.xml.Node)] =
+    val files : Iterable[(File, scala.xml.Node)] =
       query match {
         case Some(q) =>
           FileSystem.searchByQuery(q)

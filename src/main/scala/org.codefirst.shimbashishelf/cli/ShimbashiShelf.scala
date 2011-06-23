@@ -34,7 +34,7 @@ object ShimbashiShelf {
           val files = Searcher().searchByQuery(args(0))
           println(files.length + " documents found:")
           for((file,highlight) <- files){
-            println("[%s] %s".format(file.manageID, file.path))
+            println("[%s] %s".format(file.metadata.manageID, file.path))
             println(highlight)
           }
         }
@@ -44,7 +44,7 @@ object ShimbashiShelf {
         } else {
           Searcher().searchByPath(args(0)) match {
             case Some(doc) =>
-              println("[%s] %s".format(doc.manageID, doc.path))
+              println("[%s] %s".format(doc.metadata.manageID, doc.path))
             case None =>
               println("not found")
           }

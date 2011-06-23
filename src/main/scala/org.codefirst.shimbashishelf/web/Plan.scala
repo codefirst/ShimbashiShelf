@@ -5,6 +5,7 @@ import unfiltered.response._
 import unfiltered.scalate._
 
 import org.codefirst.shimbashishelf.filesystem._
+import org.codefirst.shimbashishelf.util.Base._
 
 class Plan extends unfiltered.filter.Planify({
   case Path(Seg("static" :: _)) =>
@@ -23,9 +24,9 @@ class Plan extends unfiltered.filter.Planify({
     Show(req, id)
   case req@Path(Seg("download"::id::_)) =>
     val response = for {
-      file <- FileSystem(id)
+      file@File(_,_) <- FileSystem(id)
       val name = file.name
-      xs   <- FileSystem.read(file)
+      xs   <- file.read
     } yield (name,xs)
     response match {
       case Some((name, xs)) =>

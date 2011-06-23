@@ -1,0 +1,12 @@
+- attributes("javascripts") = List("jquery.pjax.js", "view.js")
+- import org.codefirst.shimbashishelf.filesystem.{File, FileSystem, Directory}
+-@ val files : Iterable[org.codefirst.shimbashishelf.filesystem.FileObject] = List()
+#pjax
+  %ul
+    %li
+      %a.up(href="/view/") ..
+    - for(file <- files)
+      %li
+        %a(href="/view/#{file.path}")
+          =file.name
+
