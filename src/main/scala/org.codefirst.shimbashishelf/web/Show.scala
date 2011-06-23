@@ -11,8 +11,8 @@ import org.codefirst.shimbashishelf.vcs.Commit
 import org.codefirst.shimbashishelf.filesystem.{File, FileSystem}
 
 object Show {
-  def apply[A](req : HttpRequest[A], id : String) = {
-    FileSystem(id) match {
+  def apply[A](req : HttpRequest[A], path : String) = {
+    FileSystem.searchByPath(path) match {
       case Some(file@File(_, _)) =>
         val metadata =
           file.metadata

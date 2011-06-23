@@ -20,11 +20,11 @@ class Plan extends unfiltered.filter.Planify({
     Calendar(req)
   case req@Path(Seg("view"::path)) =>
     View(req, path)
-  case req@Path(Seg("show"::id::_)) =>
-    Show(req, id)
-  case req@Path(Seg("download"::id::_)) =>
+  case req@Path(Seg("show"::path)) =>
+    Show(req, path.mkString("/"))
+  case req@Path(Seg("download"::path)) =>
     val response = for {
-      file@File(_,_) <- FileSystem(id)
+      file@File(_,_) <- FileSystem.searchByPath(path.mkString("/"))
       val name = file.name
       xs   <- file.read
     } yield (name,xs)

@@ -5,10 +5,10 @@
 .show-container
   %h2 =file.name
   .download-container
-    %a(href="/download/#{file.id}") Download
+    %a(href="/download/#{file.path}") Download
   %br.clear
   .info
-    ID #{file.manageID}
+    ID #{file.metadata.manageID}
     Path: #{file.path}
     %input(type="text" class="info" value={file.path} onmousedown="this.select();")
   .show-body
