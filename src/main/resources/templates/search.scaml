@@ -6,10 +6,10 @@
   - for((file, highlight) <- page)
     .result-item
       .title
-        %a(href="/show/#{file.path}") =file.name
+        %a(href="/view#{file.url}") =file.name
       .info
         ID #{file.metadata.manageID}
-        Path: #{file.path}
+        Path: #{file.url}
       .highlight
         =unescape(highlight)
 

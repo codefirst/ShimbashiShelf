@@ -19,5 +19,5 @@
       %td.files
         - for(file <- day.files)
           %div
-            %a(title="#{file.path}" href="/show/#{file.path}")
+            %a(title="#{file.url}" href="/view#{file.url}")
               =file.name

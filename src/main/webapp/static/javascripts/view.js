@@ -1,6 +1,6 @@
 (function($){
     $(function(){
-        $("#pjax ul a").pjax("#pjax");
+        $("#pjax a").pjax("#pjax");
         $("#pjax").bind({
             "start.pjax": function(_, options){
                 if( options.clickedElement.hasClass("up") ) {

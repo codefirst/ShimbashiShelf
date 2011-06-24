@@ -35,7 +35,7 @@ class Searcher(indexPath : String) {
     doc.getField(key).stringValue()
 
   private def file(id : String, doc : LDocument) : File =
-    File(field(doc, "path"),
+    File(new JFile(field(doc, "path")),
          Some(Metadata(
            mimeType = field(doc, "mimeType"),
            content  = field(doc, "content"),

@@ -1,0 +1,22 @@
+-@ val files : Iterable[org.codefirst.shimbashishelf.filesystem.FileObject] = List()
+-@ val dir : org.codefirst.shimbashishelf.filesystem.Directory
+- attributes("javascripts") = List("jquery.pjax.js")
+- attributes("title") = dir.url
+
+
+%form(action="/mkdir" method="POST")
+  %input(type="text" name="name" placeholder="new directory")
+  %input(type="hidden" name="cwd" value="#{dir.url}")
+  %input(type="submit" value="mkdir")
+%form(action="/upload#{dir.url}" enctype="multipart/form-data" method="POST")
+  %input(type="file" name="file" id="file")
+  %input(type="submit")
+
+#pjax
+  %ul
+    %li
+      %a.up(href="/view#{dir.url}/..") ..
+    - for(file <- files)
+      %li
+        %a(href="/view#{file.url}")
+          =file.name
