@@ -60,7 +60,7 @@ class Searcher(indexPath : String) {
     if (query == null || query.trim().length() == 0)
       Seq()
     else
-      search(parser.parse(query))
+      sure( search(parser.parse(query)) ) getOrElse Seq()
   }
 
   def searchByPath(path : String) : Option[File] =
@@ -77,4 +77,3 @@ class Searcher(indexPath : String) {
           Some(file(id, searcher.doc(id.toInt)))
         } } } }
 }
-

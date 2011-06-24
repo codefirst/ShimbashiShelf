@@ -56,11 +56,12 @@ object FileSystem {
     file.mkdirs()
   }
 
-  def save( path : String, write : JFile => Unit ) {
+  def save( path : String, write : JFile => Unit ) : Option[FileObject] = {
     val file = new JFile(FileUtil.join( Home.dir("git").getPath(), path ))
     write(file)
     Indexer().index(file)
     vcs.commit(file)
+    fromJFile(file)
   }
 
   def searchByQuery(query : String) : Seq[( File, scala.xml.Node )] = {
@@ -72,7 +73,7 @@ object FileSystem {
   }
 
   def metadata(file : JFile) : Option[Metadata] = {
-    searchByPath(file.getAbsolutePath()).map(_.metadata)
+    searchByPath(file.getPath()).map(_.metadata)
   }
 
   private def vcs =
@@ -81,11 +82,13 @@ object FileSystem {
   def commitList(from : Option[Date], to : Option[Date]) : Iterable[Commit[FileObject]] =
     vcs.commitList(from, to).toIterable.map(commit =>
       commit.copy(files = commit.files.flatMap{file =>
-        (searcher.searchByPath(file) : Option[FileObject])
+        (FileSystem(file) : Option[FileObject])
     }))
 
   def fromJFile(file : JFile, metadata : Option[Metadata] = None) : Option[FileObject] = {
     if ( ! file.exists() )
+      None
+    else if ( file.getName().startsWith(".") )
       None
     else if ( file.isDirectory() )
       Some( Directory( file, metadata ) )

@@ -23,7 +23,7 @@ class Plan extends unfiltered.filter.Planify({
     View(req, path)
   case req@Path(Seg("download"::path)) =>
     val response = for {
-      file@File(_,_) <- FileSystem.searchByPath(path.mkString("/"))
+      file@File(_,_) <- FileSystem(path.mkString("/"))
       val name = file.name
       xs   <- file.read
     } yield (name,xs)
@@ -50,9 +50,13 @@ class Plan extends unfiltered.filter.Planify({
     multi.files("file") match {
       case Seq(f, _*) =>
         val name = f.name
-        val file = FileUtil.join( cwd.mkString("/"), name)
-        FileSystem.save(file, f.write(_) )
-        Redirect("/view" + file)
+        val path = FileUtil.join( cwd.mkString("/"), name)
+        FileSystem.save(path, f.write(_) ) match {
+          case Some(file) =>
+            Redirect("/view" + file.url)
+          case None =>
+            BadRequest ~> Scalate(req, "404.scaml")
+        }
       case _ =>  ResponseString("what's f?")
     }
   case req =>

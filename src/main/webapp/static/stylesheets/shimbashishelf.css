@@ -263,7 +263,7 @@ table.calendar tr:nth-child(odd)  {
 }
 
 .calendar .today {
-    background-color: #e0ffe0;
+    background-color: #e0ffe0 !IMPORTANT;
 }
 
 .calendar .day {

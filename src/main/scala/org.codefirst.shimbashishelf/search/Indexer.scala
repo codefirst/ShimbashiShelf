@@ -81,11 +81,11 @@ class Indexer(indexPath : String, idGenerator : IdGenerator) {
   }
 
   def index(file : File) {
-    index(file.getAbsolutePath(),
+    index(file.getPath(),
           TextExtractor.extract(file.getAbsolutePath()))
   }
 
   def delete(file : File) {
-    withWriter { writer => writer.deleteDocuments(("path", file.getAbsolutePath())) }
+    withWriter { writer => writer.deleteDocuments(("path", file.getPath())) }
   }
 }

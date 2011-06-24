@@ -5,7 +5,7 @@
 .show-container
   %h2 =file.name
   .download-container
-    %a(href="/download/#{file.url}") Download
+    %a(href="/download#{file.url}") Download
   %br.clear
   .info
     ID #{file.metadata.manageID}
