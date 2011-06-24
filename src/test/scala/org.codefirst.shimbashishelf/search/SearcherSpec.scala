@@ -41,7 +41,7 @@ class SearcherSpec extends Spec with ShouldMatchers with BeforeAndAfterEach {
 
     describe("ドキュメント") {
       it("パス") {
-        doc.path should be ( SampleFile.getAbsolutePath())
+        doc.file.getAbsolutePath() should be ( SampleFile.getAbsolutePath())
       }
 
       it("ファイル名") {
@@ -60,7 +60,7 @@ class SearcherSpec extends Spec with ShouldMatchers with BeforeAndAfterEach {
 
   describe("searchByPath") {
     it("seacrhbypath") {
-      searcher.searchByPath(SampleFile.getAbsolutePath()) should not be(None)
+      searcher.searchByPath(SampleFile.getPath()) should not be(None)
     }
   }
 
@@ -70,7 +70,7 @@ class SearcherSpec extends Spec with ShouldMatchers with BeforeAndAfterEach {
 
     describe("ドキュメント") {
       it("パス") {
-        doc.path should be ( SampleFile.getAbsolutePath())
+        doc.file.getAbsolutePath() should be ( SampleFile.getAbsolutePath())
       }
 
       it("ファイル名") {

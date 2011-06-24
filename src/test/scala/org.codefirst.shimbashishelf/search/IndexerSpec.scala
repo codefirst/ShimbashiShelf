@@ -31,7 +31,7 @@ class IndexerSpec extends Spec with ShouldMatchers with BeforeAndAfterEach {
       val _ = indexer
       println("hi")
       println(Searcher(IndexFile).searchByPath(SampleFile.getAbsolutePath()))
-      Searcher(IndexFile).searchByPath(SampleFile.getAbsolutePath()) should not be (None)
+      Searcher(IndexFile).searchByPath(SampleFile.getPath()) should not be (None)
     }
 
     it("indexから削除できる") {
@@ -46,8 +46,8 @@ class IndexerSpec extends Spec with ShouldMatchers with BeforeAndAfterEach {
       indexer.index(SampleFile)
       indexer.index(AnotherFile)
 
-      val doc1 = Searcher(IndexFile).searchByPath(SampleFile.getAbsolutePath()).orNull
-      val doc2 = Searcher(IndexFile).searchByPath(AnotherFile.getAbsolutePath()).orNull
+      val doc1 = Searcher(IndexFile).searchByPath(SampleFile.getPath()).orNull
+      val doc2 = Searcher(IndexFile).searchByPath(AnotherFile.getPath()).orNull
 
       doc1.metadata.manageID should not be(doc2.metadata.manageID)
     }
@@ -55,10 +55,10 @@ class IndexerSpec extends Spec with ShouldMatchers with BeforeAndAfterEach {
     it("管理番号が引きつがれる") {
       val indexer = Indexer(IndexFile)
       indexer.index(SampleFile)
-      val doc1 = Searcher(IndexFile).searchByPath(SampleFile.getAbsolutePath()).orNull
+      val doc1 = Searcher(IndexFile).searchByPath(SampleFile.getPath()).orNull
 
       indexer.index(SampleFile)
-      val doc2 = Searcher(IndexFile).searchByPath(SampleFile.getAbsolutePath()).orNull
+      val doc2 = Searcher(IndexFile).searchByPath(SampleFile.getPath()).orNull
 
       println(doc1)
       println(doc2)
