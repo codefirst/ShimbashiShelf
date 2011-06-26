@@ -28,11 +28,16 @@ class ShimbashiShelfProject(info: ProjectInfo)
   val log4j = "log4j" % "log4j" % "1.2.16"
   val mimeUtil = "eu.medsea.mimeutil" % "mime-util" % "2.1.3"
   val codec = "commons-codec" % "commons-codec" % "1.3"
+  val slf4j = "org.slf4j" % "slf4j-log4j12" % "1.6.1"
 
   // for development
   val jetty7 = "org.eclipse.jetty" % "jetty-webapp" % "7.0.2.RC0" % "test"
   val scalaTest = "org.scalatest" % "scalatest_2.9.0" % "1.6.1"
 
+  // test
+  val uf_netty = "net.databinder" %% "unfiltered-netty" % "0.3.4"
+  val dispatch_http = "net.databinder" %% "dispatch-http" % "0.8.3"
+  val dispatch_mime = "net.databinder" %% "dispatch-mime" % "0.8.3"
   def junitXmlListener: TestReportListener = new JUnitXmlTestsListener(outputPath.toString)
   override def testListeners: Seq[TestReportListener] = super.testListeners ++ Seq(junitXmlListener)
 

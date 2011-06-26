@@ -13,9 +13,7 @@
   %input(type="submit")
 
 #pjax
-  %ul
-    %li
-      %a.up(href="/view#{dir.url}/..") ..
+  %ul.files
     - for(file <- files)
       %li
         %a(href="/view#{file.url}")
