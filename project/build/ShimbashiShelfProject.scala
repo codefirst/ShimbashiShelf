@@ -31,7 +31,7 @@ class ShimbashiShelfProject(info: ProjectInfo)
   val slf4j = "org.slf4j" % "slf4j-log4j12" % "1.6.1"
 
   // for development
-  val jetty7 = "org.eclipse.jetty" % "jetty-webapp" % "7.0.2.RC0" % "test"
+  val jetty6 = "org.mortbay.jetty" % "jetty" % "6.1.14" % "test"
   val scalaTest = "org.scalatest" % "scalatest_2.9.0" % "1.6.1"
 
   // test
