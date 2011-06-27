@@ -9,6 +9,7 @@ import org.apache.http.util.EntityUtils
 import org.apache.http.{HttpResponse,HttpEntity}
 
 import org.codefirst.shimbashishelf.common.Home
+import org.codefirst.shimbashishelf.filesystem.FileSystem
 import org.codefirst.shimbashishelf.util.FileUtil
 
 class PlanSpec extends FeatureSpec with Served  with GivenWhenThen with BeforeAndAfterEach with ShouldMatchers {
@@ -45,8 +46,8 @@ class PlanSpec extends FeatureSpec with Served  with GivenWhenThen with BeforeAn
 
   def givenEmpty {
     given( "空のレポジトリ・インデックス" )
-    FileUtil.delete( Home.dir("git")   )
-    FileUtil.delete( Home.dir("index") )
+    FileUtil.delete( FileSystem.gitPath   )
+    FileUtil.delete( FileSystem.indexPath )
   }
 
   def givenFile {
