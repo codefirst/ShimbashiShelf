@@ -18,7 +18,7 @@ import org.codefirst.shimbashishelf.filesystem.{File, Metadata}
 
 object Searcher{
   def apply() = new Searcher(INDEX_PATH)
-  def apply(path : String) = new Searcher(path)
+  def apply(path : JFile) = new Searcher(path.getPath())
 }
 
 class Searcher(indexPath : String) {

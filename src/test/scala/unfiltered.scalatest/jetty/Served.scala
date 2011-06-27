@@ -9,7 +9,7 @@ trait Served extends FeatureSpec with BeforeAndAfterAll with Hosted {
   def setup: (Server => Server)
 
   lazy val server : Server = setup(Http(port))
- 
+
   override protected def beforeAll {
     server.start()
   }

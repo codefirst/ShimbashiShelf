@@ -6,12 +6,12 @@ import org.codefirst.shimbashishelf.util.FileUtil
 import org.scalatest.BeforeAndAfterEach
 
 class IndexerSpec extends Spec with ShouldMatchers with BeforeAndAfterEach {
-  val IndexFile = "test_index/index"
+  val IndexFile = new File("test_index/index")
   val SampleFile = new File("test_index/index_test1.txt")
   val AnotherFile = new File("test_index/index_test2.txt")
 
   override def beforeEach() {
-    new File(IndexFile).mkdirs()
+    IndexFile.mkdirs()
     FileUtil.touch(SampleFile,"hello")
     FileUtil.touch(AnotherFile,"hi")
   }

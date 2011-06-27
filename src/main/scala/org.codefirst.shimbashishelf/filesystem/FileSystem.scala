@@ -19,7 +19,7 @@ sealed abstract class FileObject {
     val path =file.
       getPath().
       replace( JFile.pathSeparatorChar, '/' ).
-      replaceFirst( Home.dir("git").getPath() + "/?", "" )
+      replaceFirst( FileSystem.gitPath.getPath() + "/?", "" )
     "/" + path
   }
 
@@ -47,19 +47,34 @@ case class Directory(file : JFile, initMetadata : Option[Metadata]) extends File
 }
 
 object FileSystem {
-  private def searcher = Searcher()
+  def isTest =
+    System.getProperty("run.mode", "") == "test"
+
+  def gitPath   =
+    if( isTest )
+      Home.dir( "test-git" )
+    else
+      Home.dir( "git" )
+
+  def indexPath =
+    if( isTest )
+      Home.dir( "test-index" )
+    else
+      Home.dir( "index" )
+
+  private def searcher = Searcher( indexPath )
   def apply(path : String) : Option[FileObject] =
-    fromJFile(new JFile(FileUtil.join( Home.dir("git").getPath(), path )))
+    fromJFile(new JFile(FileUtil.join( gitPath.getPath(), path )))
 
   def mkdir(path : String) {
-    val file = new JFile(FileUtil.join( Home.dir("git").getPath(), path ))
+    val file = new JFile(FileUtil.join( gitPath.getPath(), path ))
     file.mkdirs()
   }
 
   def save( path : String, write : JFile => Unit ) : Option[FileObject] = {
-    val file = new JFile(FileUtil.join( Home.dir("git").getPath(), path ))
+    val file = new JFile(FileUtil.join( gitPath.getPath(), path ))
     write(file)
-    Indexer().index(file)
+    Indexer( indexPath ).index(file)
     vcs.commit(file)
     fromJFile(file)
   }
@@ -77,7 +92,7 @@ object FileSystem {
   }
 
   private def vcs =
-    new VersionControl( Home.dir("git") )
+    new VersionControl( gitPath )
 
   def commitList(from : Option[Date], to : Option[Date]) : Iterable[Commit[FileObject]] =
     vcs.commitList(from, to).toIterable.map(commit =>
@@ -97,7 +112,7 @@ object FileSystem {
   }
 
   def root : Directory =
-    fromJFile( Home.dir("git") ).get match {
+    fromJFile( gitPath ).get match {
       case dir@Directory(_,_) => dir
       case _ => throw new RuntimeException("must not happen")
     }

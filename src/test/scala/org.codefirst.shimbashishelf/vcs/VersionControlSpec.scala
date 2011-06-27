@@ -27,6 +27,7 @@ class VersionControlSpec extends Spec with ShouldMatchers with BeforeAndAfterEac
 
   describe("コミットリスト"){
     it("コミットあり") {
+      println(System.getProperty("run.mode"))
       val vcs = new VersionControl(new File(Repository))
       vcs.commit(new File(FileName))
       vcs.commitList(None, None).length should be(1)

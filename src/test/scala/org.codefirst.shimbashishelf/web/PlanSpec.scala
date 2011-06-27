@@ -16,6 +16,7 @@ class PlanSpec extends FeatureSpec with Served  with GivenWhenThen with BeforeAn
   import dispatch.mime.Mime._
 
   def setup = {
+    System.setProperty("run.mode", "test")
     _.filter(new Plan)
   }
 

@@ -44,4 +44,8 @@ class ShimbashiShelfProject(info: ProjectInfo)
   override def includeTest(s: String) = { s.endsWith("Spec") || s.contains("UserGuide") }
 
   lazy val jar = packageTask(packagePaths, jarPath, packageOptions).dependsOn(compile) describedAs "Creates a jar file."
+
+  override def testOptions = super.testOptions ++ Seq(
+    TestArgument("-Drun.mode=hehehe")
+  )
 }

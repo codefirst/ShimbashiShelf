@@ -18,3 +18,5 @@ files/
 *.swp
 *.log
 index_status.json
+test-git/
+test-index/

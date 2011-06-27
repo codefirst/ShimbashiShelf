@@ -1,6 +1,6 @@
 package org.codefirst.shimbashishelf.search
 
-import java.io.File
+import java.io.{File => JFile}
 import java.io.IOException
 import org.apache.lucene.analysis.cjk.CJKAnalyzer
 import org.apache.lucene.store.Directory
@@ -15,12 +15,12 @@ import scala.collection.immutable.Stream
 import org.codefirst.shimbashishelf._
 
 trait IdGenerator {
-  def generate(file : File, status : Status) : String
-  def generate(file : String, status : Status) : String = generate(new File(file), status)
+  def generate(file : JFile, status : Status) : String
+  def generate(file : String, status : Status) : String = generate(new JFile(file), status)
 }
 
 class SeqIdGenerator extends IdGenerator {
-  def generate(file : File, status : Status) = {
+  def generate(file : JFile, status : Status) = {
     val id = status.safeInt("id").getOrElse(0)
     status("id") = id + 1
     id.toString
@@ -28,10 +28,10 @@ class SeqIdGenerator extends IdGenerator {
 }
 
 object Indexer {
-  def apply() = new Indexer(INDEX_PATH, new SeqIdGenerator)
-  def apply(path : String) = new Indexer(path, new SeqIdGenerator)
+  def apply() = new Indexer(new JFile(INDEX_PATH), new SeqIdGenerator)
+  def apply(path : JFile) = new Indexer(path, new SeqIdGenerator)
 
-  def allFiles(file : File) : Stream[File] = {
+  def allFiles(file : JFile) : Stream[JFile] = {
     if (file.isFile()) {
       Stream.cons(file, Stream.empty)
     }else{
@@ -43,13 +43,13 @@ object Indexer {
   }
 }
 
-class Indexer(indexPath : String, idGenerator : IdGenerator) {
+class Indexer(indexPath : JFile, idGenerator : IdGenerator) {
   import SLucene._
 
   private def withWriter(f : IndexWriter => Unit) {
     val analyzer = new IpadicAnalyzer(new Tagger("ipadic"));
     val config = new IndexWriterConfig(Version.LUCENE_31, analyzer)
-    using(FSDirectory.open(new File(indexPath))) { case dir =>
+    using(FSDirectory.open( indexPath )) { case dir =>
       using(new IndexWriter(dir, config)){ case writer =>
         f(writer) } }
   }
@@ -69,7 +69,7 @@ class Indexer(indexPath : String, idGenerator : IdGenerator) {
         doc.add(("manageID" , manageID, Store.YES, Index.NOT_ANALYZED))
         doc.add(("content"  , text,     Store.YES, Index.ANALYZED))
         doc.add(("file_path", path,     Store.YES, Index.ANALYZED))
-        doc.add(("mimeType" , MimeDetector(new File(path)), Store.YES, Index.NOT_ANALYZED))
+        doc.add(("mimeType" , MimeDetector(new JFile(path)), Store.YES, Index.NOT_ANALYZED))
         try {
           writer.addDocument(doc)
         } catch { case _ =>
@@ -80,12 +80,12 @@ class Indexer(indexPath : String, idGenerator : IdGenerator) {
       } } }
   }
 
-  def index(file : File) {
+  def index(file : JFile) {
     index(file.getPath(),
           TextExtractor.extract(file.getAbsolutePath()))
   }
 
-  def delete(file : File) {
+  def delete(file : JFile) {
     withWriter { writer => writer.deleteDocuments(("path", file.getPath())) }
   }
 }
