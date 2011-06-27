@@ -6,6 +6,7 @@ project/boot
 project/plugins/src_managed
 project/plugins/project
 index/
+git/
 .idea
 *.iml
 **/*.iml
@@ -16,3 +17,4 @@ files/
 .DS_Store
 *.swp
 *.log
+index_status.json

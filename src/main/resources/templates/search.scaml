@@ -6,10 +6,10 @@
   - for((file, highlight) <- page)
     .result-item
       .title
-        %a(href="/view#{file.url}") =file.name
+        = link_to( file.name, "view", file.url )
       .info
         ID #{file.metadata.manageID}
         Path: #{file.url}
       .highlight
-        =unescape(highlight)
+        = highlight
 

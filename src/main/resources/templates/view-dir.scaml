@@ -16,5 +16,4 @@
   %ul.files
     - for(file <- files)
       %li
-        %a(href="/view#{file.url}")
-          =file.name
+        = link_to( file.name , "view", file.url )

@@ -42,7 +42,7 @@ class Plan extends unfiltered.filter.Planify({
       name <- getStr(req, "name")
       val dir = FileUtil.join(path,name)
       val _ = FileSystem.mkdir(dir)
-    } yield Redirect("/view/" + dir)) getOrElse {
+    } yield Redirect( Helper.url_for("view", dir ))) getOrElse {
       BadRequest ~> Scalate(req, "404.scaml")
     }
   case POST(Path(Seg("upload"::cwd)) & MultiPart(req)) =>
@@ -53,7 +53,7 @@ class Plan extends unfiltered.filter.Planify({
         val path = FileUtil.join( cwd.mkString("/"), name)
         FileSystem.save(path, f.write(_) ) match {
           case Some(file) =>
-            Redirect("/view" + file.url)
+            Redirect( Helper.url_for( "view", file.url ))
           case None =>
             BadRequest ~> Scalate(req, "404.scaml")
         }

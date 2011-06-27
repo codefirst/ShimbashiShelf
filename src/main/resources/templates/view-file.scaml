@@ -5,11 +5,11 @@
 .show-container
   %h2 =file.name
   .download-container
-    %a(href="/download#{file.url}") Download
+    = link_to( "Download", "download", file.url )
   %br.clear
   .info
     ID #{file.metadata.manageID}
     Path:
     %input(type="text" class="info" value={file.url} onmousedown="this.select();")
   .show-body
-    = unescape(body)
+    = body
