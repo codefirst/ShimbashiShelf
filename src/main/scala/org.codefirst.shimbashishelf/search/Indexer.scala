@@ -9,8 +9,8 @@ import org.apache.lucene.util.Version
 import org.apache.lucene.index.{IndexWriterConfig, IndexWriter}
 import org.apache.lucene.document.Field.{Index,Store}
 import org.apache.lucene.analysis.SimpleAnalyzer
-import net.reduls.igo.Tagger
-import net.reduls.igo.analysis.ipadic.IpadicAnalyzer
+import net.reduls.gomoku.Tagger
+import net.reduls.gomoku.analysis.ipadic.IpadicAnalyzer
 import scala.collection.immutable.Stream
 import org.codefirst.shimbashishelf._
 
@@ -47,7 +47,7 @@ class Indexer(indexPath : JFile, idGenerator : IdGenerator) {
   import SLucene._
 
   private def withWriter(f : IndexWriter => Unit) {
-    val analyzer = new IpadicAnalyzer(new Tagger("ipadic"));
+    val analyzer = new IpadicAnalyzer(new Tagger())
     val config = new IndexWriterConfig(Version.LUCENE_31, analyzer)
     using(FSDirectory.open( indexPath )) { case dir =>
       using(new IndexWriter(dir, config)){ case writer =>

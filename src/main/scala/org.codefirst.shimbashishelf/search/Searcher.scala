@@ -10,8 +10,8 @@ import org.apache.lucene.util.Version
 import org.apache.lucene.index.Term
 import org.apache.lucene.search._
 import org.apache.lucene.queryParser._
-import net.reduls.igo.Tagger
-import net.reduls.igo.analysis.ipadic.IpadicAnalyzer
+import net.reduls.gomoku.Tagger
+import net.reduls.gomoku.analysis.ipadic.IpadicAnalyzer
 import scala.xml.{Node, XML}
 import org.codefirst.shimbashishelf.util.Base._
 import org.codefirst.shimbashishelf.filesystem.{File, Metadata}
@@ -22,7 +22,7 @@ object Searcher{
 }
 
 class Searcher(indexPath : String) {
-  val analyzer = new IpadicAnalyzer(new Tagger("ipadic"));
+  val analyzer = new IpadicAnalyzer(new Tagger())
   val formatter = new SimpleHTMLFormatter("]]><strong>","</strong><![CDATA[")
   val parser : QueryParser = new MultiFieldQueryParser(Version.LUCENE_31,
                                                        Array("content","file_path"),
