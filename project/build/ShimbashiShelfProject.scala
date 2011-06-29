@@ -48,4 +48,6 @@ class ShimbashiShelfProject(info: ProjectInfo)
   override def testOptions = super.testOptions ++ Seq(
     TestArgument("-Drun.mode=hehehe")
   )
+
+  override def javaCompileOptions = super.javaCompileOptions ++ Seq("-source", "1.5","-encoding", "utf8").map(x => JavaCompileOption(x))
 }
