@@ -31,26 +31,24 @@ class VersionControl(repositoryDir : File) {
   val git : Git = new Git(repository)
 
   def commit(file : File) : Boolean = {
-    withGit { index => index.add(repositoryDir, file)  }
+    withGit(file) { file => git.add().addFilepattern(file.getName()).call() }
     true
   }
 
   def remove(file : File) {
-    withGit { index => index.remove(repositoryDir, file)  }
+    withGit (file) { file => git.rm().addFilepattern(file.getName()).call() }
   }
 
-  private def withGit(f : GitIndex => Unit) {
+  private def withGit(file : File)(f : File => Unit) {
     if (!new File(repositoryDir.getAbsolutePath() + File.separatorChar + Constants.DOT_GIT).exists()) {
       logger.info(new File(repositoryDir.getAbsolutePath() + File.separatorChar + Constants.DOT_GIT).getAbsolutePath() + " created")
       Git.init().setDirectory(repositoryDir).call()
     }
 
-    // TODO: getIndex() is deprecated, but AddCommand does not work...
-    val index = repository.getIndex()
-    f(index)
-    index.write()
+    f(file)
 
     val format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
+
     // TODO: Author configuration
     val cal = Calendar.getInstance()
     git.commit().setAuthor("ShimbashiShelf", "ShimbashiShelf@codefirst.org").setMessage(format.format(cal.getTime())).call()
