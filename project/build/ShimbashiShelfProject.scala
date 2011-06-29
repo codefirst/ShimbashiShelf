@@ -9,6 +9,8 @@ class ShimbashiShelfProject(info: ProjectInfo)
   with    WinstoneProject
   with    PrecompilerWebProject
 {
+  val jgitRepos = "jgit-repository" at "http://download.eclipse.org/jgit/maven"
+
   val uf_filter = "net.databinder" %% "unfiltered-filter" % "0.3.4"
   val uf_jetty  = "net.databinder" %% "unfiltered-jetty" % "0.3.4"
   val uf_uploads = "net.databinder" %% "unfiltered-uploads" % "0.3.4"
@@ -24,7 +26,7 @@ class ShimbashiShelfProject(info: ProjectInfo)
   val luceneCore = "org.apache.lucene" % "lucene-core" % "3.1.0"
   val luceneAnalyzers = "org.apache.lucene" % "lucene-analyzers" % "3.1.0"
   val luceneHightlighter = "org.apache.lucene" % "lucene-highlighter" % "3.1.0"
-  val jgit = "com.madgag" % "org.eclipse.jgit" % "0.11.99.4-UNOFFICIAL-ROBERTO-RELEASE"
+  val jgit = "org.eclipse.jgit" % "org.eclipse.jgit" % "1.0.0.201106090707-r"
   val log4j = "log4j" % "log4j" % "1.2.16"
   val mimeUtil = "eu.medsea.mimeutil" % "mime-util" % "2.1.3"
   val codec = "commons-codec" % "commons-codec" % "1.3"
