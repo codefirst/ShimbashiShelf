@@ -8,6 +8,7 @@ import org.codefirst.shimbashishelf.filesystem._
 import org.codefirst.shimbashishelf.util.Base._
 import org.codefirst.shimbashishelf.util.FileUtil
 
+
 class Plan extends unfiltered.filter.Planify({
   case Path(Seg("static" :: _)) =>
     Pass
@@ -20,10 +21,10 @@ class Plan extends unfiltered.filter.Planify({
   case req@Path("/calendar") =>
     Calendar(req)
   case req@Path(Seg("view"::path)) =>
-    View(req, path)
+    View(req, path.map(Helper.decode(_)))
   case req@Path(Seg("download"::path)) =>
     val response = for {
-      file@File(_,_) <- FileSystem(path.mkString("/"))
+      file@File(_,_) <- FileSystem(path.map(Helper.decode(_)).mkString("/"))
       val name = file.name
       xs   <- file.read
     } yield (name,xs)

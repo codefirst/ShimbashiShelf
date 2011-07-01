@@ -183,4 +183,14 @@ class PlanSpec extends FeatureSpec with Served  with GivenWhenThen with BeforeAn
         (extract(html, "div", "show-body") \\ "pre").text should include regex("世界中のコーダ")
     }
   }
+
+  feature("チケット refs: #676") {
+    scenario( "ファイル名にスペースを含んでいてもOK" ) {
+      givenEmpty
+      when("ファイル名にスペースを含んだファイルをアップロード")
+      val sampleFile = new JFile("src/test/scala/org.codefirst.shimbashishelf/web/foo bar.txt")
+      then( "404じゃない" )
+      status( host / "upload" <<* ("file", sampleFile)) should be (200)
+    }
+  }
 }
