@@ -49,7 +49,6 @@ case class Scalate[A, B](request: HttpRequest[A], template: String, attributes:(
       val scalateTemplate = engine.load(template, bindings)
       val context = contextBuilder(request, res, engine)
       for(attr <- additionalAttributes) context.attributes(attr._1) = attr._2
-      context.attributes("layout") = "src/main/resources/templates/default.scaml"
       for(attr <- attributes) context.attributes(attr._1) = attr._2
       engine.layout(scalateTemplate, context)
     }

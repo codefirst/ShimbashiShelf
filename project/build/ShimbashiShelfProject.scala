@@ -42,14 +42,8 @@ class ShimbashiShelfProject(info: ProjectInfo)
   val dispatch_mime = "net.databinder" %% "dispatch-mime" % "0.8.3"
   def junitXmlListener: TestReportListener = new JUnitXmlTestsListener(outputPath.toString)
   override def testListeners: Seq[TestReportListener] = super.testListeners ++ Seq(junitXmlListener)
-
   override def includeTest(s: String) = { s.endsWith("Spec") || s.contains("UserGuide") }
 
-  lazy val jar = packageTask(packagePaths, jarPath, packageOptions).dependsOn(compile) describedAs "Creates a jar file."
-
-  override def testOptions = super.testOptions ++ Seq(
-    TestArgument("-Drun.mode=hehehe")
-  )
-
   override def javaCompileOptions = super.javaCompileOptions ++ Seq("-source", "1.5","-encoding", "utf8").map(x => JavaCompileOption(x))
+  override def webappClasspath = super.webappClasspath +++ buildCompilerJar
 }

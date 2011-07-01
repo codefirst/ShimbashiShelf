@@ -2,19 +2,16 @@ package org.codefirst.shimbashishelf.web
 
 import java.util.Date
 
-import unfiltered.request._
 import unfiltered.response._
-import unfiltered.scalate._
 
 import org.codefirst.shimbashishelf.util.SCalendar
 import org.codefirst.shimbashishelf.util.Base._
 import org.codefirst.shimbashishelf.vcs.Commit
 import org.codefirst.shimbashishelf.filesystem.{FileObject, FileSystem}
 
-
 case class Day(day : Int, wday : String, files : Seq[FileObject], klass : String)
 
-object Calendar {
+case class Calendar[A,B](context : Context[A,B]) {
   val wday = Map(
     java.util.Calendar.SUNDAY -> "Sun",
     java.util.Calendar.MONDAY -> "Mon",
@@ -30,9 +27,9 @@ object Calendar {
   def navi(cal : SCalendar) =
     "year=%d&month=%d".format(cal.year, cal.month)
 
-  def apply[A](req : HttpRequest[A]) = {
-    val year  = getInt(req, "year" , today.year)
-    val month = getInt(req, "month", today.month)
+  def response = {
+    val year  = context.int( "year" , today.year )
+    val month = context.int( "month", today.month)
 
     val cal    = SCalendar(year, month, 1)
     val commits =
@@ -50,12 +47,11 @@ object Calendar {
     val prev = navi(cal.addMonth(-1))
     val next = navi(cal.addMonth(1))
 
-    Ok ~> Scalate(req,
-                  "calendar.scaml",
-                  ("title", title),
-                  ("days", days),
-                  ("prev", prev),
-                  ("next", next))
+    Ok ~> context.render( "calendar.scaml",
+                         ("title", title),
+                         ("days", days),
+                         ("prev", prev),
+                         ("next", next))
   }
 
   private def filesOfDay(day:Date, commits : Iterable[Commit[FileObject]]) = {
@@ -81,3 +77,4 @@ object Calendar {
     cal1.get(java.util.Calendar.DATE) == cal2.get(java.util.Calendar.DATE)
   }
 }
+

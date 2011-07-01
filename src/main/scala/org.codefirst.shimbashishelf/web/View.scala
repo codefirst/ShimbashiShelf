@@ -1,20 +1,17 @@
 package org.codefirst.shimbashishelf.web
 
-import unfiltered.request._
-import unfiltered.response._
-import unfiltered.scalate._
+import unfiltered.response.{Ok, NotFound}
 import org.apache.commons.codec.binary.Base64
 
 import org.codefirst.shimbashishelf.util.SCalendar
 import org.codefirst.shimbashishelf.util.Base._
-import org.codefirst.shimbashishelf.vcs.Commit
 import org.codefirst.shimbashishelf.filesystem.{File, FileSystem, Directory}
 
-object View {
-  def dir[A](req : HttpRequest[A], dir : Directory) =
-      Ok ~> Scalate(req, "view-dir.scaml", ("files", dir.children),("dir",dir))
+case class View[A,B](context : Context[A,B], path : List[String]) {
+  def dir[A,B](context : Context[A,B], dir : Directory) =
+      Ok ~> context.render( "view-dir.scaml", ("files", dir.children),("dir",dir) )
 
-  def file[A](req : HttpRequest[A], file : File) = {
+  def file[A,B](context : Context[A,B], file : File) = {
     val metadata =
       file.metadata
     val body : scala.xml.Node =
@@ -28,19 +25,19 @@ object View {
         }
       } else
         <pre>{metadata.content}</pre>
-     Scalate(req, "view-file.scaml", ("file", file), ("body", body))
+      Ok ~> context.render( "view-file.scaml", ("file", file), ("body", body) )
   }
 
-  def apply[A](req : HttpRequest[A], path : List[String]) = {
+  def response = {
     ( path, FileSystem(path.mkString("/")) ) match {
       case ( List(), _ ) =>
-        dir(req, FileSystem.root)
+        dir(context, FileSystem.root)
       case ( _, Some(x@Directory(_,_)) ) =>
-        dir(req, x)
+        dir(context, x)
       case ( _, Some(x@File(_,_)) ) =>
-        file(req, x)
+        file(context, x)
       case _ =>
-        NotFound ~> Scalate(req, "404.scaml")
+        NotFound ~> context.render( "404.scaml" )
     }
   }
 }
