@@ -4,11 +4,11 @@
 - attributes("title") = dir.url
 
 
-%form(action="#{url_for("/mkdir",dir.url)}" method="POST")
+%form(action="/mkdir" method="POST")
   %input(type="text" name="name" placeholder="new directory")
   %input(type="hidden" name="cwd" value="#{dir.url}")
   %input(type="submit" value="mkdir")
-%form(action="{url_for("updload", dir.url)}" enctype="multipart/form-data" method="POST")
+%form(action="/upload#{dir.url}" enctype="multipart/form-data" method="POST")
   %input(type="file" name="file" id="file")
   %input(type="submit")
 
