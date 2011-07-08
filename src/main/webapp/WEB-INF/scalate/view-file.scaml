@@ -2,6 +2,12 @@
 -@ val body : scala.xml.Node
 - attributes("title") = file.name
 
+%h1
+  - for(parent <- file.parents.dropRight(1))
+    = link_to( parent.name, "view", parent.url )
+    \/
+  = file.name
+
 .show-container
   %h2 =file.name
   .download-container

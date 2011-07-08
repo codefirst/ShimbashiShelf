@@ -297,3 +297,32 @@ table.calendar tr:nth-child(odd)  {
     margin-top: 20px;
 }
 
+table.files {
+    border-spacing: 0px;
+    border: 1px solid #D8D8D8;
+    width: 640px;
+    margin: 0;
+    margin-bottom: 1em;
+}
+
+table.files th {
+    text-align: left;
+    font-weight: normal;
+    background-color: #EAEAEA;
+    color: #999;
+}
+
+table.files td {
+    background: #fbfbfb;
+    padding: .5em .3em;
+    color: #484848;
+    border-bottom: 1px solid #E1E1E1;
+}
+
+table.files tr.file > td:first-child:before {
+    content: url("/static/images/page_text.gif")
+}
+
+table.files tr.dir td:first-child:before {
+    content: url("/static/images/folder.gif")
+}

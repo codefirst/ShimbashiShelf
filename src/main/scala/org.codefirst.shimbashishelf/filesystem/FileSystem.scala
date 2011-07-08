@@ -12,6 +12,7 @@ case class Metadata(mimeType : String, content : String, attrs : Map[String, Str
 }
 
 sealed abstract class FileObject {
+  def isDir : Boolean
   def file : JFile
   def initMetadata : Option[Metadata]
 
@@ -23,20 +24,38 @@ sealed abstract class FileObject {
     "/" + path
   }
 
+  def isRoot =
+    this.file.getPath == FileSystem.root.file.getPath
+
   def parent : Option[FileObject] = {
-    if( file.getPath == FileSystem.gitPath )
+    if( isRoot )
       None
     else {
       val jfile = file.getParentFile
       if(jfile eq null)
         None
       else
-        FileSystem.fromJFile( file.getParentFile )
+        FileSystem.fromJFile( jfile )
     }
   }
 
+  def parents : List[FileObject] = {
+    def loop(x : FileObject, xs : List[FileObject]) : List[FileObject] = {
+      x.parent match {
+        case None =>
+          x :: xs
+        case Some(y) =>
+          loop(y, x :: xs)
+      }
+    }
+    loop(this, List())
+  }
+
   def name : String =
-    file.getName()
+    if(isRoot)
+      "root"
+    else
+      file.getName()
 
   def metadata : Metadata =
     initMetadata getOrElse {
@@ -50,12 +69,14 @@ case class File(file : JFile, initMetadata : Option[Metadata]) extends FileObjec
   def read : Option[Array[Byte]] = {
     FileUtil.readArray(file.getAbsolutePath())
   }
+  def isDir = false
 }
 
 case class Directory(file : JFile, initMetadata : Option[Metadata]) extends FileObject {
   def children : Iterable[FileObject] = {
     file.listFiles().flatMap( FileSystem.fromJFile(_) )
   }
+  def isDir = true
 }
 
 object FileSystem {

@@ -4,7 +4,35 @@
 - attributes("javascripts") = List("jquery.pjax.js")
 - attributes("title") = dir.url
 
+%h1
+  - for(parent <- dir.parents.dropRight(1))
+    = link_to( parent.name, "view", parent.url )
+    \/
+  = dir.name
 
+#pjax
+  %table.files
+    %tr
+      %th name
+      %th info
+      %th content
+    %tr.dir
+      - if( dir.parent.isDefined )
+        %td
+          = link_to( ".." , "view", dir.parent.get.url )
+        %td
+        %td
+    - for(file <- files)
+      %tr(class={if(file.isDir) "dir" else "file"})
+        %td
+          = link_to( file.name , "view", file.url )
+        %td
+          ID :
+          = file.metadata.manageID
+        %td
+          = file.metadata.content.take(20)
+
+%hr
 %form(action="/mkdir" method="POST")
   %input(type="text" name="name" placeholder="new directory")
   %input(type="hidden" name="cwd" value="#{dir.url}")
@@ -12,11 +40,3 @@
 %form(action="/upload#{dir.url}" enctype="multipart/form-data" method="POST")
   %input(type="file" name="file" id="file")
   %input(type="submit")
-
-#pjax
-  %ul.files
-    - if( dir.parent.isDefined )
-      = link_to( ".." , "view", dir.parent.get.url )
-    - for(file <- files)
-      %li
-        = link_to( file.name , "view", file.url )

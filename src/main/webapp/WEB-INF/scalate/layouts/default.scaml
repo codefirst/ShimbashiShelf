@@ -11,7 +11,7 @@
     %meta(name="description" content="")
     %meta(name="keywords" content="")
     %link(href="/static/images/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon")
-    %link(href="/static/stylesheets/shimbashishelf.css" rel="stylesheet" type="text/css")
+    %link(href="/static/stylesheets/shimbashishelf.css?#{new java.util.Date().getTime()}" rel="stylesheet" type="text/css")
     %script(src="/static/javascripts/jquery-1.6.1.min.js" type="text/javascript")
     - for(javascript <- javascripts)
       %script(src="/static/javascripts/#{javascript}" type="text/javascript")
