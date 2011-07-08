@@ -1,16 +1,18 @@
 -@ val file : org.codefirst.shimbashishelf.filesystem.File
 -@ val body : scala.xml.Node
+- attributes("javascripts") = List("jquery-ui-1.8.14.custom.min.js", "jquery.pjax.js", "view.js")
+- attributes("stylesheets") = List("ui-lightness/jquery-ui-1.8.14.custom.css")
 - attributes("title") = file.name
 
-%h1
+%h1.pjax
   - for(parent <- file.parents.dropRight(1))
-    = link_to( parent.name, "view", parent.url )
+    = link_to_with_class( parent.name, "up", "view", parent.url )
     \/
   = file.name
 
-.show-container
+.show
   %h2 =file.name
-  .download-container
+  .download
     = link_to( "Download", "download", file.url )
   %br.clear
   .info

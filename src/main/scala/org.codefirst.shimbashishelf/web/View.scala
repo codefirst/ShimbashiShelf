@@ -15,7 +15,6 @@ case class View[A,B](context : Context[A,B], path : List[String]) {
   def pjax =
     context.request match {
       case PJAX(_) =>
-        println("pjax!")
         true
       case _ =>
         false
@@ -44,6 +43,10 @@ case class View[A,B](context : Context[A,B], path : List[String]) {
         }
       } else
         <pre>{metadata.content}</pre>
+
+    if(pjax)
+      Ok ~> context.render( "view-file.scaml", ("file", file), ("body", body), ("layout", "") )
+    else
       Ok ~> context.render( "view-file.scaml", ("file", file), ("body", body) )
   }
 

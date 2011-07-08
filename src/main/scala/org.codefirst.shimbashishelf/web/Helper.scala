@@ -8,6 +8,10 @@ object Helper {
   def link_to(title : String, url : String*) =
     <a href={url_for(url : _*)}>{title}</a>
 
+  def link_to_with_class(title : String, klass : String,url : String*) =
+    <a class={klass} href={url_for(url : _*)}>{title}</a>
+
+
   def encode(s : String) : String=
     URLEncoder.encode(s, "UTF-8").replace("%2F","/")
 

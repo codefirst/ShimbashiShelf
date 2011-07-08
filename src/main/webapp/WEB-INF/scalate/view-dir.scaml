@@ -1,17 +1,16 @@
 -@ val files : Iterable[org.codefirst.shimbashishelf.filesystem.FileObject] = List()
 -@ val dir : org.codefirst.shimbashishelf.filesystem.Directory
--@ val isRoot : Boolean = true
-- attributes("javascripts") = List("jquery-ui-1.8.14.custom.min.js", "jquery.pjax.js")
+- attributes("javascripts") = List("jquery-ui-1.8.14.custom.min.js", "jquery.pjax.js", "view.js")
 - attributes("stylesheets") = List("ui-lightness/jquery-ui-1.8.14.custom.css")
 - attributes("title") = dir.url
 
-%h1
-  - for(parent <- dir.parents.dropRight(1))
-    = link_to( parent.name, "view", parent.url )
-    \/
-  = dir.name
+.pjax
+  %h1
+    - for(parent <- dir.parents.dropRight(1))
+      = link_to_with_class( parent.name, "up", "view", parent.url )
+      \/
+    = dir.name
 
-#pjax
   %table.files
     %tr
       %th name
@@ -20,7 +19,7 @@
     - if( dir.parent.isDefined )
       %tr.dir
         %td
-          = link_to( ".." , "view", dir.parent.get.url )
+          = link_to_with_class( "..", "up", "view", dir.parent.get.url )
         %td
         %td
     - for(file <- files)

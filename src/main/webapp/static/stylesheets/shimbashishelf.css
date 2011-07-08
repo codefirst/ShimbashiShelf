@@ -149,7 +149,7 @@ input[type="submit"] {
     overflow: hidden;
 }
 
-.show-container .info,
+.show .info,
 .search-result .info{
     font-size: 10px;
 }
@@ -187,15 +187,15 @@ div.show-body img {
     margin-top: 0px;
 }
 
-.show-container {
+.show {
     padding-top: 10px;
 }
-.show-container h2 {
+.show h2 {
     margin-bottom: 0px;
     float: left;
     width: 65%;
 }
-.download-container {
+.download {
     text-align: right;
     float: right;
     width: 35%;
@@ -329,4 +329,9 @@ table.files tr.dir td:first-child:before {
 
 div.error{
     text-align: center;
+}
+
+.content h1 {
+    margin:0;
+    padding:0;
 }
