@@ -28,12 +28,17 @@ trait Template extends InittedFilter {
         new DefaultRenderContext(unfiltered.util.Optional(req.uri).getOrElse("").split('?')(0), engine, res.getWriter)
     }
 
+  lazy val engine = {
+    val e = new ServletTemplateEngine(config)
+    e.allowCaching = true
+    e.allowReload = false
+    e.mode = "production"
+    e
+  }
+
   def render[A,B](request: HttpRequest[A])(template: String, attributes:(String,Any)*) : Responder[B] = {
     val path =
       "/WEB-INF/scalate/%s".format(template)
-
-    val engine =
-      new ServletTemplateEngine(config)
 
     HtmlContent ~> Scalate(request, path, attributes : _*)(
       engine = engine,
