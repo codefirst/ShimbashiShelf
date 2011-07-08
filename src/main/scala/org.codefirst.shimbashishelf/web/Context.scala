@@ -47,6 +47,10 @@ trait Template extends InittedFilter {
 }
 
 case class Context[A,B](request : HttpRequest[A], render : Template.Render[B]) {
+  request.underlying match {
+    case hreq : HttpServletRequest =>
+      hreq.setCharacterEncoding("UTF-8")
+  }
   def string(name : String) : Option[String] = {
     val xs = request.parameterValues(name)
     if(xs eq null)

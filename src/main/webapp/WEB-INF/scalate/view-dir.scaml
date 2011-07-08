@@ -37,6 +37,6 @@
   %input(type="text" name="name" placeholder="new directory")
   %input(type="hidden" name="cwd" value="#{dir.url}")
   %input(type="submit" value="mkdir")
-%form(action="/upload#{dir.url}" enctype="multipart/form-data" method="POST")
+%form(action={url_for("upload",dir.url)} enctype="multipart/form-data" method="POST")
   %input(type="file" name="file" id="file")
   %input(type="submit")

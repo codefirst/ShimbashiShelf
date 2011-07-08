@@ -7,6 +7,7 @@ trait Served extends FeatureSpec with BeforeAndAfterAll with Hosted {
 
   import unfiltered.jetty._
   def setup: (Server => Server)
+  def shutdown: (Server => Unit)
 
   lazy val server : Server = setup(Http(port))
 
@@ -15,6 +16,7 @@ trait Served extends FeatureSpec with BeforeAndAfterAll with Hosted {
   }
 
   override protected def afterAll {
+    shutdown(server)
     server.stop()
     server.destroy()
   }

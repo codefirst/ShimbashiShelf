@@ -1,3 +1,4 @@
+// -*- coding: utf-8 -*-
 package org.codefirst.shimbashishelf.web
 
 import java.io.{File => JFile}
@@ -14,11 +15,15 @@ import org.codefirst.shimbashishelf.util.FileUtil
 
 class PlanSpec extends FeatureSpec with Served  with GivenWhenThen with BeforeAndAfterEach with ShouldMatchers {
   import dispatch._
-  import dispatch.mime.Mime._
+  import mispatch.mime.Mime._
 
   def setup = {
     System.setProperty("run.mode", "test")
     _.filter(new Plan).resources(new JFile("src/main/webapp").toURI.toURL)
+  }
+
+  def shutdown = { case _ =>
+    System.setProperty("run.mode", "")
   }
 
   val http = new Http
@@ -56,6 +61,9 @@ class PlanSpec extends FeatureSpec with Served  with GivenWhenThen with BeforeAn
     status( host / "upload" <<* ("file", sampleFile)) should be (200)
   }
 
+  def files(xml : Node) =
+    extract(xml, "table", "files") \\ "tr"
+
   feature( "トップページ" ) {
     scenario( "/へのアクセス" ){
       status( host ) should be(200)
@@ -69,8 +77,7 @@ class PlanSpec extends FeatureSpec with Served  with GivenWhenThen with BeforeAn
   }
 
   feature("viewページ") {
-    def files(xml : Node) =
-      extract(xml, "table", "files") \\ "tr"
+
 
     scenario( "空ファイルの表示" ) {
       givenEmpty
@@ -167,20 +174,42 @@ class PlanSpec extends FeatureSpec with Served  with GivenWhenThen with BeforeAn
     }
   }
 
-  feature("チケット refs: #674") {
+  feature("日本語が使える") {
     def givenJaFile {
       given( "ファイルがアップロードされている" )
-      val sampleFile = new JFile("src/test/scala/org.codefirst.shimbashishelf/web/sample-ja.txt")
-      status( host / "upload" <<* ("file", sampleFile)) should be (200)
+      val sampleFile = new JFile("src/test/scala/org.codefirst.shimbashishelf/web/サンプル.txt")
+      status( host / "upload" <<* ("file", sampleFile) ) should be (200)
     }
 
     scenario( "日本語を含んだファイルもアップロードできる" ) {
       givenEmpty
       givenJaFile
       when( "/viewへのアクセス" )
-        val html = body( host / "view" / "sample-ja.txt")
+        val html = body( host / "view" / "サンプル.txt")
       then( "本文表示" )
         (extract(html, "div", "show-body") \\ "pre").text should include regex("世界中のコーダ")
+    }
+
+    scenario( "ディレクトリの作成" ) {
+      givenEmpty
+      when( "/mkdirへのPOST" )
+        status( host / "mkdir" << Map("cwd" -> "", "name" -> "ほげ" ))
+      then( "ファイルが1個ある" )
+        files( body( host / "view" )) should have length (2)
+      and( "アクセスできる" )
+        status( host / "view" / "ほげ" ) should be(200)
+    }
+
+    scenario( "インデックス済なら検索できる" ) {
+      givenEmpty
+      givenJaFile
+      when( "/seacrhへのアクセス" )
+        val html = body( host / "search?q=世界中" )
+      then( "件数が1" )
+        (extract( html, "div", "search-result") \ "div") should have length(1)
+      and( "リンクがある" )
+        val link = (extract( html, "div", "search-result") \ "div" \\ "a" \ "@href").toString()
+        java.net.URLDecoder.decode(link, "UTF-8") should be("/view/サンプル.txt")
     }
   }
 
