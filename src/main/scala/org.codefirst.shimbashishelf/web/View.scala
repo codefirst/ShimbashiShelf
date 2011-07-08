@@ -1,16 +1,34 @@
 package org.codefirst.shimbashishelf.web
 
 import unfiltered.response.{Ok, NotFound}
+import unfiltered.request.RequestHeader
 import org.apache.commons.codec.binary.Base64
 
 import org.codefirst.shimbashishelf.util.SCalendar
 import org.codefirst.shimbashishelf.util.Base._
 import org.codefirst.shimbashishelf.filesystem.{File, FileSystem, Directory}
 
+object PJAX extends RequestHeader("X-PJAX")
+
 case class View[A,B](context : Context[A,B], path : List[String]) {
-  def dir[A,B](context : Context[A,B], dir : Directory ) =
+
+  def pjax =
+    context.request match {
+      case PJAX(_) =>
+        println("pjax!")
+        true
+      case _ =>
+        false
+    }
+
+  def dir[A,B](context : Context[A,B], dir : Directory ) = {
+    if(pjax)
+      Ok ~> context.render( "view-dir.scaml",
+                           ("files", dir.children), ("dir",dir), ("layout",""))
+    else
       Ok ~> context.render( "view-dir.scaml",
                            ("files", dir.children), ("dir",dir))
+  }
 
   def file[A,B](context : Context[A,B], file : File) = {
     val metadata =

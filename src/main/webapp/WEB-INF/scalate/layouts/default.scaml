@@ -2,6 +2,7 @@
 -@ val title: String = "Top Page"
 -@ val query : String = ""
 -@ val javascripts : List[String] = List()
+-@ val stylesheets : List[String] = List()
 !!! 5
 %html
   %head
@@ -14,7 +15,9 @@
     %link(href="/static/stylesheets/shimbashishelf.css?#{new java.util.Date().getTime()}" rel="stylesheet" type="text/css")
     %script(src="/static/javascripts/jquery-1.6.1.min.js" type="text/javascript")
     - for(javascript <- javascripts)
-      %script(src="/static/javascripts/#{javascript}" type="text/javascript")
+      %script(src="/static/javascripts/#{javascript}?#{new java.util.Date().getTime()}" type="text/javascript")
+    - for(stylesheet <- stylesheets)
+      %link(href="/static/stylesheets/#{stylesheet}?#{new java.util.Date().getTime()}" rel="stylesheet" type="text/css")
     %title #{title} - ShimbashiShelf
   %body
     .container
