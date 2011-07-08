@@ -39,7 +39,7 @@ class Plan extends unfiltered.filter.Plan with Template {
           val dir = FileUtil.join(path,name)
           val _ = FileSystem.mkdir(dir)
         } yield Redirect( Helper.url_for("view", dir ))) getOrElse {
-          BadRequest ~> context.render("404.scaml")
+          BadRequest ~> context.render("400.scaml")
         }
       case POST(Path(Seg("upload"::cwd)) & MultiPart(req)) =>
         val multi = MultiPartParams.Streamed(req)
@@ -51,10 +51,10 @@ class Plan extends unfiltered.filter.Plan with Template {
               case Some(file) =>
                 Redirect( Helper.url_for( "view", file.url ))
               case None =>
-                BadRequest ~> context.render("404.scaml")
+                BadRequest ~> context.render("400.scaml")
             }
           case _ =>
-            BadRequest ~> context.render("404.scaml")
+            BadRequest ~> context.render("400.scaml")
         }
       case _ =>
         NotFound ~> context.render("404.scaml")

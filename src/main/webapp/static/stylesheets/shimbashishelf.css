@@ -326,3 +326,7 @@ table.files tr.file > td:first-child:before {
 table.files tr.dir td:first-child:before {
     content: url("/static/images/folder.gif")
 }
+
+div.error{
+    text-align: center;
+}
