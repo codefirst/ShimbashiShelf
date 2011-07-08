@@ -16,8 +16,8 @@
       %th name
       %th info
       %th content
-    %tr.dir
-      - if( dir.parent.isDefined )
+    - if( dir.parent.isDefined )
+      %tr.dir
         %td
           = link_to( ".." , "view", dir.parent.get.url )
         %td

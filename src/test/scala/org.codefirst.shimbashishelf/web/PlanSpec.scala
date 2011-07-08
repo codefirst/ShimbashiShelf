@@ -70,13 +70,13 @@ class PlanSpec extends FeatureSpec with Served  with GivenWhenThen with BeforeAn
 
   feature("viewページ") {
     def files(xml : Node) =
-      extract(xml, "ul", "files") \\ "li"
+      extract(xml, "table", "files") \\ "tr"
 
     scenario( "空ファイルの表示" ) {
       givenEmpty
       when( "/viewへのアクセス" )
       then( "ファイルリストが空" )
-        files( body( host / "view" )) should be ('empty)
+        files( body( host / "view" )) should have length(1)
     }
 
     scenario( "ディレクトリの作成" ) {
@@ -84,7 +84,7 @@ class PlanSpec extends FeatureSpec with Served  with GivenWhenThen with BeforeAn
       when( "/mkdirへのPOST" )
         status( host / "mkdir" << Map("cwd" -> "", "name" -> "hoge" ))
       then( "ファイルが1個ある" )
-        files( body( host / "view" )) should have length (1)
+        files( body( host / "view" )) should have length (2)
     }
 
     scenario( "ファイルのアップロード" ) {
@@ -92,7 +92,7 @@ class PlanSpec extends FeatureSpec with Served  with GivenWhenThen with BeforeAn
       givenFile
       when( "/viewへのアクセス" )
       then("ファイルが1個ある")
-        files( body( host / "view" )) should have length (1)
+        files( body( host / "view" )) should have length (2)
     }
 
     scenario( "個別ファイル表示" ) {
