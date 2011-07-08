@@ -8,8 +8,9 @@ import org.codefirst.shimbashishelf.util.Base._
 import org.codefirst.shimbashishelf.filesystem.{File, FileSystem, Directory}
 
 case class View[A,B](context : Context[A,B], path : List[String]) {
-  def dir[A,B](context : Context[A,B], dir : Directory) =
-      Ok ~> context.render( "view-dir.scaml", ("files", dir.children),("dir",dir) )
+  def dir[A,B](context : Context[A,B], dir : Directory ) =
+      Ok ~> context.render( "view-dir.scaml",
+                           ("files", dir.children), ("dir",dir))
 
   def file[A,B](context : Context[A,B], file : File) = {
     val metadata =

@@ -23,6 +23,18 @@ sealed abstract class FileObject {
     "/" + path
   }
 
+  def parent : Option[FileObject] = {
+    if( file.getPath == FileSystem.gitPath )
+      None
+    else {
+      val jfile = file.getParentFile
+      if(jfile eq null)
+        None
+      else
+        FileSystem.fromJFile( file.getParentFile )
+    }
+  }
+
   def name : String =
     file.getName()
 

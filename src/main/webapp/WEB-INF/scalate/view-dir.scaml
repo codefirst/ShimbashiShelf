@@ -1,5 +1,6 @@
 -@ val files : Iterable[org.codefirst.shimbashishelf.filesystem.FileObject] = List()
 -@ val dir : org.codefirst.shimbashishelf.filesystem.Directory
+-@ val isRoot : Boolean = true
 - attributes("javascripts") = List("jquery.pjax.js")
 - attributes("title") = dir.url
 
@@ -14,6 +15,8 @@
 
 #pjax
   %ul.files
+    - if( dir.parent.isDefined )
+      = link_to( ".." , "view", dir.parent.get.url )
     - for(file <- files)
       %li
         = link_to( file.name , "view", file.url )
