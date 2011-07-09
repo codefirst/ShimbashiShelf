@@ -177,7 +177,7 @@ class PlanSpec extends FeatureSpec with Served  with GivenWhenThen with BeforeAn
   feature("日本語が使える") {
     def givenJaFile {
       given( "ファイルがアップロードされている" )
-      val sampleFile = new JFile("src/test/scala/org.codefirst.shimbashishelf/web/サンプル.txt")
+      val sampleFile = new JFile("src/test/scala/org.codefirst.shimbashishelf/web/テスト.txt")
       status( host / "upload" <<* ("file", sampleFile) ) should be (200)
     }
 
@@ -185,7 +185,7 @@ class PlanSpec extends FeatureSpec with Served  with GivenWhenThen with BeforeAn
       givenEmpty
       givenJaFile
       when( "/viewへのアクセス" )
-        val html = body( host / "view" / "サンプル.txt")
+        val html = body( host / "view" / "テスト.txt")
       then( "本文表示" )
         (extract(html, "div", "show-body") \\ "pre").text should include regex("世界中のコーダ")
     }
@@ -209,7 +209,7 @@ class PlanSpec extends FeatureSpec with Served  with GivenWhenThen with BeforeAn
         (extract( html, "div", "search-result") \ "div") should have length(1)
       and( "リンクがある" )
         val link = (extract( html, "div", "search-result") \ "div" \\ "a" \ "@href").toString()
-        java.net.URLDecoder.decode(link, "UTF-8") should be("/view/サンプル.txt")
+        java.net.URLDecoder.decode(link, "UTF-8") should be("/view/テスト.txt")
     }
   }
 
