@@ -335,3 +335,15 @@ div.error{
     margin:0;
     padding:0;
 }
+
+.button{
+    cursor : pointer;
+}
+
+.dialog{
+    display: none;
+}
+
+.dialog p{
+    margin: 5px;
+}

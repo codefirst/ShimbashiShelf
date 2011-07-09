@@ -11,6 +11,10 @@
       \/
     = dir.name
 
+  %p
+    %img.mkdir.button(src="/static/images/folder_new.gif" title="Create Directory")
+    %img.upload.button(src="/static/images/page_new.gif" title="Upload File")
+
   %table.files
     %tr
       %th name
@@ -32,11 +36,15 @@
         %td
           = file.metadata.content.take(20)
 
-%hr
-%form(action="/mkdir" method="POST")
-  %input(type="text" name="name" placeholder="new directory")
-  %input(type="hidden" name="cwd" value="#{dir.url}")
-  %input(type="submit" value="mkdir")
-%form(action={url_for("upload",dir.url)} enctype="multipart/form-data" method="POST")
-  %input(type="file" name="file" id="file")
-  %input(type="submit")
+#mkdir.dialog(title="Create Directory")
+  %form(action="/mkdir" method="POST")
+    %input(type="text" name="name" placeholder="new directory")
+    %input(type="submit" value="Save")
+    %input(type="hidden" name="cwd" value="#{dir.url}")
+
+#upload.dialog(title="Upload File")
+  %form(action={url_for("upload",dir.url)} enctype="multipart/form-data" method="POST")
+    %p
+      %input(type="file" name="file" id="file")
+    %p
+      %input(type="submit")
