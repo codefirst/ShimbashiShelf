@@ -46,7 +46,7 @@ class Plan extends unfiltered.filter.Plan with Template {
         multi.files("file") match {
           case Seq(f, _*) =>
             val name = f.name
-            val path = FileUtil.join( cwd.mkString("/"), name)
+            val path = FileUtil.join( cwd.map(Helper.decode(_)).mkString("/"), name)
             FileSystem.save(path, f.write(_) ) match {
               case Some(file) =>
                 Redirect( Helper.url_for( "view", file.url ))
