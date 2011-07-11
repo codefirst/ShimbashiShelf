@@ -19,6 +19,11 @@ import org.codefirst.shimbashishelf.filesystem.{File, Metadata}
 object Searcher{
   def apply() = new Searcher(INDEX_PATH)
   def apply(path : JFile) = new Searcher(path.getPath())
+
+  def toQuery(file : JFile) : Query = {
+    val term : Term = new Term("path", file.getPath)
+    new TermQuery(term)
+  }
 }
 
 class Searcher(indexPath : String) {
@@ -31,17 +36,24 @@ class Searcher(indexPath : String) {
   private def prefix(s : String, n : Int) : String =
     s.substring(0, scala.math.min(s.length, n))
 
-  private def field(doc : LDocument, key : String) =
-    doc.getField(key).stringValue()
+  private def field(doc : LDocument, key : String, default : String = "") = {
+    val field = doc.getField(key)
+    if(field eq null)
+      default
+    else {
+      field.stringValue()
+    }
+  }
 
-  private def file(id : String, doc : LDocument) : File =
+  private def file(doc : LDocument) : File =
     File(new JFile(field(doc, "path")),
          Some(Metadata(
            mimeType = field(doc, "mimeType"),
            content  = field(doc, "content"),
+           tags     = field(doc, "tags").split(",").toList,
            attrs    = Map("manageID" -> field(doc, "manageID")))))
 
-  private def search(query : Query) : Seq[(File, Node)] =
+  private[search] def searchDocuments(query : Query) : Seq[(LDocument, Node)] =
     using( FSDirectory.open(new JFile(indexPath)) ) { case dir =>
       using( new IndexSearcher(dir, true) ) { case searcher => {
         val scorer = new QueryScorer(query, "content")
@@ -53,8 +65,11 @@ class Searcher(indexPath : String) {
           val content  = doc.getField("content").stringValue()
           val fragment = hightlighter.getBestFragment(analyzer, "content",content)
           val high     = notNull(fragment, prefix(content,100))
-        } yield (file(scoreDoc.doc.toString, doc), XML.loadString("<pre><![CDATA[" + high + "]]></pre>"))
+        } yield (doc, XML.loadString("<pre><![CDATA[" + high + "]]></pre>"))
       } } }
+
+  private def search(query : Query) : Seq[(File, Node)] =
+    searchDocuments(query).map({case (doc, high) => (file(doc), high)})
 
   def searchByQuery(query : String) : Seq[(File, scala.xml.Node)] = {
     if (query == null || query.trim().length() == 0)
@@ -65,15 +80,6 @@ class Searcher(indexPath : String) {
 
   def searchByPath(path : String) : Option[File] =
     safe {
-      val term : Term = new Term("path", path)
-      val query : Query = new TermQuery(term)
-      search(query).headOption.map(_._1)
+      search(Searcher.toQuery(new JFile(path))).headOption.map(_._1)
     }
-
-  def searchByID(id : String) : Option[File] =
-    safe {
-      using( FSDirectory.open(new JFile(indexPath)) ) { case dir =>
-        using( new IndexSearcher(dir, true) ) { case searcher => {
-          Some(file(id, searcher.doc(id.toInt)))
-        } } } }
 }

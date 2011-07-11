@@ -69,6 +69,7 @@ class Indexer(indexPath : JFile, idGenerator : IdGenerator) {
         doc.add(("manageID" , manageID, Store.YES, Index.NOT_ANALYZED))
         doc.add(("content"  , text,     Store.YES, Index.ANALYZED))
         doc.add(("file_path", path,     Store.YES, Index.ANALYZED))
+        doc.add(("tags", "ss",Store.YES, Index.NOT_ANALYZED))
         doc.add(("mimeType" , MimeDetector(new JFile(path)), Store.YES, Index.NOT_ANALYZED))
         try {
           writer.addDocument(doc)
@@ -77,6 +78,7 @@ class Indexer(indexPath : JFile, idGenerator : IdGenerator) {
           doc.add(("content", "<binary>", Store.YES, Index.ANALYZED))
           writer.addDocument(doc)
         }
+        writer.optimize
       } } }
   }
 
@@ -87,5 +89,18 @@ class Indexer(indexPath : JFile, idGenerator : IdGenerator) {
 
   def delete(file : JFile) {
     withWriter { writer => writer.deleteDocuments(("path", file.getPath())) }
+  }
+
+  def updateTags(file : JFile, tags : List[String]) {
+    withWriter { writer =>
+      Searcher(indexPath).searchDocuments(Searcher.toQuery(file)).headOption match {
+        case Some((doc,_)) =>
+          doc.removeField("tags")
+          doc.add(("tags", tags.mkString(","), Store.YES, Index.NOT_ANALYZED))
+          writer.updateDocument(("path", file.getPath), doc)
+        case None =>
+          throw new java.io.FileNotFoundException(file.getPath)
+      }
+    }
   }
 }

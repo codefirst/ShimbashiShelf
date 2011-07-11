@@ -7,7 +7,7 @@ import org.codefirst.shimbashishelf.common.Home
 import org.codefirst.shimbashishelf.search.{Searcher, Indexer}
 import org.codefirst.shimbashishelf.vcs.{VersionControl,Commit}
 
-case class Metadata(mimeType : String, content : String, attrs : Map[String, String]){
+case class Metadata(mimeType : String, content : String, tags : List[String], attrs : Map[String, String]){
   def manageID = attrs.getOrElse("manageID", "-")
 }
 
@@ -60,16 +60,19 @@ sealed abstract class FileObject {
   def metadata : Metadata =
     initMetadata getOrElse {
       FileSystem.metadata(file) getOrElse {
-        Metadata( "application/octet-stream", "", Map() )
+        Metadata( "application/octet-stream", "", List(),Map() )
       }
     }
 }
 
 case class File(file : JFile, initMetadata : Option[Metadata]) extends FileObject {
-  def read : Option[Array[Byte]] = {
+  def read : Option[Array[Byte]] =
     FileUtil.readArray(file.getAbsolutePath())
-  }
+
   def isDir = false
+
+  def updateTags(tags : List[String]) =
+    FileSystem.indexer.updateTags( file, tags )
 }
 
 case class Directory(file : JFile, initMetadata : Option[Metadata]) extends FileObject {
@@ -95,7 +98,8 @@ object FileSystem {
     else
       Home.dir( "index" )
 
-  private def searcher = Searcher( indexPath )
+  private[filesystem] def searcher = Searcher( indexPath )
+  private[filesystem] def indexer  = Indexer(  indexPath )
   def apply(path : String) : Option[FileObject] =
     fromJFile(new JFile(FileUtil.join( gitPath.getPath(), path )))
 
@@ -107,7 +111,7 @@ object FileSystem {
   def save( path : String, write : JFile => Unit ) : Option[FileObject] = {
     val file = new JFile(FileUtil.join( gitPath.getPath(), path ))
     write(file)
-    Indexer( indexPath ).index(file)
+    indexer.index(file)
     vcs.commit(file)
     fromJFile(file)
   }

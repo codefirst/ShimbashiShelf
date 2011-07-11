@@ -73,4 +73,26 @@ class IndexerSpec extends Spec with ShouldMatchers with BeforeAndAfterEach {
       xs should contain (AnotherFile)
     }
   }
+
+  describe( "タグの管理" ) {
+    it("設定できる") {
+      val indexer = Indexer(IndexFile)
+      indexer.index(SampleFile)
+
+      indexer.updateTags(SampleFile, List("foo", "bar"))
+
+      val doc = Searcher(IndexFile).searchByPath(SampleFile.getPath()).orNull
+      doc.metadata.tags should be(List("foo", "bar"))
+    }
+
+    it("更新できる") {
+      val indexer = Indexer(IndexFile)
+      indexer.index(SampleFile)
+      indexer.updateTags(SampleFile, List("hoge"))
+
+      val doc = Searcher(IndexFile).searchByPath(SampleFile.getPath()).orNull
+      doc.metadata.tags should be(List("hoge"))
+    }
+  }
 }
+
